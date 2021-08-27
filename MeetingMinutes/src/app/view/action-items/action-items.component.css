@@ -1,0 +1,114 @@
+#container{
+    background-image: url('src/assets/background.jpg');
+    min-height: 1000px;
+    background-size: cover;
+    background-repeat: repeat-y;
+    align-content: center;
+    width: 100%;
+}
+
+.cardActionItem {
+    padding: 30px;
+    /* height: 770px; */
+    margin-top: 30px;
+    margin-bottom: auto;
+    width: 100%;
+    /* height: 100%; */
+    /* margin: 0% 5%; */
+    border-radius: 10px;
+    background-color: rgb(253, 253, 253) !important;
+    border-top: 1px solid rgb(179, 179, 179);
+    border-bottom: 1px solid rgb(179, 179, 179);
+}
+
+.cardActionItem:hover {
+cursor: pointer;
+}
+
+.card-title {
+    margin-bottom: 0.75rem;
+}
+
+.meetingTime {
+    font-size: 28px;
+    margin-left: 10px;
+    color: rgb(50, 111, 182);
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.titleIcon {
+    margin-left: 20px;
+    color: rgb(238, 237, 237);
+    font-size: 22px;
+}
+
+.titleIcon:hover {
+    cursor: pointer;
+    color: rgb(97, 97, 97);
+}
+
+.meetingMain {
+    margin-left: 140px;
+}
+
+.meetingLabel {
+    font-size: 20px;
+    width: 2%;
+    color: rgb(145, 145, 145);
+    /* border: 1px solid; */
+    padding: 10px;
+}
+
+.meetingContent {
+    /* border: 1px solid; */
+    font-size: 18px;
+    width: 30%;
+    color: rgb(158, 156, 156);
+    padding: 10px;
+}
+
+.ribbon {
+    position: absolute;
+}
+
+.ribbon-2 {
+    width: 130px;
+    height: 40px;
+    background: #e74c3c;
+    top: 10px;
+    /* left: -10px; */
+    /* padding: 8px 35px; */
+    padding: 10px;
+    color: white;
+    text-align: center;
+    justify-content: center;
+    font-size: 10px;
+    border-radius: 50px;
+}
+
+.ribbon-2:before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -1px;
+    /* border-left: 5px solid transparent;
+    border-right: 5px solid #14455b;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid #14455b; */
+}
+
+.text-oneline {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+
+.mat-card-header-text {
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 80%;
+  }

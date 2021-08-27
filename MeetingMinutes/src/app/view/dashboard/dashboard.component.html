@@ -1,0 +1,238 @@
+<div class="content">
+    <div id="container" *ngIf="!dataLoaded; else loading">
+        <div class="row" style="margin-left: 0px !important; margin-right: 0px !important; width: 100% !important;">
+            <div class="col-md-12" style="margin-bottom: 20px">
+                <div id="monthchartContainer" style="height: 370px; width: 100%; min-width: 100%;"></div>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="col-xl-8">
+                <div class="row" *ngIf="deviceDetector(); else dognutView">
+                    <div class=" col-sm-4" style="margin-bottom: 25px;">
+                        <mat-card style="width: 100%;">
+                            <mat-card-content>
+                                <circle-progress [backgroundOpacity]="'1'" [radius]="50" [space]="-10"
+                                    [unitsFontSize]="'13'" [outerStrokeGradient]="true" [outerStrokeWidth]="10"
+                                    [outerStrokeColor]="'#FFA400'" [outerStrokeGradientStopColor]="'#FF0000'"
+                                    [innerStrokeColor]="'#ececec'" [innerStrokeWidth]="10" [percent]="meetingLenght"
+                                    [titleFontSize]="'32'" [subtitleFontSize]="'12'" [animateTitle]="false"
+                                    [animationDuration]="'400'" [showUnits]="false" [responsive]="true"
+                                    [startFromZero]="false" [backgroundPadding]="-20" [subtitle]="'Total Meetings'"
+                                    [subtitleColor]="'#000000'">
+                                </circle-progress>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <div class=" col-sm-4" style="margin-bottom: 25px;">
+                        <mat-card style="width: 100%;">
+                            <mat-card-content>
+                                <circle-progress [backgroundOpacity]="'1'" [radius]="50" [space]="-10"
+                                    [unitsFontSize]="'13'" [outerStrokeGradient]="true" [outerStrokeWidth]="10"
+                                    [outerStrokeColor]="'#4882c2'" [outerStrokeGradientStopColor]="'#53a9ff'"
+                                    [innerStrokeColor]="'#ececec'" [innerStrokeWidth]="10" [percent]="assignmentLength"
+                                    [titleFontSize]="'32'" [subtitleFontSize]="'12'" [animateTitle]="false"
+                                    [animationDuration]="'400'" [showUnits]="false" [responsive]="true"
+                                    [startFromZero]="false" [backgroundPadding]="-20" [subtitle]="'Actions'"
+                                    [subtitleColor]="'#000000'">
+                                </circle-progress>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <div class=" col-sm-4" style="margin-bottom: 25px;">
+                        <mat-card style="width: 100%;">
+                            <mat-card-content>
+                                <circle-progress [backgroundOpacity]="'1'" [radius]="50" [space]="-10"
+                                    [unitsFontSize]="'13'" [outerStrokeGradient]="true" [outerStrokeWidth]="10"
+                                    [outerStrokeColor]="'#31F31D'" [outerStrokeGradientStopColor]="'#3D9945'"
+                                    [innerStrokeColor]="'#ececec'" [innerStrokeWidth]="10"
+                                    [percent]="assignmentResultLength" [titleFontSize]="'32'" [subtitleFontSize]="'12'"
+                                    [animateTitle]="false" [animationDuration]="'400'" [showUnits]="false"
+                                    [responsive]="true" [startFromZero]="false" [subtitle]="'Decisions'"
+                                    [subtitleColor]="'#000000'">
+                                </circle-progress>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <!-- <div id="dognutChartContainer" style="height: 370px; width: 50%;"></div> -->
+
+                </div>
+                <ng-template #dognutView>
+                    <mat-card style="width: 100%; margin-bottom: 20px;" *ngIf="!dataLoaded">
+                        <mat-card-content style="text-align: -moz-center;">
+                            <canvas baseChart [data]="demodoughnutChartData" [labels]="doughnutChartLabels"
+                                [chartType]="doughnutChartType" [colors]="chartColors"></canvas>
+                        </mat-card-content>
+                    </mat-card>
+                </ng-template>
+                <!-- end row -->
+                <div class="card-box">
+                    <h4 class="header-title mt-0 mb-3">Recent Meetings</h4>
+                    <div class="" *ngFor="let meeting of allmeeting" (click)="meetingPage(meeting.MeetingID)">
+                        <div class="recentMeetings">
+                            <h5 class="text-custom">{{meeting.project_Name}}</h5>
+                            <p class="mb-0">{{meeting.Meeting_Subject}}</p>
+                            <p><b>{{meeting.MeetingTime}}</b></p>
+                            <p class="text-muted font-13 mb-0">{{meeting.Meeting_objective}}</p>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-xl-4">
+                <!-- Personal-Information -->
+                <div class="card-box">
+                    <!-- <h4 class="header-title mt-0">Personal Information</h4> -->
+                    <div class="panel-body">
+                        <div id="piechartContainer" style="height: 370px; width: 100%;"></div>
+                    </div>
+                    <ng-template #loading>
+                        <img style="height: 50px; width: 50px;" src="../../../assets/giphy_loading.gif">
+                    </ng-template>
+                </div>
+                <!-- Personal-Information -->
+                <div class="card-box ribbon-box">
+                    <div class="ribbon ribbon-primary">Activity Logs</div>
+                    <div class="clearfix"></div>
+                    <div class="inbox-widget">
+                        <a href="#">
+                            <div class="inbox-item">
+                                <div class="inbox-item-img"><img
+                                        src="https://bootdey.com/img/Content/avatar/avatar2.png" class="rounded-circle"
+                                        alt=""></div>
+                                <p class="inbox-item-author">Tomaslau</p>
+                                <p class="inbox-item-text">I've finished it! See you so...</p>
+                                <p class="inbox-item-date">
+                                    <button type="button"
+                                        class="btn btn-icon btn-sm waves-effect waves-light btn-success">Reply</button>
+                                </p>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="inbox-item">
+                                <div class="inbox-item-img"><img
+                                        src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle"
+                                        alt=""></div>
+                                <p class="inbox-item-author">Stillnotdavid</p>
+                                <p class="inbox-item-text">This theme is awesome!</p>
+                                <p class="inbox-item-date">
+                                    <button type="button"
+                                        class="btn btn-icon btn-sm waves-effect waves-light btn-success">Reply</button>
+                                </p>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="inbox-item">
+                                <div class="inbox-item-img"><img
+                                        src="https://bootdey.com/img/Content/avatar/avatar4.png" class="rounded-circle"
+                                        alt=""></div>
+                                <p class="inbox-item-author">Kurafire</p>
+                                <p class="inbox-item-text">Nice to meet you</p>
+                                <p class="inbox-item-date">
+                                    <button type="button"
+                                        class="btn btn-icon btn-sm waves-effect waves-light btn-success">Reply</button>
+                                </p>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="inbox-item">
+                                <div class="inbox-item-img"><img
+                                        src="https://bootdey.com/img/Content/avatar/avatar5.png" class="rounded-circle"
+                                        alt=""></div>
+                                <p class="inbox-item-author">Shahedk</p>
+                                <p class="inbox-item-text">Hey! there I'm available...</p>
+                                <p class="inbox-item-date">
+                                    <button type="button"
+                                        class="btn btn-icon btn-sm waves-effect waves-light btn-success">Reply</button>
+                                </p>
+                            </div>
+                        </a>
+                        <a href="#">
+                            <div class="inbox-item">
+                                <div class="inbox-item-img"><img
+                                        src="https://bootdey.com/img/Content/avatar/avatar6.png" class="rounded-circle"
+                                        alt=""></div>
+                                <p class="inbox-item-author">Adhamdannaway</p>
+                                <p class="inbox-item-text">This theme is awesome!</p>
+                                <p class="inbox-item-date">
+                                    <button type="button"
+                                        class="btn btn-icon btn-sm waves-effect waves-light btn-success">Reply</button>
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12">
+                <div class="card-box">
+                    <mat-tab-group>
+                        <mat-tab label="Action Items">
+                            <!-- <h4 class="header-title mb-3">Assignment</h4> -->
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Project Name</th>
+                                            <th>Start Date</th>
+                                            <th>Status</th>
+                                            <th>Priority</th>
+                                            <th>Assignee</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let action of actions; let i = index"
+                                            (click)="actionListPage(action.ActionItemID)" class="recentMeetings">
+                                            <td>{{i+1}}</td>
+                                            <td>{{action.ActionItem_Title}}</td>
+                                            <td>{{action.ActionDate | date:'shortDate'}}</td>
+                                            <td *ngIf="action.Status === 1">In Progress</td>
+                                            <td *ngIf="action.Status === 0">Overdue</td>
+                                            <td *ngIf="action.Status === 2">Complete</td>
+                                            <td><span class="label label-info">{{action.Priority}}</span></td>
+                                            <td>{{action.ActionAssignedTo}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </mat-tab>
+                        <mat-tab label="Decision List">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Project Name</th>
+                                            <!-- <th>Start Date</th> -->
+                                            <th>Status</th>
+                                            <th>Priority</th>
+                                            <th>Assignee</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let decision of decisions; let i = index"
+                                            (click)="decisionListPage(decision.DecisionItemID)" class="recentMeetings">
+                                            <td>{{i+1}}</td>
+                                            <td>{{decision.DecisionItem_Title}}</td>
+                                            <!-- <td>{{decision.DecisionDate}}</td> -->
+                                            <td *ngIf="decision.Status === 1">In Progress</td>
+                                            <td *ngIf="decision.Status === 0">Overdue</td>
+                                            <td *ngIf="decision.Status === 2">Complete</td>
+                                            <td><span class="label label-info">{{decision.Priority}}</span></td>
+                                            <td>{{decision.DecisionAssignedTo}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+    <ng-template #loading>
+        <div id="loader" ></div>
+    </ng-template>
+    <!-- container -->
+</div>

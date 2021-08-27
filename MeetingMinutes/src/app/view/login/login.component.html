@@ -1,0 +1,71 @@
+<div id="container">
+    <div style="background-color: white;">
+        <div class="login-logo" style="margin-top: 15px;">
+            <a><img class="logo" src="../../../assets/newLogo.png" alt="My Ad Cubes"></a>
+        </div>
+        <mat-divider></mat-divider>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="login-box">
+        <!-- /.login-logo -->
+        <div class="d-flex justify-content-center h-100">
+            <div class="card">
+                <div class="card-header" style="background-color: white;">
+                    <h1>LogIn</h1>
+                </div>
+                <div class="card-body">
+                    <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" name="LoginName" class="form-control userinput" #username="ngModel"
+                                [(ngModel)]="usernameText" placeholder="Type Your Username" required>
+                        </div>
+                        <!-- <div *ngIf="loginForm.LoginName?.errors.minlength"  class="alert1" >
+                            Name must be at least 5 characters long.
+                       </div>  -->
+                        <div *ngIf="username.invalid && (username.dirty || username.touched); else sensitive" class="alert1 float-left">
+                            <div *ngIf="username.errors.required" class="alert1">Username is required</div>
+                        </div>
+                        <ng-template #sensitive> 
+                            <div class="alert1">* Username should be case sensitive</div>
+                        </ng-template>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input type="password" name="Password" class="form-control userinput" #password="ngModel"
+                                [(ngModel)]="passwordText" placeholder="Type Your Password" required>
+                        </div>
+                        <div *ngIf="password.invalid && (password.dirty || password.touched); else caseSensitive" class="alert1 float-left">
+                            <div *ngIf="password.errors.required" class="alert1">Password is required</div>
+                        </div>
+                        <ng-template #caseSensitive> 
+                            <div class="alert1">* Password should be case sensitive</div>
+                        </ng-template>
+                        <div class="row align-items-center remember float-right">
+                            <a class="forgotPassword" routerLink="/forgot-password">Forgot Your Password?</a>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Login" [disabled]="!loginForm.valid" class="btn form-control login_btn">
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer" style="background-color: white;">
+                    <div class="d-flex justify-content-center links">
+                        <a (click)="onRegister()" class="register"><u>Or Sign Up?</u></a>
+                    </div>
+                    <!-- <div class="d-flex justify-content-center links">
+                        <a style="margin-top: 15px;"><img class="referenceLogo" src="../../../assets/outlook.png"
+                                title="Outlook"></a>
+                        <a style="margin-top: 15px;"><img class="referenceLogo" src="../../../assets/facebook.png"
+                                title="Facebook"></a>
+                        <a style="margin-top: 15px;"><img class="referenceLogo" src="../../../assets/insta.jpeg"
+                                title="Instagram"></a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

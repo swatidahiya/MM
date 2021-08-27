@@ -1,0 +1,109 @@
+<div id="container" *ngIf="deviceDetector(); else mobileView">
+    <div class="card" style="padding: 20px 40px;">
+        <div class="card-title">
+            <div class="row">
+                <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div style="border-bottom: 1px solid cornflowerblue; padding: 20px;"
+                                *ngFor="let user of users">
+                                <img src="../../../assets/avatar1.png"
+                                    style="height: 50px; width: 50px; border-radius: 50%;" title="{{user.LoginName}}">
+                                <a style="font-size: 18px; color: darkcyan; margin-left: 20px;">{{user.FirstName}}
+                                    {{user.LastName}}</a>
+                                <div class="float-right" style="margin-left: 20px;" *ngIf="user.Initials != 'sAdmin'">
+                                    <button mat-raised-button color="accent" (click)="deleteUser(user.LoginName)"
+                                        style="border-radius: 10px; padding: 5px; width: 150px;">Delete</button>
+                                </div>
+                                <div class="float-right" *ngIf="user.IsActive === true;else unblock">
+                                    <div *ngIf="user.Initials != 'sAdmin'; else superAdmin">
+                                        <button mat-raised-button color="warn"
+                                            style="border-radius: 10px; padding: 5px; width: 150px;"
+                                            (click)="updateUser(user.LoginName, false)">Block</button>
+                                    </div>
+                                    <ng-template #superAdmin>
+                                        <button mat-flat-button color="primary"
+                                            style="border-radius: 10px; padding: 5px; width: 320px;">Super
+                                            Admin</button>
+                                    </ng-template>
+                                </div>
+                                <ng-template #unblock>
+                                    <div class="float-right">
+                                        <button mat-raised-button color="primary"
+                                            style="border-radius: 10px; padding: 5px; width: 150px;"
+                                            (click)="updateUser(user.LoginName, true)">Un-Block</button>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #mobileView>
+    <div id="container">
+        <div class="card" style="padding: 20px 40px;">
+            <div class="card-title">
+                <div class="row">
+                    <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div style="border-bottom: 1px solid cornflowerblue; padding: 20px 5px;"
+                                    *ngFor="let user of users">
+                                    <div class="row">
+                                        <div class="col-10" style=" display: block;  white-space: nowrap;
+                                        overflow: hidden;
+                                        text-overflow: ellipsis;">
+                                            <img src="../../../assets/avatar1.png"
+                                                style="height: 50px; width: 50px; border-radius: 50%;"
+                                                title="{{user.LoginName}}">
+                                            <a style="font-size: 18px; color: darkcyan; margin-left: 20px;">{{user.FirstName}}
+                                                {{user.LastName}}</a>
+                                        </div>
+                                        <div class="col-2 dropdown">
+                                            <i class="fa fa-ellipsis-v float-right" style="margin-top: 15px;"
+                                                aria-hidden="true"></i>
+                                            <div class="dropdown-content">
+                                                <div style="margin-bottom: 20px;"
+                                                    *ngIf="user.Initials != 'sAdmin'">
+                                                    <button mat-raised-button color="accent"
+                                                        (click)="deleteUser(user.LoginName)"
+                                                        style="width: 140px;"
+                                                        >Delete</button>
+                                                </div>
+                                                <div *ngIf="user.IsActive === true;else unblock">
+                                                    <div *ngIf="user.Initials != 'sAdmin'; else superAdmin">
+                                                        <button mat-raised-button color="warn"
+                                                        style="width: 140px;"
+                                                            (click)="updateUser(user.LoginName, false)">Block</button>
+                                                    </div>
+                                                    <ng-template #superAdmin>
+                                                        <button mat-flat-button color="primary" 
+                                                        style="width: 140px;">Super
+                                                            Admin</button>
+                                                    </ng-template>
+                                                </div>
+                                                <ng-template #unblock>
+                                                    <div>
+                                                        <button mat-raised-button color="primary"
+                                                        style="width: 140px;"
+                                                            (click)="updateUser(user.LoginName, true)">Un-Block</button>
+                                                    </div>
+                                                </ng-template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

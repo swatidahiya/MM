@@ -1,0 +1,38 @@
+
+    <h1 mat-dialog-title style="text-align: center;">Create a Poll</h1>
+    <mat-divider></mat-divider>
+    <br>
+    <div mat-dialog-content>
+        <div class="input-group form-group">
+            <input type="text" class="form-control" style="width: 100%;" name="Question" [(ngModel)]="poll.Question" placeholder="Question Name">
+        </div>
+    
+        <mat-form-field>
+            <mat-label>Expires On</mat-label>
+            <input matInput [min]="minDate" [matDatepicker]="picker" name="Polldate" [(ngModel)]="poll.Polldate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <br>
+            <label style="margin-right: 10px; color: rgb(117, 117, 117); margin-top: 8px;">Poll Options: </label>
+    
+        <div class="input-group form-group">
+            <input type="text" class="form-control" placeholder="Option 1"  name="option_1" [(ngModel)]="optionOne">
+        </div>
+    
+        <div class="input-group form-group">
+            <input type="text" class="form-control" placeholder="Option 2"  name="option_2" [(ngModel)]="optionTwo">
+        </div>
+    
+        <div *ngIf="showMessage">
+            <a class="alert1">Please fill up the {{field}}</a>
+        </div>
+    </div>
+    <br>
+    <mat-divider></mat-divider>
+    <br>
+    <div mat-dialog-actions style="justify-content: center;">
+        <button mat-raised-button mat-dialog-close color="primary">Cancel</button>
+        <button mat-raised-button cdkFocusInitial color="primary" (click)="sendData(poll)">Create Poll</button>
+    </div>
+    

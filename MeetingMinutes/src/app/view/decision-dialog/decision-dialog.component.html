@@ -1,0 +1,54 @@
+<h1 mat-dialog-title style="text-align: center;">Add Decision</h1>
+<mat-divider></mat-divider>
+<br>
+<div mat-dialog-content>
+    <div class="input-group form-group">
+        <input type="text" class="form-control" style="width: 100%;" name="DecisionItem_Title" [(ngModel)]="decision.DecisionItem_Title" placeholder="Decision title">
+    </div>
+
+    <div class="input-group form-group">
+        <input type="text" class="form-control" readonly [value]="meeting.project_Name">
+        <!-- [(ngModel)]="decision.project_Name" -->
+    </div>
+
+    <div class="input-group form-group">
+        <textarea class="form-control" rows="3" placeholder="Description of Decision Item" name="Action_Description" [(ngModel)]="decision.Description"></textarea>
+    </div>
+
+    <mat-form-field>
+        <mat-label>Choose a date</mat-label>
+        <input matInput [min]="minDate" [matDatepicker]="picker" name="DecisionDate" [(ngModel)]="decision.DecisionDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <div class="input-group form-group">
+        <label style="margin-right: 10px; color: rgb(117, 117, 117); margin-top: 8px;">Assigned To: </label>
+        <!-- <input type="text" class="form-control" placeholder="Assigned To" name="DecisionAssignedTo" [(ngModel)]="decision.DecisionAssignedTo"> -->
+        <input type="text" placeholder="Choose Any" aria-label="Number" matInput class="form-control"
+                        style="height: 50px" [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)='getPosts($event.option.value)'>
+                        <mat-option *ngFor="let option of options" [value]="option.DisplayName">
+                            {{option.FirstName}} {{option.LastName}}
+                        </mat-option>
+                    </mat-autocomplete>
+    </div>
+
+    <div class="input-group form-group">
+        <label style="margin-right: 10px; color: rgb(117, 117, 117);;">Set Priority: </label>
+        <mat-radio-group aria-label="Select an option" name="Priority" [(ngModel)]="decision.Priority">
+            <mat-radio-button value="High" style="margin-right: 10px;">High</mat-radio-button>
+            <mat-radio-button value="Medium" style="margin-right: 10px;">Medium</mat-radio-button>
+            <mat-radio-button value="Low" style="margin-right: 10px;">Low</mat-radio-button>
+        </mat-radio-group>
+    </div>
+    <div *ngIf="showMessage">
+        <a class="alert1">Please fill up the {{field}}</a>
+    </div>
+</div>
+<mat-divider></mat-divider>
+<br>
+<div mat-dialog-actions style="justify-content: center;">
+    <button mat-raised-button mat-dialog-close color="primary">Cancel</button>
+    <button mat-raised-button cdkFocusInitial color="primary" (click)="sendData(decision)">Add Decision</button>
+</div>

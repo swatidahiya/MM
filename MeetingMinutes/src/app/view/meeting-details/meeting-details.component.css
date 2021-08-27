@@ -1,0 +1,505 @@
+.main{
+    background-color: rgb(235, 235, 235);
+    align-content: center;
+    height: auto;
+}
+
+#container{
+    background-image: url('src/assets/background.jpg');
+    min-height: 900px;
+    background-size: cover;
+    background-repeat: repeat-y;
+    align-content: center;
+}
+
+.card{
+    /* height: 770px; */
+    margin-top: 30px;
+    margin-bottom: auto;
+    width: 90%;
+    /* height: 100%; */
+    margin: 0% 5%;
+    background-color: rgb(253, 253, 253) !important;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    }
+
+.cardActionItem {
+        /* height: 770px; */
+        margin-top: 30px;
+        margin-bottom: auto;
+        width: 100%;
+        /* height: 100%; */
+        /* margin: 0% 5%; */
+        background-color: rgb(253, 253, 253) !important;
+        border-top: 1px solid rgb(179, 179, 179);
+        border-bottom: 1px solid rgb(179, 179, 179);
+}
+
+.cardActionItem:hover {
+    cursor: pointer;
+}
+    
+.card-header h1{
+    color: rgb(59, 59, 59);
+    justify-content: center;
+    /* text-align: center; */
+}
+
+.card-title {
+    margin-bottom: 0.75rem;
+}
+
+.card-header {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-bottom: 0 solid rgba(0, 0, 0, 0.125);
+  }
+  
+.card-header:first-child {
+    border-radius: calc(0.25rem - 0) calc(0.25rem - 0) 0 0;
+}
+  
+.card-header + .list-group .list-group-item:first-child {
+    border-top: 0;
+}
+  
+.card-footer {
+    padding: 0.75rem 1.25rem;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-top: 0 solid rgba(0, 0, 0, 0.125);
+}
+  
+.card-footer:last-child {
+    border-radius: 0 0 calc(0.25rem - 0) calc(0.25rem - 0);
+}
+  
+.card-header-tabs {
+    margin-right: -0.625rem;
+    margin-bottom: -0.75rem;
+    margin-left: -0.625rem;
+    border-bottom: 0;
+}
+  
+.card-header-pills {
+    margin-right: -0.625rem;
+    margin-left: -0.625rem;
+}
+  
+.card-img-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1.25rem;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.example-margin {
+    margin: 10px;
+}
+
+.right{
+    /* text-align: end; */
+    float: right;
+}
+
+.meetingTime {
+    font-size: 28px;
+    margin-left: 10px;
+    color: rgb(50, 111, 182);
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.titleIcon {
+    margin-left: 20px;
+    color: rgb(238, 237, 237);
+    font-size: 22px;
+}
+
+.titleIcon:hover {
+    cursor: pointer;
+    color: rgb(97, 97, 97);
+}
+
+.ribbon {
+    position: absolute;
+}
+
+.ribbon-1 {
+    width: 150px;
+    height: 60px;
+    background: #21759a;
+    top: 10px;
+    left: -15px;
+    padding: 8px 20px;
+    color: white;
+    text-align: left    ;
+    justify-content: left;
+    font-size: 10px;
+}
+
+.ribbon-1:before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -1px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid #14455b;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid #14455b;
+}
+
+.ribbon-1:hover{
+    cursor: pointer;
+}
+
+/* .ribbon-1:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -50px;
+    border-left: 20px solid #21759a;
+    border-right: 30px solid transparent;
+    border-top: 30px solid transparent;
+    border-bottom: 30px solid transparent;
+} */
+
+.ribbon-2 {
+    width: 130px;
+    height: 40px;
+    background: #e74c3c;
+    top: 10px;
+    left: -15px;
+    padding: 8px 20px;
+    color: white;
+    text-align: left    ;
+    justify-content: left;
+    font-size: 10px;
+}
+
+.ribbon-2:before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -1px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid #b62e1f;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid #b62e1f;
+}
+
+.ribbon-3 {
+    width: 130px;
+    height: 40px;
+    background: #21759a;
+    top: 10px;
+    left: -15px;
+    padding: 8px 20px;
+    color: white;
+    text-align: left    ;
+    justify-content: left;
+    font-size: 10px;
+}
+
+.ribbon-3:before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -1px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid #14455b;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid #14455b;
+}
+
+.meetingMain {
+    margin-left: 140px;
+    /* padding: 10px; */
+}
+
+.meetingLabel {
+    font-size: 20px;
+    width: 2%;
+    color: rgb(145, 145, 145);
+    /* border: 1px solid; */
+    padding: 10px;
+}
+
+.meetingContent {
+    /* border: 1px solid; */
+    font-size: 14px;
+    font-weight: 400;
+    width: 30%;
+    color: rgb(15, 15, 15);
+    padding: 10px;
+}
+
+.attendeesLogo {
+    width: 60px;
+    height: 60px;
+    margin-top: 15px; 
+    margin-left: 30px;
+}
+
+.tabToolbar {
+    width: 100%;
+    margin-top: 30px;
+    height: 48px;
+    background-color: rgb(204, 204, 204);
+}
+
+.flatButton {
+    padding: 2px 4px;
+    /* width: 200px; */
+    height: 48px;
+    vertical-align: top;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Tabs */
+nav > .nav.nav-tabs{
+
+    border: none;
+      color:#fff;
+      background:#272e38;
+      border-radius:0;
+  
+  }
+  nav > div a.nav-item.nav-link,
+  nav > div a.nav-item.nav-link.active
+  {
+    border: none;
+      padding: 18px 25px;
+      color:#fff;
+      background:#272e38;
+      border-radius:0;
+  }
+  
+  nav > div a.nav-item.nav-link.active:after
+   {
+    content: "";
+    position: relative;
+    bottom: -60px;
+    left: -10%;
+    border: 15px solid transparent;
+    /* border-top-color: #e74c3c ; */
+  }
+  .tab-content{
+    background: #fdfdfd;
+      line-height: 25px;
+      /* border: 1px solid #ddd; */
+      border-top:5px solid #e74c3c;
+      /* border-bottom:5px solid #e74c3c; */
+      padding:30px 25px;
+  }
+  
+  nav > div a.nav-item.nav-link:hover,
+  nav > div a.nav-item.nav-link:focus
+  {
+    border: none;
+      background: #e74c3c;
+      color:#fff;
+      border-radius:0;
+      transition:background 0.20s linear;
+      cursor: pointer;
+  }
+
+
+
+  .spanElements {
+    color: black; font-size: 16px;
+  }
+
+  .spanElements:hover {
+      cursor: pointer;
+      background-color: white;
+      color: black;
+  }
+
+  .header {
+      font-size: 24px;
+      color: rgb(65, 102, 65);
+      margin-left: 4%;
+      margin-top: 12px;
+      font-weight: bold;
+  }
+
+  .meetingNotes {
+      position: relative;
+      border: 1px inset rgb(33, 58, 33);
+      border-radius: 10px;
+      background-color: rgb(211, 226, 189);
+      margin-left: 2%;
+      margin-right: 2%;
+      color: rgb(33, 58, 33);
+      width: 96%;
+      padding: 10px;
+  }
+
+  .list {
+      font-size: 16px;
+      padding: 4px;
+  }
+
+  .commentSection {
+      position: relative;
+      width: 96%;
+      padding: 10px;
+      margin-left: 2%;
+      margin-right: 2%;
+  }
+
+  .commentImage {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid grey;
+  }
+
+  .comment {
+    position: relative;
+    border: 1px inset rgb(87, 121, 87);
+    border-radius: 10px;
+    background-color: rgba(211, 226, 189, 0.788);
+    margin-left: 4%;
+    margin-right: 2%;
+    color: rgb(33, 58, 33);
+    width: 50%;
+    padding: 10px;
+}
+
+.actionItemTab {
+    height: 100px;
+    background-color: rgb(233, 233, 233);
+    /* text-align: end; */
+    /* justify-content: center; */
+}
+
+.editInput {
+    border: none;
+    border-bottom: 1px solid green;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.conclusionText {
+    width: 100%;
+}
+/* 
+textarea:focus, input:focus, .uneditable-input:focus {   
+    border-color: rgba(229, 103, 23, 0.8) !important;
+    box-shadow: 0 1px 1px rgba(229, 103, 23, 0.075) inset, 0 0 8px rgba(229, 103, 23, 0.6) !important;
+    outline: 0 none !important;
+} */
+  
+
+.modal{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    box-align: center;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgb(0,0,0,0.4);
+    padding-top: 60px;
+  }
+  
+  .modal-content-assign{
+    background-color: white;
+    margin : 5% auto 15% auto;
+    border : 1px solid #888;
+    width: 0%;
+    min-width: 50%;
+    height: auto;
+    
+  }
+
+  .assignecomment{
+    width: 70%;
+    vertical-align: baseline;
+    margin: 2% 2% 2% 1%;
+    border: 1px groove rgb(110, 110, 110);
+    background-color: rgb(248, 246, 246);
+    border-radius: 10px;
+    height: auto;
+    min-height: 180px;
+    font-size: 14px;
+    color: black;
+  }
+  
+  .close{
+    position: absolute;
+    right: 25px;
+    top: 0;
+    color: #000;
+    font-size: 35px;
+    font-weight: bold;
+  }
+  
+  .imgcontainer {
+    /* text-align: center; */
+    margin: 24px 0 12px 0;
+    position: relative;
+  }
+  
+  
+  .close:hover, .close:focus{
+    color: red;
+    cursor: pointer;
+  }
+  
+  .animate{
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s;
+  }
+  
+  @-webkit-keyframes animatezoom {
+    from {-webkit-transform: scale(0)} 
+    to {-webkit-transform: scale(1)}
+  }
+    
+  @keyframes animatezoom {
+    from {transform: scale(0)} 
+    to {transform: scale(1)}
+  }
+
+  .selectedFile {
+      padding: 20px;
+      text-align: left;
+      height: 60px;
+      border-bottom: 1px solid rgb(206, 206, 206);
+      font-size: 18px;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+  }
+
+  .selectedFile:hover {
+      cursor: pointer;
+      /* background-color: rgb(255, 252, 241); */
+      border-bottom: 1px solid rgb(2, 97, 97);
+  }
+  .alert1 {
+    font-size: 12px;
+    color: red;
+    /* margin-left: 25px; */
+}
+
+.text-oneline {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }

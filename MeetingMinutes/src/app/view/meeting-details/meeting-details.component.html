@@ -1,0 +1,1214 @@
+<div id="container" *ngIf="deviceDetector(); else mobileView">
+    <!-- <div *ngIf="dataLoaded; else loading"> -->
+    <div class="card" *ngIf="dataLoaded">
+        <div *ngIf="meeting.reoccrence == 'Yes' || meeting.reoccrence == null">
+            <div class="card-header">
+                <h1 class="card-title"><b style="margin-left: 20px;">
+                        <div *ngIf='!editHeader' (click)='editHeader=true' class="float-left" style="margin-left: 6px;">
+                            {{meeting.Meeting_Subject}}<i class="fas fa-pencil-alt titleIcon"
+                                style="margin-left: 5px;"></i>
+                        </div>
+                        <input *ngIf='editHeader' (focusout)="onHeaderFocused()" (keydown.enter)='$event.target.blur()'
+                            [(ngModel)]='meeting.Meeting_Subject' class="editInput" appAutofocus type='text'
+                            (keydown.enter)='$event.target.blur()' (focusout)="editHeader=false">
+                    </b>
+                </h1>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
+
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="ribbon ribbon-1">
+                                    <br><b style="font-size: 16px;"> In Progress</b>
+                                </div>
+
+                                <div class="ribbon ribbon-1" style="background: #21759a;"
+                                    *ngIf="meeting.Status === 1; else Overdue"
+                                    (click)="updateMeeting(meeting.Status, 'Status')">
+                                    Meeting
+                                    <br><b style="font-size: 16px;">In Progress</b>
+                                </div>
+                                <ng-template #Overdue>
+                                    <ng-container *ngIf="meeting.Status === 0; else Complete">
+                                        <div class="ribbon ribbon-1" style="background: #e74c3c; padding: 8px 30px;"
+                                            (click)="updateMeeting(meeting.Status, 'Status')">
+                                            Meeting
+                                            <br><b style="font-size: 16px;">Overdue</b>
+                                        </div>
+                                    </ng-container>
+                                </ng-template>
+                                <ng-template #Complete>
+                                    <div class="ribbon ribbon-1"
+                                        style="background: #2bc440; padding: 8px 28px; color: white;"
+                                        (click)="updateMeeting(meeting.Status, 'Status')">Meeting
+                                        <br><b style="font-size: 16px;">Complete</b>
+                                    </div>
+                                </ng-template>
+
+                                <table class="meetingMain">
+                                    <tr>
+                                        <td class="meetingLabel"> Meeting ID :</td>
+                                        <td class="meetingContent" style="color: rgb(97, 96, 96);">
+                                            <a style="font-size: 14px; color: black; margin-left: 10px;">MM -
+                                                {{meeting.MeetingID}}</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="meetingLabel"> Project :</td>
+                                        <td class="meetingContent" style="color: rgb(97, 96, 96);">
+                                            <ejs-inplaceeditor id="element" style="font-weight: 700; font-size: large;"
+                                                type="Text" mode="Inline" data-underline="false"
+                                                value="{{meeting.project_Name}}"
+                                                (actionSuccess)="updateMeeting($event.value, 'project_Name')">
+                                            </ejs-inplaceeditor>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="meetingLabel"> Objective :</td>
+                                        <td class="meetingContent">
+                                            <div *ngIf='!editMode' (click)='editMode=true' style="margin-left: 6px;">
+                                                {{meeting.Meeting_objective}} <i class="fas fa-pencil-alt"
+                                                    style="color: rgb(211, 211, 211); margin-left: 10px;"></i></div>
+                                            <textarea *ngIf='editMode' (focusout)="onFocusOut()"
+                                                style="width: 600px; height: 60px;"
+                                                (keydown.enter)='$event.target.blur()'
+                                                [(ngModel)]='meeting.Meeting_objective' class='cellInput' appAutofocus
+                                                type='text' (keydown.enter)='$event.target.blur()'
+                                                (focusout)="editMode=false"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="meetingLabel"> Agenda :</td>
+                                        <td class="meetingContent">
+                                            <div *ngIf='!editAgenda' (click)='editAgenda=true'
+                                                style="margin-left: 6px;">
+                                                {{meeting.Agenda}} <i class="fas fa-pencil-alt"
+                                                    style="color: rgb(211, 211, 211); margin-left: 10px;"></i></div>
+                                            <textarea *ngIf='editAgenda' (focusout)="submitAgenda()"
+                                                style="width: 600px; height: 60px;"
+                                                (keydown.enter)='$event.target.blur()' [(ngModel)]='meeting.Agenda'
+                                                class='cellInput' appAutofocus type='text'
+                                                (keydown.enter)='$event.target.blur()'
+                                                (focusout)="editAgenda=false"></textarea>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-3">
+                                <table>
+                                    <td class="meetingLabel">
+                                        <img style="height: 60px; width: 60px;margin-top: 15px;"
+                                            src="../../../assets/facebook.png">
+                                    </td>
+                                    <td style="text-align: start;">
+                                        <a style="font-size: 1vw;">Meeting Host</a><br>
+                                        <a style="font-size: 0.8vw;">{{meeting.HostUser}}</a>
+                                    </td>
+                                </table>
+                                <button mat-raised-button color="warn" *ngIf="isCompleted" (click)="deleteMeeting()"
+                                    class="form-control">Archive
+                                    Meeting</button>
+                                <button mat-raised-button color="accent" *ngIf="isHost"
+                                    onclick="document.getElementById('id01').style.display='block'"
+                                    class="form-control"><a style="font-size: 1vw;">Re-Schedule
+                                    Meeting</a></button>
+                            </div>
+
+                            <div class="tabToolbar">
+                                <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+                                    <mat-button-toggle class="flatButton" (click)="invitees('A')" value="INVITED">
+                                        INVITED
+                                    </mat-button-toggle>
+                                    <mat-button-toggle class="flatButton" (click)="invitees('B')" value="ATTENDED">
+                                        ATTENDED
+                                    </mat-button-toggle>
+                                    <mat-button-toggle class="flatButton" (click)="invitees('C')" value="REGRETS">
+                                        REGRETS
+                                    </mat-button-toggle>
+                                    <mat-button-toggle class="flatButton" (click)="invitees('D')"
+                                        value="PENDING APPROVAL">
+                                        PENDING APPROVAL</mat-button-toggle>
+                                </mat-button-toggle-group>
+
+
+                                <a style="text-align: end; float: right; margin-top: 15px; margin-left: 10px; margin-right: 10px;"
+                                    *ngIf="!newParticipant" (click)="showAutoComplete()">Add Participant +</a>
+                                <div class="float-right" *ngIf="newParticipant">
+                                    <input type="text" placeholder="Pick one" aria-label="Number" matInput
+                                        style="width: 300px; height: 48px; border: 1px solid rgb(24, 22, 22); border-radius: 10px; margin-left: 10px;"
+                                        [matAutocomplete]="auto">
+                                    <mat-autocomplete #auto="matAutocomplete"
+                                        (optionSelected)='getPosts($event.option.value)'>
+                                        <mat-option *ngFor="let option of options" [value]="option.Email">
+                                            {{option.FirstName}} {{option.LastName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </div>
+                            </div>
+                            <div class="col-9">
+                                <div *ngIf="dataPage === 'A'">
+                                    <div *ngIf="participants.length != 0; else noParticipants">
+                                        <div class="row">
+                                            <div *ngFor="let participant of participants">
+                                                <div title="Click to block {{participant}}"
+                                                    *ngIf="userVerified; else normalInvites"
+                                                    (click)="blockParticipant(participant)">
+                                                    <table
+                                                        style="text-align: center; justify-content: center; display: block; overflow: hidden; text-overflow: ellipsis;">
+                                                        <td>
+                                                            <img class="attendeesLogo"
+                                                                src="../../../assets/avatar1.png"><br>
+                                                            <a class="attendeesLogo">{{participant}}</a>
+                                                        </td>
+                                                    </table>
+                                                </div>
+                                                <ng-template #normalInvites>
+                                                    <table style="text-align: center; justify-content: center;">
+                                                        <td>
+                                                            <img class="attendeesLogo"
+                                                                src="../../../assets/avatar1.png"><br>
+                                                            <a class="attendeesLogo">{{participant}} </a>
+                                                        </td>
+                                                    </table>
+                                                </ng-template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ng-template #noParticipants>
+                                        <div style="padding: 10px;">
+                                            <h1><b>No Participants</b></h1>
+                                        </div>
+                                    </ng-template>
+                                </div>
+                                <div *ngIf="dataPage === 'B'">
+                                    <table>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/facebook.png"><br>
+                                            <a class="attendeesLogo">User</a>
+
+                                        </td>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/facebook.png"><br>
+                                            <a class="attendeesLogo">User</a>
+
+                                        </td>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/facebook.png"><br>
+                                            <a class="attendeesLogo">User</a>
+
+                                        </td>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/facebook.png"><br>
+                                            <a class="attendeesLogo">User</a>
+
+                                        </td>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/facebook.png"><br>
+                                            <a class="attendeesLogo">User</a>
+
+                                        </td>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/facebook.png"><br>
+                                            <a class="attendeesLogo">User</a>
+
+                                        </td>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/facebook.png"><br>
+                                            <a class="attendeesLogo">User</a>
+
+                                        </td>
+                                    </table>
+                                </div>
+                                <div *ngIf="dataPage === 'C'">
+                                    <table>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
+                                            <a class="attendeesLogo">Profile</a>
+
+                                        </td>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
+                                            <a class="attendeesLogo">Profile</a>
+
+                                        </td>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
+                                            <a class="attendeesLogo">Profile</a>
+
+                                        </td>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
+                                            <a class="attendeesLogo">Profile</a>
+
+                                        </td>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
+                                            <a class="attendeesLogo">Profile</a>
+
+                                        </td>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
+                                            <a class="attendeesLogo">Profile</a>
+
+                                        </td>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
+                                            <a class="attendeesLogo">Profile</a>
+
+                                        </td>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
+                                            <a class="attendeesLogo">Profile</a>
+
+                                        </td>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
+                                            <a class="attendeesLogo">Profile</a>
+
+                                        </td>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
+                                            <a class="attendeesLogo">Profile</a>
+
+                                        </td>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
+                                            <a class="attendeesLogo">Profile</a>
+
+                                        </td>
+                                    </table>
+                                </div>
+                                <div *ngIf="dataPage === 'D'">
+                                    <table>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/background.jpg"><br>
+                                            <a class="attendeesLogo">Background</a>
+
+                                        </td>
+                                        <td>
+                                            <img class="attendeesLogo" src="../../../assets/background.jpg"><br>
+                                            <a class="attendeesLogo">Background</a>
+
+                                        </td>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-3" style="margin-top: 20px; justify-content: center;text-align: center;">
+                                <table style="display: block;">
+                                    <td class="meetingLabel">
+                                        <i style="font-size: 50px;" class="fas fa-male"></i>
+                                    </td>
+                                    <td style="text-align: start;padding: 4px;vertical-align: bottom;">
+                                        <div *ngIf="participants != null; else somethingElse">
+                                            <a style="font-size: 2vw; color: rgb(158, 158, 158);">Participants</a><br>
+                                            <a
+                                                style="font-size: 1vw; color: orangered;"><b>{{participants.length}}</b></a>
+                                            <a style="font-size: 1vw; color: rgb(60, 120, 168);"> of <b>100</b></a>
+                                        </div>
+                                        <ng-template #somethingElse>
+                                            <a style="font-size: 2vw; color: rgb(158, 158, 158);">Participants</a><br>
+                                            <a style="font-size: 1vw; color: orangered;"><b>0</b></a>
+                                            <a style="font-size: 1vw; color: rgb(60, 120, 168);"> of <b>100</b></a>
+                                        </ng-template>
+                                    </td>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="text-align: end; float: right; margin-right: 80px; margin-top: 20px;">
+        <button mat-fab color="warn" *ngIf="!fabIcon" (click)="showFab()"
+            aria-label="Example icon-button with a menu"><i style="font-size: 18px;" class="fas fa-plus"
+                aria-hidden="true"></i>
+        </button>
+        <div class="float-right" *ngIf="fabIcon">
+            <!-- <a mat-fab color="primary" style="margin-right: 10px;" title="Audio Conferencing"
+                href="https://mmconferenceroom.checkboxtechnology.com:9002/#MM{{meeting.RoomKey}}${{currentUser.LoginName}}${{meeting.MeetingID}}$0"
+                aria-label="Example icon-button with a heart icon">
+                <mat-icon>phone_in_talk</mat-icon>
+            </a>
+            <a mat-fab color="primary" style="margin-right: 10px;" title="Video Conferencing"
+                href="https://mmconfrenceroomdemo.checkboxtechnology.com:9002/#MM{{meeting.RoomKey}}${{currentUser.LoginName}}${{meeting.MeetingID}}$1"
+                aria-label="Example icon-button with a heart icon">
+                <mat-icon>videocam</mat-icon>
+            </a> -->
+            <button mat-fab color="primary" style="margin-right: 10px;" (click)="openChat(meeting.RoomKey)"
+                    aria-label="Example icon-button with a heart icon" title="Video Room">
+                    <mat-icon>airplay</mat-icon>
+                </button>
+            <button mat-fab color="primary" style="margin-right: 10px;" (click)="fileInput.click()" title="Upload File">
+                <mat-icon>publish</mat-icon>
+                <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
+            </button>
+            <button mat-fab color="primary" style="margin-right: 10px;" (click)="getServerFiles()"
+                title="Download File">
+                <mat-icon>get_app</mat-icon>
+            </button>
+            <button mat-fab color="warn" (click)="showFab()" aria-label="Example icon-button with a menu"><i
+                    style="font-size: 18px;" class="fa fa-times" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card" style="margin-top: 100px;">
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
+
+                    <div class="row">
+                        <div class="col-12">
+                            <nav>
+                                <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"
+                                        (click)="navItem('A')" role="tab" aria-controls="nav-home">Meeting
+                                        Minutes</a>
+                                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab"
+                                        (click)="navItem('B')" role="tab" aria-controls="nav-profile">Action
+                                        Items</a>
+                                    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab"
+                                        (click)="navItem('C')" role="tab" aria-controls="nav-contact">Decision
+                                        Lists</a>
+                                </div>
+                            </nav>
+                            <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                                <div class="tab-pane fade show active" *ngIf="activePage === 'A'">
+                                    <h3 class="header"> General Meeting Notes</h3>
+                                    <div class="meetingNotes">
+                                        <div id="textboxes" *ngFor="let mNote  of mNotes;let i = index">
+                                            <ul>
+                                                <li>
+                                                    <ejs-inplaceeditor id="element"
+                                                        style="font-weight: 700; font-size: large;" width="auto"
+                                                        type="Text" mode="Inline" data-underline="false"
+                                                        value="{{mNote.MeetingNotes}}"
+                                                        (actionSuccess)="editMeetingNotes($event.value, mNote.MeetingNotesID)">
+                                                    </ejs-inplaceeditor>
+                                                    &nbsp;<span>
+                                                        <a *ngIf="isHost" class="fas fa-trash"
+                                                            (click)="deleteMeetingNotes(mNote.MeetingNotesID)"
+                                                            id="rightIcon"></a>
+                                                    </span>
+
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
+                                            <div class="row" style="width: 100%;">
+
+                                                <div class="col-11">
+                                                    <textarea type="text" name="meetingNotes" title="Add notes"
+                                                        class="form-control" id="exampleFormControlTextarea5" rows="1"
+                                                        style="margin-left: 12px;" placeholder="Add your  notes Here"
+                                                        [(ngModel)]="meetingNotes.MeetingNotes" #meetingText></textarea>
+                                                </div>
+                                                <div class="col-1">
+                                                    <button mat-raised-button
+                                                        style="float: right;height: 45px; width: 90px; margin-left: 40px;"
+                                                        color="warn" (click)="sendNotes()">Send</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="isConclude">
+                                        <h3 class="header"> Final Minutes of Meeting</h3>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="meetingNotes">
+                                                    <a class="list" *ngIf='!editConclusion'
+                                                        (click)='editConclusion=true'
+                                                        style="margin-left: 15px; font-size: 18px; cursor: pointer;">{{meeting.Conclusion}}<i
+                                                            class="fas fa-pencil-alt"
+                                                            style="margin-left: 10px;"></i></a>
+                                                    <textarea *ngIf='editConclusion' (focusout)="submitConclusion()"
+                                                        style="width: 100%; height: 60px;"
+                                                        (keydown.enter)='$event.target.blur()'
+                                                        [(ngModel)]='meeting.Conclusion' class='conclusionText'
+                                                        appAutofocus type='text' (keydown.enter)='$event.target.blur()'
+                                                        (focusout)="editConclusion=false"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="isShow" style="margin-top: 10px; margin-left: 25px;">
+                                            <button mat-raised-button color="primary" style="height: 50px;"
+                                                (click)="sendConclusion()"> Send Conclusion By Mail </button>
+                                        </div>
+                                    </div>
+
+                                    <mat-expansion-panel style="margin-left: 2%; margin-right: 2%; margin-top: 2%;">
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title>
+                                                <h3 class="header" style="margin-left: 1px;">Comment</h3>
+                                            </mat-panel-title>
+                                        </mat-expansion-panel-header>
+
+                                        <div class="commentSection" *ngIf="dataLoaded">
+                                            <div style="margin-top: 20px;" *ngFor="let comment of allComments">
+                                                <div *ngIf="comment.MeetingID == urlID">
+                                                    <!-- <img class="commentImage" style="float: left;"
+                                                        src="../../../assets/avatar1.png"> -->
+                                                    <img class="commentImage" [src]="imageToShow"
+                                                        style="float: left; width: 45px; height: 45px;"
+                                                        alt="Place image title"
+                                                        *ngIf="!isImageLoading; else noImageFound">
+                                                    <ng-template #noImageFound>
+                                                        <img class="commentImage" src="../../../assets/avatar1.png"
+                                                            style="float: left;" title="dummy" alt="Fallbackimage">
+                                                    </ng-template>
+                                                    <div class="comment">
+                                                        <ejs-inplaceeditor id="element"
+                                                            style="font-weight: 700; font-size: large;" width="auto"
+                                                            type="Text" mode="Inline" data-underline="false"
+                                                            value="{{comment.Comment1}}"
+                                                            (actionSuccess)="editComment($event.value, comment.CommentID)">
+                                                        </ejs-inplaceeditor>
+                                                        &nbsp;<span>
+                                                            <a class="fas fa-trash"
+                                                                (click)="deleteComment(comment.CommentID)"
+                                                                id="rightIcon"></a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- <div style="margin-top: 20px;">
+                                                <img class="commentImage" style="float: left;"
+                                                    src="../../../assets/avatar1.png">
+                                                <div class="comment">
+                                                    <a style="font-size: 14px;">Many desktop publishing packages and
+                                                        web
+                                                        page editors now use Lorem Ipsum</a>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </mat-expansion-panel>
+
+                                    <div style="margin-top:30px; margin-left: 2%;">
+                                        <!-- <img class="commentImage" style="float: left; width: 45px; height: 45px;"
+                                            src="../../../assets/avatar1.png"> -->
+                                            <!-- <div class="form-group row" style="width: 100%;"> -->
+                                        <img class="commentImage" [src]="imageToShow"
+                                            style="float: left; max-width: 45px; max-height: 45px;" alt="Place image title"
+                                            *ngIf="!isImageLoading; else noImageFound">
+                                        <ng-template #noImageFound>
+                                            <img class="commentImage" src="../../../assets/avatar1.png"
+                                                style="float: left; width: 45px; height: 45px;" title="dummy"
+                                                alt="Fallbackimage">
+                                        </ng-template>
+                                        <div class="form-group green-border-focus"
+                                            style="margin-left: 4%;margin-right: 2%;">
+                                            <textarea class="form-control" id="exampleFormControlTextarea5" rows="1"
+                                                placeholder="Add your comment Here" #commentArea></textarea>
+                                        <!-- </div> -->
+                                    </div>
+                                        <button mat-raised-button style="float: right; margin-right: 2%;height: 50px;"
+                                            color="warn" (click)="postComment()">Post
+                                            Your comment</button>
+                                            
+                                    </div>
+
+                                </div>
+                                <div class="tab-pane fade show active" *ngIf="activePage === 'B'">
+                                    <div *ngIf="tempActionPage; else default">
+                                        <div class="cardActionItem" *ngFor="let actionItem of actionItems"
+                                            (click)="detailedAction(actionItem.ActionItemID)">
+                                            <div class="card-title">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
+
+                                                        <div class="row">
+                                                            <div class="col-9">
+                                                                <div class="ribbon ribbon-2"
+                                                                    style="background: #21759a;"
+                                                                    *ngIf="actionItem.Status === 1; else Overdue">
+                                                                    <!-- <b style="font-size: 16px; margin-top: 10px;">
+                                                                    {{actionItem.Status === 0 ? 'In Progress' : 'Overdue'}}</b> -->
+                                                                    <b style="font-size: 16px; margin-top: 10px;">In
+                                                                        Progress</b>
+                                                                </div>
+                                                                <ng-template #Overdue>
+                                                                    <ng-container
+                                                                        *ngIf="actionItem.Status === 0; else Complete">
+                                                                        <div class="ribbon ribbon-2"
+                                                                            style="background: #e74c3c; padding: 8px 30px;">
+                                                                            <!-- <b style="font-size: 16px; margin-top: 10px;">
+                                                                        {{actionItem.Status === 0 ? 'In Progress' : 'Overdue'}}</b> -->
+                                                                            <b
+                                                                                style="font-size: 16px; margin-top: 10px;">Overdue</b>
+                                                                        </div>
+                                                                    </ng-container>
+                                                                </ng-template>
+                                                                <ng-template #Complete>
+                                                                    <div class="ribbon ribbon-2"
+                                                                        style="background: #2bc440; padding: 8px 28px; color: white;">
+                                                                        <!-- <b style="font-size: 16px; margin-top: 10px;">
+                                                                        {{actionItem.Status === 0 ? 'In Progress' : 'Overdue'}}</b> -->
+                                                                        <b
+                                                                            style="font-size: 16px; margin-top: 10px;">Complete</b>
+                                                                    </div>
+                                                                </ng-template>
+                                                                <table class="meetingMain">
+                                                                    <tr>
+                                                                        <td class="meetingLabel"
+                                                                            style="font-size: 24px;width: 100%;">
+                                                                            {{actionItem.Action_Description}}</td>
+                                                                    </tr>
+                                                                </table>
+                                                                <table class="meetingMain">
+                                                                    <tr>
+                                                                        <td class="meetingLabel"> Meeting :</td>
+                                                                        <td class="meetingContent"
+                                                                            style="color: rgb(47, 68, 45);">
+                                                                            {{actionItem.ActionItem_Title}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="meetingLabel"> Project :</td>
+                                                                        <td class="meetingContent"
+                                                                            style="color: rgb(47, 68, 45);">
+                                                                            {{actionItem.project_Name}}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="meetingLabel"> Objective :</td>
+                                                                        <td class="meetingContent">
+                                                                            {{actionItem.Action_Description}}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="meetingLabel"> Due Date :</td>
+                                                                        <td class="meetingContent">
+                                                                            {{actionItem.ActionDate | date : 'mediumDate'}}
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+
+                                                                <!-- <div class="row">
+                                                                    <div class="col-5">
+                                                                        <table class="meetingMain">
+                                                                            <tr>
+                                                                                <td
+                                                                                    style="font-size: 16px;color: grey;">
+                                                                                    Created :
+                                                                                </td>
+                                                                                <td
+                                                                                    style="font-size: 16px;color: rgb(66, 66, 66);">
+                                                                                    {{actionItem.ActionDate | date : 'mediumDate'}}
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </div>
+                                                                    <div class="col-4">
+                                                                        <table>
+                                                                            <tr>
+                                                                                <td
+                                                                                    style="font-size: 16px;color: grey;">
+                                                                                    Last Recieved :
+                                                                                </td>
+                                                                                <td
+                                                                                    style="font-size: 16px;color: rgb(66, 66, 66);">
+                                                                                    3 Hours Ago
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </div>
+                                                                </div> -->
+                                                            </div>
+                                                            <div class="col-3">
+                                                                <table>
+                                                                    <td class="meetingLabel">
+                                                                        <img style="height: 60px; width: 60px;margin-top: 15px;"
+                                                                            src="../../../assets/facebook.png">
+                                                                    </td>
+                                                                    <td style="text-align: start;">
+                                                                        <a style="font-size: 1vw;">Assignee</a><br>
+                                                                        <a
+                                                                            style="font-size: 0.8vw;">{{actionItem.ActionAssignedTo}}</a>
+                                                                    </td>
+                                                                </table>
+                                                                <div style="margin-top: 10px;">
+                                                                    <a style="font-size: 16px; color: grey;">Priority
+                                                                        :</a>
+                                                                    <button
+                                                                        *ngIf="actionItem.Priority === 'High'; else medium"
+                                                                        style="margin-left: 10px; width: 120px; font-size: 18px; padding: 10px; border-radius: 50px; background: rgb(231, 25, 25); color: white; font-weight: 600;"
+                                                                        color="warn">{{actionItem.Priority}}</button>
+                                                                    <ng-template #medium>
+                                                                        <ng-container
+                                                                            *ngIf="actionItem.Priority === 'medium'; else low">
+                                                                            <button
+                                                                                style="margin-left: 10px; width: 120px; font-size: 18px; padding: 10px; border-radius: 50px; background: rgb(250, 96, 40); color: white; font-weight: 600;"
+                                                                                color="warn">{{actionItem.Priority}}</button>
+                                                                        </ng-container>
+                                                                    </ng-template>
+                                                                    <ng-template #low>
+                                                                        <button
+                                                                            style="margin-left: 10px; width: 120px; font-size: 18px; padding: 10px; border-radius: 50px; background: rgb(241, 160, 38); color: black; font-weight: 600;"
+                                                                            color="warn">{{actionItem.Priority}}</button>
+                                                                    </ng-template>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body" *ngIf="collapsedA">
+                                                <div class="commentSection">
+                                                    <div style="margin-top: 20px;">
+                                                        <img class="commentImage" style="float: left;"
+                                                            src="../../../assets/avatar1.png">
+                                                        <div class="comment">
+                                                            <a style="font-size: 14px;">Many desktop publishing packages
+                                                                and
+                                                                web
+                                                                page editors now use Lorem Ipsum</a>
+                                                        </div>
+                                                    </div>
+                                                    <div style="margin-top: 20px;">
+                                                        <img class="commentImage" style="float: left;"
+                                                            src="../../../assets/avatar1.png">
+                                                        <div class="comment">
+                                                            <a style="font-size: 14px;">Many desktop publishing packages
+                                                                and
+                                                                web
+                                                                page editors now use Lorem Ipsum</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <mat-divider></mat-divider>
+                                                <div style="margin-top:30px; margin-left: 2%;">
+                                                    <img class="commentImage"
+                                                        style="float: left; width: 45px; height: 45px;"
+                                                        src="../../../assets/avatar1.png">
+                                                    <div class="form-group green-border-focus"
+                                                        style="margin-left: 4%;margin-right: 2%;">
+                                                        <textarea class="form-control" name="Comment1"
+                                                            [(ngModel)]="comment" id="exampleFormControlTextarea5"
+                                                            rows="1" placeholder="Add your comment Here"></textarea>
+                                                    </div>
+
+                                                    <button mat-raised-button (click)="postComment()"
+                                                        style="margin-left: 4%; margin-right: 2%;height: 50px;"
+                                                        color="warn">Post Your comment</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ng-template #default>
+                                        <div style="text-align: center;justify-content: center; margin-top: 40px;">
+                                            <a style="font-size: 18px; color: black; font-weight: 500;">There are no
+                                                Action Items in this meeting.</a><br>
+                                            <a style="font-size: 18px; color: black; font-weight: 500;">You can create a
+                                                new Action Item by, <br> click on Action Item button at top right of
+                                                your screen. <br> Thanks.</a>
+                                        </div>
+                                    </ng-template>
+                                </div>
+                                <!-- next card -->
+                                <div class="tab-pane fade show active" *ngIf="activePage === 'C'">
+                                    <div *ngIf="tempDecisionPage; else default"></div>
+                                    <div class="cardActionItem" *ngFor="let decision of decisions"
+                                        (click)="detailedDecision(decision.DecisionItemID)">
+                                        <div class="card-title">
+                                            <div class="row">
+                                                <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
+
+                                                    <div class="row">
+                                                        <div class="col-9">
+                                                            <div class="ribbon ribbon-2" style="background: #21759a;"
+                                                                *ngIf="decision.Status === 1; else Overdue">
+                                                                <!-- <b style="font-size: 16px; margin-top: 10px;">
+                                                                {{actionItem.Status === 0 ? 'In Progress' : 'Overdue'}}</b> -->
+                                                                <b style="font-size: 16px; margin-top: 10px;">In
+                                                                    Progress</b>
+                                                            </div>
+                                                            <ng-template #Overdue>
+                                                                <ng-container
+                                                                    *ngIf="decision.Status === 0; else Complete">
+                                                                    <div class="ribbon ribbon-2"
+                                                                        style="background: #e74c3c; padding: 8px 30px;">
+                                                                        <!-- <b style="font-size: 16px; margin-top: 10px;">
+                                                                    {{actionItem.Status === 0 ? 'In Progress' : 'Overdue'}}</b> -->
+                                                                        <b
+                                                                            style="font-size: 16px; margin-top: 10px;">Overdue</b>
+                                                                    </div>
+                                                                </ng-container>
+                                                            </ng-template>
+                                                            <ng-template #Complete>
+                                                                <div class="ribbon ribbon-2"
+                                                                    style="background: #2bc440; padding: 8px 28px; color: white;">
+                                                                    <!-- <b style="font-size: 16px; margin-top: 10px;">
+                                                                    {{actionItem.Status === 0 ? 'In Progress' : 'Overdue'}}</b> -->
+                                                                    <b
+                                                                        style="font-size: 16px; margin-top: 10px;">Complete</b>
+                                                                </div>
+                                                            </ng-template>
+                                                            <table class="meetingMain">
+                                                                <tr>
+                                                                    <td class="meetingLabel"
+                                                                        style="font-size: 24px;width: 100%;">
+                                                                        {{decision.Description}}</td>
+                                                                </tr>
+                                                            </table>
+                                                            <table class="meetingMain">
+                                                                <tr>
+                                                                    <td class="meetingLabel"> Meeting :</td>
+                                                                    <td class="meetingContent"
+                                                                        style="color: rgb(47, 68, 45);">
+                                                                        {{decision.DecisionItem_Title}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="meetingLabel"> Project :</td>
+                                                                    <td class="meetingContent"
+                                                                        style="color: rgb(47, 68, 45);">
+                                                                        {{decision.project_Name}}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="meetingLabel"> Objective :</td>
+                                                                    <td class="meetingContent">
+                                                                        {{decision.Description}}
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <table>
+                                                                <td class="meetingLabel">
+                                                                    <img style="height: 60px; width: 60px;margin-top: 15px;"
+                                                                        src="../../../assets/facebook.png">
+                                                                </td>
+                                                                <td style="text-align: start;">
+                                                                    <a style="font-size: 1vw">Assignee</a><br>
+                                                                    <a
+                                                                        style="font-size: 0.8vw">{{decision.DecisionAssignedTo}}</a>
+                                                                </td>
+                                                            </table>
+                                                            <div style="margin-top: 10px;">
+                                                                <a style="font-size: 16px; color: grey;">Priority
+                                                                    :</a>
+                                                                <button
+                                                                    *ngIf="decision.Priority === 'High'; else medium"
+                                                                    style="margin-left: 10px; width: 120px; font-size: 18px; padding: 10px; border-radius: 50px; background: rgb(231, 25, 25); color: white; font-weight: 600;"
+                                                                    color="warn">{{decision.Priority}}</button>
+                                                                <ng-template #medium>
+                                                                    <ng-container
+                                                                        *ngIf="decision.Priority === 'medium'; else low">
+                                                                        <button
+                                                                            style="margin-left: 10px; width: 120px; font-size: 18px; padding: 10px; border-radius: 50px; background: rgb(250, 96, 40); color: white; font-weight: 600;"
+                                                                            color="warn">{{decision.Priority}}</button>
+                                                                    </ng-container>
+                                                                </ng-template>
+                                                                <ng-template #low>
+                                                                    <button
+                                                                        style="margin-left: 10px; width: 120px; font-size: 18px; padding: 10px; border-radius: 50px; background: rgb(241, 160, 38); color: black; font-weight: 600;"
+                                                                        color="warn">{{decision.Priority}}</button>
+                                                                </ng-template>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ng-template #default>
+                                        <div style="text-align: center;justify-content: center; margin-top: 40px;">
+                                            <a style="font-size: 18px; color: black; font-weight: 500;">There are no
+                                                Decision in this meeting.</a><br>
+                                            <a style="font-size: 18px; color: black; font-weight: 500;">You can create a
+                                                new Decision by, <br> click on Decision button at top right of your
+                                                screen. <br> Thanks.</a>
+                                        </div>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #mobileView>
+    <div id="container" *ngIf="dataLoaded">
+        <!-- <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around center" fxLayoutGap="25px"> -->
+        <mat-card style="margin: 0px 10px 10px 10px; min-width: 150px;">
+            <mat-card-header>
+                <div mat-card-avatar class="example-header-image" *ngIf="meeting.Status === 1; else Overdue"><img
+                        style="width: 40px;" src="../../../assets/in_prgress.jpg"
+                        (click)="updateMeeting(meeting.Status, 'Status')"></div>
+                <ng-template #Overdue>
+                    <div mat-card-avatar class="example-header-image" *ngIf="meeting.Status === 0; else Completed"><img
+                            style="width: 40px;" src="../../../assets/overdue.jpg"
+                            (click)="updateMeeting(meeting.Status, 'Status')"></div>
+                </ng-template>
+                <ng-template #Completed>
+                    <div mat-card-avatar class="example-header-image" *ngIf="meeting.Status === 2"><img
+                            style="width: 40px;" src="../../../assets/Completed.jpg"
+                            (click)="updateMeeting(meeting.Status, 'Status')"></div>
+                </ng-template>
+                <mat-card-title>{{meeting.project_Name}}</mat-card-title>
+                <mat-card-subtitle>{{meeting.Meeting_Subject}}</mat-card-subtitle>
+            </mat-card-header>
+            <!-- <img mat-card-image [src]="member.url" alt="Photo of {{member.title}}"> -->
+            <!-- {{meeting.Meeting_objective}} -->
+            <mat-card-content>
+                <p class="text-oneline">
+                    <b>Meeting ID : </b> MM-{{meeting.MeetingID}}
+                </p>
+                <p class="text-oneline">
+                    <b>Meeting Date : </b> {{meeting.MeetingTime}}
+                </p>
+                <p>
+                    <b>Objective : </b>{{meeting.Meeting_objective}}
+                </p>
+                <p>
+                    <b>Agenda : </b>{{meeting.Agenda}}
+                </p>
+
+            </mat-card-content>
+        </mat-card>
+
+        <div style="text-align: center; margin-bottom: 15px; margin-top: 15px;">
+            <!-- <a mat-fab color="accent" style="margin-right: 10px;" title="Audio Conferencing"
+                href="https://mmconferenceroom.checkboxtechnology.com:9002/#MM{{meeting.RoomKey}}${{currentUser.LoginName}}${{meeting.MeetingID}}$0"
+                aria-label="Example icon-button with a heart icon">
+                <mat-icon>phone_in_talk</mat-icon>
+            </a>
+            <a mat-fab color="accent" style="margin-right: 10px;" title="Video Conferencing"
+                href="https://mmconferenceroom.checkboxtechnology.com:9002/#MM{{meeting.RoomKey}}${{currentUser.LoginName}}${{meeting.MeetingID}}$1"
+                aria-label="Example icon-button with a heart icon">
+                <mat-icon>videocam</mat-icon>
+            </a> -->
+            <!-- <a mat-fab color="accent" style="margin-right: 10px;" title="Video Conferencing"
+                href="../../../video_conference_test/index.html" aria-label="Example icon-button with a heart icon">
+                <mat-icon>videocam</mat-icon>
+            </a> -->
+            <button mat-fab color="primary" style="margin-right: 10px;" (click)="openChat(meeting.RoomKey)"
+                    aria-label="Example icon-button with a heart icon" title="Video Room">
+                    <mat-icon>airplay</mat-icon>
+                </button>
+            <button mat-fab color="accent" style="margin-right: 10px;" (click)="fileInput.click()" title="Upload File">
+                <mat-icon>publish</mat-icon>
+                <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
+            </button>
+            <button mat-fab color="accent" style="margin-right: 10px;" (click)="getServerFiles()" title="Download File">
+                <mat-icon>get_app</mat-icon>
+            </button>
+            <!-- <button mat-fab color="warn" (click)="showFab()" aria-label="Example icon-button with a menu"><i
+                    style="font-size: 18px;" class="fa fa-times" aria-hidden="true"></i>
+            </button> -->
+        </div>
+
+        <swiper [config]="config" (indexChange)="onIndexChange($event)" style="max-height: 300px; overflow-x: scroll;">
+            <div *ngFor="let slide of slides" class="swiper-slide">
+                <ng-container *ngIf="slide.id === 1">
+                    <mat-card style="margin: 0px 10px 10px 10px;">
+                        <mat-card-content>
+                            <div class="tab-pane fade show active">
+                                <h3 class="header"> General Notes</h3>
+                                <!-- <div class="meetingNotes"> -->
+
+                                <mat-card
+                                    style="margin: 0px 10px 10px 10px; background-color: rgba(197, 228, 179, 0.788);">
+                                    <mat-card-content>
+                                        <div id="textboxes" *ngFor="let mNote  of mNotes;let i = index">
+                                            <ul>
+                                                <li>
+                                                    <ejs-inplaceeditor id="element"
+                                                        style="font-weight: 700; font-size: large;" width="auto"
+                                                        type="Text" mode="Inline" data-underline="false"
+                                                        value="{{mNote.MeetingNotes}}"
+                                                        (actionSuccess)="editMeetingNotes($event.value, mNote.MeetingNotesID)">
+                                                    </ejs-inplaceeditor>
+                                                    &nbsp;<span style="display: inline-block;">
+                                                        <a class="fas fa-trash float-right"
+                                                            (click)="deleteMeetingNotes(mNote.MeetingNotesID)"></a>
+                                                    </span>
+
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" placeholder="Add Your Notes Here"
+                                                aria-label="Recipient's username" aria-describedby="basic-addon2"
+                                                #meetingText>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="basic-addon2"
+                                                    (click)="sendNotes()">Send</span>
+                                            </div>
+                                        </div>
+                                    </mat-card-content>
+
+                                </mat-card>
+                                <div *ngIf="isConclude">
+                                    <h3 class="header"> Final Notes</h3>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="meetingNotes">
+                                                <a class="list" *ngIf='!editConclusion' (click)='editConclusion=true'
+                                                    style="margin-left: 15px; font-size: 18px; cursor: pointer;">{{meeting.Conclusion}}<i
+                                                        class="fas fa-pencil-alt" style="margin-left: 10px;"></i></a>
+                                                <textarea *ngIf='editConclusion' (focusout)="submitConclusion()"
+                                                    style="width: 100%; height: 60px;"
+                                                    (keydown.enter)='$event.target.blur()'
+                                                    [(ngModel)]='meeting.Conclusion' class='conclusionText' appAutofocus
+                                                    type='text' (keydown.enter)='$event.target.blur()'
+                                                    (focusout)="editConclusion=false"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="isShow" style="margin-top: 10px; margin-left: 25px;">
+                                    <button mat-raised-button color="primary" style="height: 50px;"
+                                        (click)="sendConclusion()">
+                                        Send Conclusion By Mail </button>
+                                </div>
+                                <mat-expansion-panel style="margin-left: 2%; margin-right: 2%; margin-top: 20px;">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            <h3 class="header" style="margin-left: 1px;">Comment(if Any)</h3>
+                                        </mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    <div *ngFor="let comment of allComments">
+                                        <mat-card *ngIf="comment.MeetingID == urlID">
+                                            <div>
+                                                <mat-card-header>
+                                                    <div mat-card-avatar class="example-header-image"><img
+                                                            style="width: 40px;" src="../../../assets/avatar1.png">
+                                                    </div>
+                                                    <mat-card-title>
+                                                        <ejs-inplaceeditor id="element"
+                                                            style="font-weight: 700; font-size: large;" width="auto"
+                                                            type="Text" mode="Inline" data-underline="false"
+                                                            value="{{comment.Comment1}}"
+                                                            (actionSuccess)="editComment($event.value, comment.CommentID)">
+                                                        </ejs-inplaceeditor>
+                                                    </mat-card-title>
+                                                </mat-card-header>
+                                            </div>
+                                        </mat-card>
+                                    </div>
+
+                                </mat-expansion-panel>
+
+                                <div style="margin-top:30px; margin-left: 2%;">
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" placeholder="Add Your Comment Here"
+                                            aria-describedby="basic-addon2" #commentArea>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text" id="basic-addon2"
+                                                (click)="postComment()">Send</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </ng-container>
+                <ng-container *ngIf="slide.id === 2">
+                    <div *ngIf="tempActionPage; else default">
+                        <mat-card *ngFor="let actionItem of actionItems"
+                            (click)="detailedAction(actionItem.ActionItemID)" style="margin: 0px 10px 10px 10px;">
+                            <mat-card-header>
+                                <div mat-card-avatar class="example-header-image"
+                                    *ngIf="actionItem.Status === 1; else Overdue"><img style="width: 40px;"
+                                        src="../../../assets/in_prgress.jpg"></div>
+                                <ng-template #Overdue>
+                                    <div mat-card-avatar class="example-header-image"
+                                        *ngIf="actionItem.Status === 0; else Completed"><img style="width: 40px;"
+                                            src="../../../assets/overdue.jpg"></div>
+                                </ng-template>
+                                <ng-template #Completed>
+                                    <div mat-card-avatar class="example-header-image" *ngIf="actionItem.Status === 2">
+                                        <img style="width: 40px;" src="../../../assets/Completed.jpg"></div>
+                                </ng-template>
+                                <mat-card-title>{{actionItem.project_Name}}</mat-card-title>
+                                <mat-card-subtitle>{{actionItem.ActionItem_Title}}</mat-card-subtitle>
+                            </mat-card-header>
+                            <!-- <img mat-card-image [src]="member.url" alt="Photo of {{member.title}}"> -->
+                            <!-- {{meeting.Meeting_objective}} -->
+                            <mat-card-content>
+                                <p class="text-oneline">
+                                    <b> Date : </b> {{actionItem.ActionDate | date : 'mediumDate'}}
+                                </p>
+                                <p class="text-oneline">
+                                    <b>Objective : </b> {{actionItem.Action_Description}}
+                                </p>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <ng-template #default>
+                        <mat-card style="margin: 0px 10px 10px 10px;">
+                            <mat-card-content style="text-align: center;">
+                                <a>There are no
+                                    Action Items in this meeting.</a><br>
+                                <a>You can create a
+                                    new Action Item by, <br> click on Action Item button at top right of
+                                    your screen. <br> Thanks.</a>
+                            </mat-card-content>
+                        </mat-card>
+                    </ng-template>
+                </ng-container>
+                <ng-container *ngIf="slide.id === 3">
+                    <div *ngIf="tempDecisionPage; else default">
+                        <mat-card *ngFor="let decision of decisions" (click)="detailedDecision(decision.DecisionItemID)"
+                            style="margin: 0px 10px 10px 10px;">
+                            <mat-card-header>
+                                <div mat-card-avatar class="example-header-image"
+                                    *ngIf="decision.Status === 1; else Overdue"><img style="width: 40px;"
+                                        src="../../../assets/in_prgress.jpg"></div>
+                                <ng-template #Overdue>
+                                    <div mat-card-avatar class="example-header-image"
+                                        *ngIf="decision.Status === 0; else Completed"><img style="width: 40px;"
+                                            src="../../../assets/overdue.jpg"></div>
+                                </ng-template>
+                                <ng-template #Completed>
+                                    <div mat-card-avatar class="example-header-image" *ngIf="decision.Status === 2"><img
+                                            style="width: 40px;" src="../../../assets/Completed.jpg"></div>
+                                </ng-template>
+                                <mat-card-title>{{decision.project_Name}}</mat-card-title>
+                                <mat-card-subtitle>{{decision.DecisionItem_Title}}</mat-card-subtitle>
+                            </mat-card-header>
+                            <!-- <img mat-card-image [src]="member.url" alt="Photo of {{member.title}}"> -->
+                            <!-- {{meeting.Meeting_objective}} -->
+                            <mat-card-content>
+                                <p class="text-oneline">
+                                    <b>Date : </b> {{decision.DecisionDate | date : 'mediumDate'}}
+                                </p>
+                                <p class="text-oneline">
+                                    <b>Objective : </b> {{decision.Description}}
+                                </p>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <ng-template #default>
+                        <mat-card style="margin: 0px 10px 10px 10px;">
+                            <mat-card-content style="text-align: center;">
+                                <a>There are no
+                                    Decision in this meeting.</a><br>
+                                <a>You can create a
+                                    new Decision by, <br> click on Decision button at top right of your
+                                    screen. <br> Thanks.</a>
+                            </mat-card-content>
+                        </mat-card>
+                    </ng-template>
+                </ng-container>
+            </div>
+        </swiper>
+        <!-- </div> -->
+
+    </div>
+</ng-template>
+
+
+<div id="id01" class="modal" *ngIf="dataLoaded">
+    <form #scheduleForm="ngForm" (submit)="rescheduleMeeting(scheduleForm)" class="modal-content-assign animate"
+        style="width: 30% ;justify-content: center">
+        <div class="imgcontainer">
+            <span onclick="document.getElementById('id01').style.display='none'" class="close"
+                style="margin-top: -20px; font-size: 25px;" title="Close Modal">&times;</span>
+            <div class="card" style="border-radius: 20px;">
+                <div class="card-header">
+                    <h1 class="card-title"><b>Select New date and time</b></h1>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <label
+                            style="font-size: 14px; margin-top: 20px; border-radius: 10px; color: rgb(112, 110, 110);">Select
+                             Meeting Date and Time</label>
+                        <input [owlDateTimeTrigger]="dt4" [min]="minDate" name="MeetingDate" [(ngModel)]="timeToDisplay"
+                        #MeetingDate="ngModel" class="form-control" [owlDateTime]="dt4" required>
+                        <owl-date-time #dt4></owl-date-time>
+                        <!-- <input type="time" theme="dark" atp-time-picker class="form-control" formControlName="MeetingTime" arrowStyle="{'background': 'blue', 'color': 'white'}" aria-label="12hr format" placeholder="From" id="timePicker"> -->
+                    </div>
+                    <div *ngIf="MeetingDate.invalid && (MeetingDate.dirty || MeetingDate.touched)"
+                        class="alert1 float-left">
+                        <div *ngIf="MeetingDate.errors.required" class="alert1">MeetingDate is required</div>
+                    </div>
+                    <!-- <label
+                        style="font-size: 14px; margin-top: 20px; border-radius: 10px; color: rgb(112, 110, 110);">Select
+                        Meeting Date</label>
+                    <mat-form-field style="width: 100%;">
+                        <mat-label>Choose a date</mat-label>
+                        <input matInput [matDatepicker]="picker" name="MeetingDate" [(ngModel)]="meeting.MeetingDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <div>
+                        <label
+                            style="font-size: 14px; margin-top: 20px; border-radius: 10px; color: rgb(112, 110, 110);">Select
+                            Meeting Time</label>
+                        <input atp-time-picker class="form-control" name="MeetingTime" [(ngModel)]="meeting.MeetingTime"
+                            aria-label="12hr format" placeholder="From" id="timePicker">
+                    </div> -->
+                </div>
+                <div class="card-footer" style="text-align: center;">
+                    <button mat-raised-button type="button" color="secondary"
+                        onclick="document.getElementById('id01').style.display='none'" style="margin-right: 15px;">
+                        Cancel</button>
+                    <button mat-raised-button type="submit" color="primary" [disabled]="!MeetingDate.valid"> Re-Schedule</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="id02" class="modal">
+    <form #fileList="ngForm" class="modal-content-assign animate" style="width: 30% ;justify-content: center">
+        <div class="imgcontainer">
+            <span onclick="document.getElementById('id02').style.display='none'" class="close"
+                style="margin-top: -20px; font-size: 25px;" title="Close Modal">&times;</span>
+            <div class="card" style="border-radius: 20px;">
+                <div class="card-header">
+                    <h1 class="card-title"><b>Select a file to download</b></h1>
+                </div>
+                <div class="card-body">
+                    <label style="font-size: 14px; margin-top: 20px; border-radius: 10px; color: rgb(112, 110, 110);">
+                        All Files</label>
+                    <div *ngFor="let file of allFiles" class="selectedFile" (click)="getFile(file)">
+                        {{file}}
+                    </div>
+                </div>
+                <div class="card-footer" style="text-align: center;">
+                    <button mat-raised-button type="button" color="primary"
+                        onclick="document.getElementById('id02').style.display='none'" style="margin-right: 15px;">
+                        Cancel</button>
+                    <!-- <button mat-raised-button type="submit" color="primary"> Re-Schedule</button> -->
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="id03" class="modal" style="width: 100%;">
+    <form #fileList="ngForm" class="modal-content-assign animate" style="width: 100% ;justify-content: center">
+        <div class="imgcontainer">
+            <span onclick="document.getElementById('id03').style.display='none'" class="close"
+                style="margin-top: -20px; font-size: 25px;" title="Close Modal">&times;</span>
+            <div class="card" style="border-radius: 20px;">
+                <div class="card-header">
+                    <h1 class="card-title"><b>Select a file to download</b></h1>
+                </div>
+                <div class="card-body">
+                    <label style="font-size: 14px; margin-top: 20px; border-radius: 10px; color: rgb(112, 110, 110);">
+                        All Files</label>
+                    <div *ngFor="let file of allFiles" class="selectedFile" (click)="getFile(file)">
+                        {{file}}
+                    </div>
+                </div>
+                <div class="card-footer" style="text-align: center;">
+                    <button mat-raised-button type="button" color="primary"
+                        onclick="document.getElementById('id03').style.display='none'" style="margin-right: 15px;">
+                        Cancel</button>
+                    <!-- <button mat-raised-button type="submit" color="primary"> Re-Schedule</button> -->
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

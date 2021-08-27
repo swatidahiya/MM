@@ -1,0 +1,32 @@
+
+<div id="container">
+  <!-- <mat-grid-list cols="2" rowHeight="700px" gutterSize="25px">
+       <mat-grid-tile colspan="1">
+           <table style="width: 100%;">
+              <tr>  -->
+
+
+    <div class="row"  style="width: 99%;">
+      <div class="col-md-6" style="margin-top: 20px;">
+        <select class="dropdown browser-default custom-select"  (change)="selectedMonth($event.target.selectedIndex)" required>
+          <option *ngFor="let p of months; let i = index" [selected]="mm == p.val">{{p.name}}
+          </option>
+        </select>
+
+        <div id="monthchartContainer" style="height: 370px; width: 100%;"></div>
+      </div>
+      <div class="col-md-6" style="margin-top: 60px;">
+        <!-- </tr>
+          </table>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1">
+        <table style="width: 100%;">
+            <tr> -->
+        <div id="piechartContainer" style="height: 370px; width: 100%;"></div>
+      </div>
+    </div>
+    <!-- </tr>
+    </table>
+      </mat-grid-tile> -->
+    <!-- </mat-grid-list> -->
+  </div>

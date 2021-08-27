@@ -1,0 +1,230 @@
+<mat-divider></mat-divider>
+<!-- <div class="main"> -->
+
+<div id="container">
+    <!-- <div class="d-flex justify-content-center h-100"> -->
+    <div>
+        <h1 style="text-align: center;color: white; font-weight: 400; font-size: 42px;padding: 30px;">Schedule Meeting
+        </h1>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <mat-horizontal-stepper  [linear]="true" labelPosition="bottom" #stepper>
+                <mat-step [stepControl]="firstFormGroup">
+                    <form [formGroup]="firstFormGroup" (ngSubmit)="form1()" #formone="ngForm">
+                        <ng-template matStepLabel>Step 1</ng-template>
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
+
+                                <div class="row">
+                                    <div class="col-6"
+                                        style="padding: 40px; border-right: 1px solid rgb(207, 207, 207);">
+                                        <div>
+                                            <label
+                                                style="font-size: 16px; margin-top: 20px;  border-radius: 10px; color: rgb(112, 110, 110);">Project
+                                                Name</label><br>
+                                            <input type="text" class="form-control" formControlName="project_Name"
+                                                [ngClass]="{ 'is-invalid': firstFormSubmit && f.project_Name.errors }"
+                                                required>
+                                        </div>
+                                        <div *ngIf="firstFormSubmit && f.project_Name.errors" class="invalid-feedback">
+                                            <div *ngIf="f.project_Name.errors.required">Title is required</div>
+                                        </div>
+                                        <div>
+                                            <label
+                                                style="font-size: 16px; margin-top: 20px; border-radius: 10px; color: rgb(112, 110, 110);">Meeting
+                                                Subject</label><br>
+                                            <input type="text" class="form-control" formControlName="Meeting_Subject">
+                                        </div>
+                                        <div>
+                                            <label
+                                                style="font-size: 16px; margin-top: 20px; border-radius: 10px; color: rgb(112, 110, 110);">Meeting
+                                                Objective</label><br>
+                                            <textarea type="text" class="form-control"
+                                                formControlName="Meeting_objective" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-6"
+                                        style="text-align: center;justify-content: center; padding-left: 200px; padding-top: 50px;">
+                                        <div
+                                            style="height: 300px;width: 300px; background-color: rgb(238, 238, 238); border-radius: 20px; padding: 80px 30px;text-align: center; justify-content: center;">
+                                            <div class="ribbon ribbon" id="ribbon">
+                                                <img style="width: 90px; height: 90px; border-radius: 50%;"
+                                                    src="../../../assets/outlook_sync.png">
+                                            </div>
+                                            <h3 style="font-size: 20px;"><b>Import a Meeting</b></h3>
+                                            <a style="font-size: 16px; color: gray;">Easily import a meeting</a><br>
+                                            <a style="font-size: 16px; color: gray;">you've aready created</a>
+                                            <button mat-raised-button color="primary"
+                                                style="width: 200px; margin-top: 40px;height: 50px;">Start Importing<i
+                                                    style="margin-left: 15px;font-size: 16px"
+                                                    class="fas fa-sync"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button mat-raised-button value="Next" color="warn"
+                                        style="width: 150PX; height: 40px;" class="btn float-right"
+                                        [disabled]="!firstFormGroup.valid" matStepperNext>Next
+                                        Step <i style="font-size: 16px;margin-left: 10px;"
+                                            class="fas fa-angle-right"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="secondFormGroup">
+                    <form [formGroup]="secondFormGroup" (ngSubmit)="form2()" #formtwo="ngForm">
+                        <ng-template matStepLabel>Step 2</ng-template>
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
+
+                                <div class="row">
+                                    <div class="col-6"
+                                        style="padding: 40px; border-right: 1px solid rgb(207, 207, 207);">
+                                        <label
+                                            style="font-size: 14px;margin-top: 20px; color: rgb(112, 110, 110);">Meeting
+                                            Location</label>
+                                        <input type="text" class="form-control" formControlName="Meeting_Location">
+                                        <br>
+                                        <mat-divider></mat-divider>
+                                        <h2 style="font-size: 20px; font-weight: 400;">Audio/Web Conferencing</h2>
+                                        <label
+                                            style="font-size: 14px;margin-top: 20px; border-radius: 10px; color: rgb(112, 110, 110);">Use
+                                            my Conference Bridge</label>
+                                        <select type="text" class="form-control browser-default custom-select">
+                                            <option>Option 1</option>
+                                            <option>Option 2</option>
+                                            <option>Option 3</option>
+                                        </select>
+                                        <label
+                                            style="font-size: 14px; margin-top: 20px; border-radius: 10px; color: rgb(112, 110, 110);">Use
+                                            my Web Meeting</label>
+                                        <select type="text" class="form-control browser-default custom-select">
+                                            <option>Option 1</option>
+                                            <option>Option 2</option>
+                                            <option>Option 3</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6" style="padding: 40px;">
+                                        <!-- <label
+                                            style="font-size: 14px; margin-top: 20px; border-radius: 10px; color: rgb(112, 110, 110);">Select
+                                            Meeting Date</label>
+                                        <mat-form-field style="width: 100%;">
+                                            <mat-label>Choose a date</mat-label>
+                                            <input matInput [matDatepicker]="picker" formControlName="MeetingDate">
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker></mat-datepicker>
+                                        </mat-form-field> -->
+                                        <div>
+                                            <label
+                                                style="font-size: 14px; margin-top: 20px; border-radius: 10px; color: rgb(112, 110, 110);">Select
+                                                Meeting Date and Time</label>
+                                            <input [owlDateTimeTrigger]="dt4" [min]="minDate" formControlName="MeetingDate" class="form-control" [owlDateTime]="dt4">
+                                            <owl-date-time  #dt4></owl-date-time>
+                                            <!-- <input type="time" theme="dark" atp-time-picker class="form-control" formControlName="MeetingTime" arrowStyle="{'background': 'blue', 'color': 'white'}" aria-label="12hr format" placeholder="From" id="timePicker"> -->
+                                        </div>
+                                        <div>
+                                            <label
+                                                style="font-size: 16px; margin-top: 20px; border-radius: 10px; color: rgb(112, 110, 110);">Meeting
+                                                Agenda</label><br>
+                                            <textarea type="text" class="form-control" formControlName="Agenda"
+                                                rows="3"></textarea>
+                                        </div>
+                                        <div
+                                            style="text-align: right;font-size: 16px;color: rgb(41, 77, 155); margin-top: 20px;">
+                                            <i style="font-size: 16px;" class="fa fa-plus"></i> Add More Agenda
+                                        </div>
+                                        <!-- <igx-time-picker ></igx-time-picker> -->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button mat-raised-button value="Next" color="warn"
+                                        style="width: 150PX; height: 40px;" class="btn float-left" matStepperPrevious><i
+                                            style="font-size: 16px;margin-right: 10px;"
+                                            class="fas fa-angle-left"></i>Previous
+                                        Step </button>
+                                    <button mat-raised-button value="Next" color="warn"
+                                        style="width: 150PX; height: 40px;" class="btn float-right"
+                                        [disabled]="!secondFormGroup.valid" matStepperNext>Next
+                                        Step <i style="font-size: 16px;margin-left: 10px;"
+                                            class="fas fa-angle-right"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="thirdFormGroup">
+                    <form [formGroup]="thirdFormGroup" (ngSubmit)="form3()" #formthree="ngForm">
+                        <ng-template matStepLabel>Step 3</ng-template>
+                        <!-- <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
+
+                                <div class="row"> -->
+                        <div style="padding: 40px; text-align: center;">
+                            <a style="color: rgb(168, 168, 168); font-size: 18px;">Add users by searching for their
+                                name</a>
+                            <div
+                                style="width: 100%;min-height: 150px; height: auto; border: 1px solid rgb(156, 156, 156); margin-top: 20px; border-radius: 10px;">
+                                <div class="row">
+                                    <div *ngFor="let contact of displayName" class="contactList">
+                                        {{contact.FirstName}} {{contact.LastName}}
+                                        <i class="fa fa-times" (click)="onCancelUser(contact, contact.Email)" style="font-size: 18px; float: right;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="padding: 10px 40px 40px 40px;">
+                            <a style="color: rgb(168, 168, 168); font-size: 18px;">Add Users : </a>
+                            <input type="text" placeholder="Pick one" aria-label="Number" matInput
+                            formControlName="Partipatents" style="width: 400px; height: 40px; border: 1px solid rgb(173, 173, 173); border-radius: 10px; margin-left: 10px;vertical-align: middle;"
+                                [matAutocomplete]="auto">
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)='getPosts($event.option.value)'>
+                                <mat-option *ngFor="let option of options" [value]="option.Email">
+                                    {{option.FirstName}} {{option.LastName}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </div>
+                        <div class="form-group">
+                            <button mat-raised-button value="Next" color="warn" style="width: 150PX; height: 40px;"
+                                class="btn float-left" matStepperPrevious><i style="font-size: 16px;margin-right: 10px;"
+                                    class="fas fa-angle-left"></i>Previous
+                                Step </button>
+                            <button mat-raised-button value="Next" color="warn" style="width: 150PX; height: 40px;"
+                                class="btn float-right" [disabled]="!thirdFormGroup.valid"  matStepperNext>Next
+                                Step <i style="font-size: 16px;margin-left: 10px;"
+                                    class="fas fa-angle-right" ></i></button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step>
+                    <ng-template matStepLabel>step 4</ng-template>
+                    <h2 class="fs-title text-center">Success !</h2> <br><br>
+                    <div class="row justify-content-center">
+                        <div class="col-3 text-center"> <img src="../../../assets/success.jpg" class="fit-image"> </div>
+                    </div> <br><br>
+                    <div class="row justify-content-center">
+                        <div class="col-7 text-center">
+                            <h2>Thank you for registering new Meeting. Please go to dashboard to see more about it.
+                                Thanks!
+                            </h2>
+                        </div>
+                        <div style="padding: 10px 40px 40px 40px;">
+                            <a style="color: rgb(168, 168, 168); font-size: 18px;">Edit or Copy this link : </a>
+                            <input type="text" value="https://ievangelist-videochat.azurewebsites.net/"
+                                aria-label="Number" matInput
+                                style="width: 400px; height: 40px; border: 1px solid rgb(173, 173, 173); border-radius: 10px; margin-left: 10px;vertical-align: middle;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button mat-raised-button value="Next" color="warn" style="width: 150PX; height: 40px;"
+                            class="btn float-right" routerLink="/dashboard">Dashboard <i
+                                style="font-size: 16px;margin-left: 10px;" class="fas fa-angle-right"></i></button>
+                    </div>
+                </mat-step>
+            </mat-horizontal-stepper>
+        </div>
+    </div>
+    <!-- </div> -->
+</div>
+<!-- </div> -->

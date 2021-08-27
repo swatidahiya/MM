@@ -1,0 +1,349 @@
+<div id="container" *ngIf="deviceDetector(); else mobileView">
+    <!-- <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1"> -->
+
+    <div class="row" style="width: 99%;" *ngIf="dataLoaded; else loading">
+        <div class="col-lg-3" style="border-right: 1px solid rgb(179, 179, 179);">
+            <div style="border-bottom: 1px solid rgb(179, 179, 179);">
+                <h2 style="padding: 20px">
+                    <a style="font-size: 30px; color: cornsilk;">
+                        Filter
+                    </a>
+                    <!-- <button mat-raised-button color="warn" class="float-right" (click)="resetFilter()">Reset
+                        Filter</button> -->
+                </h2>
+            </div>
+            <br>
+            <div style="padding: 20px">
+
+                <label style="font-size: 16px; color: cornsilk; margin-bottom: 10px;">By Project</label>
+                <input type="text" placeholder="Project Name" style="padding: 5px; border-right: 10px; height: 50px;"
+                    class="form-control" name="projectName" [(ngModel)]="projectNameText">
+
+                <label style="font-size: 16px; color: cornsilk; margin-bottom: 10px;margin-top: 10px;">Created
+                    By</label>
+                <input type="text" placeholder="Choose Any" aria-label="Number" matInput class="form-control"
+                    style="height: 50px" [matAutocomplete]="auto" name="fullName" [(ngModel)]="fullNameText">
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)='getPosts($event.option.value)'>
+                    <mat-option *ngFor="let option of options" [value]="option.DisplayName">
+                        {{option.FirstName}} {{option.LastName}}
+                    </mat-option>
+                </mat-autocomplete>
+
+                <label style="font-size: 16px; color: cornsilk; margin-bottom: 10px;margin-top: 10px;">Meeting
+                    Status</label><br>
+                    <mat-checkbox style="color: white; font-size: 18px;"  name="status0" [(ngModel)]="status0Text"  (click)="statusCheck('overdue')"  >Not Yet
+                        Started</mat-checkbox><br>
+                    <mat-checkbox style="color: white; font-size: 18px;"  name="status1" [(ngModel)]="status1Text"(click)="statusCheck('inProgress')" >In Progress
+                    </mat-checkbox><br>
+                    <mat-checkbox style="color: white; font-size: 18px;" name="status2" [(ngModel)]="status2Text" (click)="statusCheck('completed')" >Completed
+                    </mat-checkbox>
+            </div>
+            <button mat-raised-button color="primary" class="form-control" style="margin-left: 7px;"
+                (click)="filterMeetings()">Filter Meetings</button>
+            <br>
+            <br>
+            <button mat-raised-button color="warn" class="form-control" style="margin-left: 7px;"
+                (click)="resetFilter()">Reset Filter</button>
+        </div>
+        <div class="col-lg-9">
+            <div style="border-bottom: 1px solid rgb(179, 179, 179);">
+                <h1 style="padding: 20px">
+                    <a style="font-size: 40px; color: cornsilk;">
+                        Meeting
+                    </a>
+                    <button mat-raised-button color="warn" class="float-right" [matMenuTriggerFor]="menu"
+                        style="width: 100px;">Sort By</button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="dueDate()">Date</button>
+                            <button mat-menu-item (click)="priority()">Meeting Id</button>
+                            <button mat-menu-item (click)="upcoming()">Status</button>
+                        </mat-menu>
+                </h1>
+            </div>
+            <br>
+            <div *ngFor="let meeting of meetings; let i = index">
+                <!-- <div *ngIf="meeting.reoccrence === 'Yes' || meeting.reoccrence === null"> -->
+                    <!-- <div *ngFor="let part of meeting.Partipatents?.split(',')"> -->
+                    <!-- for super admin -->
+                    <div *ngIf="currentUser.Initials === 'sAdmin'; else normalUser">
+                        <div class="cardActionItem" (click)="getTicket(meeting.MeetingID)">
+                            <div class="card-title">
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
+
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <table class="meetingMain">
+                                                    <tr>
+                                                        <td class="meetingLabel" style="font-size: 24px;width: 100%;">
+                                                            {{meeting.project_Name}}</td>
+                                                    </tr>
+                                                </table>
+                                                <table class="meetingMain">
+                                                    <tr>
+                                                        <td class="meetingLabel"> Meeting ID:</td>
+                                                        <td class="meetingContent" style="color: rgb(47, 68, 45);">
+                                                            MM - {{meeting.MeetingID}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="meetingLabel"> Meeting :</td>
+                                                        <td class="meetingContent" style="color: rgb(47, 68, 45);">
+                                                            {{meeting.Meeting_Subject}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="meetingLabel"> Project :</td>
+                                                        <td class="meetingContent" style="color: rgb(47, 68, 45);">
+                                                            {{meeting.project_Name}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="meetingLabel"> Objective :</td>
+                                                        <td class="meetingContent"> {{meeting.Meeting_objective}}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+
+                                                <div class="row">
+                                                    <!-- <div class="col-5">
+                                                            <table class="meetingMain">
+                                                                <tr style="padding: 10px;">
+                                                                    <td
+                                                                        style="font-size: 16px;color: grey; padding: 10px;">
+                                                                        Participants :
+                                                                    </td>
+                                                                    <td
+                                                                        style="font-size: 20px; font-weight: 600;color: rgb(66, 66, 66);">
+                                                                         Invited
+                                                                    </td>
+                                                                </tr>
+                                                                <tr style="padding: 10px;">
+                                                                    <td
+                                                                        style="font-size: 16px;color: grey; padding: 10px;">
+                                                                        Meeting :
+                                                                    </td>
+                                                                    <td
+                                                                        style="font-size: 18px;color: rgb(121, 120, 120);">
+                                                                        Not Yet Started
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <table>
+                                                                <tr>
+                                                                    <td
+                                                                        style="font-size: 16px;color: grey; padding: 10px;">
+                                                                        Last Recieved :
+                                                                    </td>
+                                                                    <td style="font-size: 16px;color: rgb(66, 66, 66);">
+                                                                        3 Hours Ago
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div> -->
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <button mat-raised-button color="primary" class="form-control"
+                                                    *ngIf="!isToday[i]"
+                                                    style="border-radius: 50px; height: 50px;">Scheduled</button>
+                                                <br>
+                                                <button mat-raised-button color="accent" class="form-control"
+                                                    *ngIf="isToday[i]"
+                                                    style="border-radius: 50px; height: 50px;">Today</button>
+                                                <br>
+                                                <div style="margin-top: 20px; text-align: center;">
+                                                    <a style="font-size: 14px; color: rgb(156, 154, 154);">SCHEDULED
+                                                        ON</a><br>
+                                                    <h2 style="font-size: 32px; color: rgb(62, 114, 61);">
+                                                        {{meeting.MeetingDate | date:'mediumDate'}}</h2>
+                                                    <h4 style="font-size: 20px; color: rgb(107, 107, 107);">
+                                                        {{ meeting.MeetingDate | date : 'EEE' }} @
+                                                        {{meeting.MeetingTime }}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                    <!-- normal user -->
+                    <ng-template #normalUser>
+                        <!-- <div *ngFor="let part of meeting.Partipatents?.split(',')">
+                            <div *ngIf="currentUser.Email === part"> -->
+                                <div class="cardActionItem" (click)="getTicket(meeting.MeetingID)">
+                                    <div class="card-title">
+                                        <div class="row">
+                                            <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
+
+                                                <div class="row">
+                                                    <div class="col-9">
+                                                        <table class="meetingMain">
+                                                            <tr>
+                                                                <td class="meetingLabel"
+                                                                    style="font-size: 24px;width: 100%;">
+                                                                    {{meeting.project_Name}}</td>
+                                                            </tr>
+                                                        </table>
+                                                        <table class="meetingMain">
+                                                            <tr>
+                                                                <td class="meetingLabel"> Meeting ID:</td>
+                                                                <td class="meetingContent"
+                                                                    style="color: rgb(47, 68, 45);">
+                                                                    MM - {{meeting.MeetingID}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="meetingLabel"> Meeting :</td>
+                                                                <td class="meetingContent"
+                                                                    style="color: rgb(47, 68, 45);">
+                                                                    {{meeting.Meeting_Subject}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="meetingLabel"> Project :</td>
+                                                                <td class="meetingContent"
+                                                                    style="color: rgb(47, 68, 45);">
+                                                                    {{meeting.project_Name}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="meetingLabel"> Objective :</td>
+                                                                <td class="meetingContent">
+                                                                    {{meeting.Meeting_objective}}
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+
+                                                        <div class="row">
+                                                            <div class="col-5">
+                                                                <table class="meetingMain">
+                                                                    <tr style="padding: 10px;">
+                                                                        <td
+                                                                            style="font-size: 16px;color: grey; padding: 10px;">
+                                                                            Participants :
+                                                                        </td>
+                                                                        <td *ngIf="meeting.Partipatents.length != 0; else somethingElse"
+                                                                            style="color: rgb(47, 68, 45);">
+                                                                            <span style=" margin-left: 30%;">
+                                                                                {{meeting.Partipatents.split(',').length}}</span>
+                                                                        </td>
+                                                                        <ng-template #somethingElse>
+                                                                            <td style="color: rgb(47, 68, 45);">
+                                                                                <span style=" margin-left: 30%;">
+                                                                                    0</span>
+                                                                            </td>
+                                                                        </ng-template>
+                                                                    </tr>
+                                                                    <tr style="padding: 10px;">
+                                                                        <td
+                                                                            style="font-size: 16px;color: grey; padding: 10px;">
+                                                                            Meeting :
+                                                                        </td>
+                                                                        <td *ngIf="meeting.Status === 1; else Overdue"
+                                                                            style="color: rgb(47, 68, 45); font-size: 18px; margin-left: 30%;">
+                                                                            <span>In Progress</span>
+                                                                        </td>
+                                                                        <ng-template #Overdue>
+                                                                            <td *ngIf="meeting.Status === 0; else Complete"
+                                                                                style="color: rgb(47, 68, 45); font-size: 18px; margin-left: 30%;">
+                                                                                <span style=" margin-left: 30%;">
+                                                                                    Overdue</span>
+                                                                            </td>
+                                                                        </ng-template>
+
+                                                                        <ng-template #Complete>
+
+                                                                            <td
+                                                                                style="color: rgb(47, 68, 45); font-size: 18px; margin-left: 30%;">
+                                                                                <span
+                                                                                    style=" margin-left: 30%;">Completed</span>
+                                                                            </td>
+                                                                        </ng-template>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                            <!-- <div class="col-4">
+                                                                <table>
+                                                                    <tr>
+                                                                        <td
+                                                                            style="font-size: 16px;color: grey; padding: 10px;">
+                                                                            Last Recieved :
+                                                                        </td>
+                                                                        <td
+                                                                            style="font-size: 16px;color: rgb(66, 66, 66);">
+                                                                            3 Hours Ago
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div> -->
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <button mat-raised-button color="primary" class="form-control"
+                                                            *ngIf="!isToday[i]"
+                                                            style="border-radius: 50px; height: 50px;">Scheduled</button>
+                                                        <br>
+                                                        <button mat-raised-button color="accent" class="form-control"
+                                                            *ngIf="isToday[i]"
+                                                            style="border-radius: 50px; height: 50px;">Today</button>
+                                                        <br>
+                                                        <div style="margin-top: 20px; text-align: center;">
+                                                            <a style="font-size: 14px; color: rgb(156, 154, 154);">SCHEDULED
+                                                                ON</a><br>
+                                                            <h2 style="font-size: 32px; color: rgb(62, 114, 61);">
+                                                                {{meeting.MeetingDate | date:'mediumDate'}}</h2>
+                                                            <h4 style="font-size: 20px; color: rgb(107, 107, 107);">
+                                                                {{ meeting.MeetingDate | date : 'EEE' }} @
+                                                                {{meeting.MeetingTime  | date : 'shortTime'}}</h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <!-- </div>
+                        </div> -->
+                    </ng-template>
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+    <ng-template #loading>
+        <div style="text-align: center; padding: 10%;">
+            <img src="../../../assets/giphy.gif">
+        </div>
+    </ng-template>
+</div>
+<ng-template #mobileView>
+    <div id="container">
+        <!-- <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around center" fxLayoutGap="25px"> -->
+            <mat-card *ngFor="let meeting of meetings" (click)="getTicket(meeting.MeetingID)" style="margin: 0px 10px 10px 10px; max-height: 150px;">
+              <mat-card-header>
+                <div mat-card-avatar class="example-header-image" *ngIf="meeting.Status === 1; else Overdue"><img style="width: 40px;" src="../../../assets/in_prgress.jpg"></div>
+                <ng-template #Overdue>
+                    <div mat-card-avatar class="example-header-image" *ngIf="meeting.Status === 0; else Completed"><img style="width: 40px;" src="../../../assets/overdue.jpg"></div>
+                </ng-template>
+                <ng-template #Completed>
+                    <div mat-card-avatar class="example-header-image" *ngIf="meeting.Status === 2"><img style="width: 40px;" src="../../../assets/Completed.jpg"></div>
+                </ng-template>
+                <mat-card-title>{{meeting.project_Name}}</mat-card-title>
+                <mat-card-subtitle  >{{meeting.Meeting_Subject}}</mat-card-subtitle>
+              </mat-card-header>
+              <!-- <img mat-card-image [src]="member.url" alt="Photo of {{member.title}}"> -->
+              <!-- {{meeting.Meeting_objective}} -->
+              <mat-card-content>
+                <p class="text-oneline">
+                    <b>Meeting Date : </b> {{meeting.MeetingTime}}
+                  </p>
+                <p class="text-oneline">
+                  {{meeting.Meeting_objective}}
+                </p>
+              </mat-card-content>
+            </mat-card>
+          <!-- </div> -->
+          
+    </div>
+</ng-template>

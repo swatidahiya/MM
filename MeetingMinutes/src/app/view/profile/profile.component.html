@@ -1,0 +1,201 @@
+<div id="container">
+    <div class="container emp-profile">
+        <form method="post">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profile-img">
+                        <img [src]="imageToShow" alt="Place image title" *ngIf="!isImageLoading; else noImageFound">
+                        <ng-template #noImageFound>
+                            <img src="../../../assets/avatar1.png" alt="Fallbackimage">
+                        </ng-template>
+                        <div class="file btn btn-lg btn-primary" (click)="fileInput.click()">
+                            Change Photo
+                            <input #fileInput type="file" name="file" (change)="onSelectFile($event)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="profile-head">
+                        <h5>
+                            {{currentUser.FirstName}} {{currentUser.LastName}}
+                        </h5>
+                        <h6>
+                            {{currentUser.SpecialOption}}
+                        </h6>
+                        <p class="proile-rating">Total Meetings : <span>{{meetings.length}}</span></p>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                                    aria-controls="home" aria-selected="true">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#lastActivity" role="tab"
+                                    aria-controls="profile" aria-selected="true">Timeline</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profile-work">
+                        <p> Write Your Skills</p>
+                        <div *ngIf='!editMode' (click)='editMode=true' style="margin-left: 6px;">
+                            {{currentUser.AppUserNote}} <i class="fas fa-pencil-alt"
+                                style="color: rgb(211, 211, 211); margin-left: 10px;"></i></div>
+                        <textarea *ngIf='editMode' (focusout)="onFocusOut()" style="width: 100%; height: 130px;"
+                            (keydown.enter)='$event.target.blur()' [(ngModel)]='currentUser.AppUserNote'
+                            class='cellInput' appAutofocus type='text' name="AppUserNote"
+                            (keydown.enter)='$event.target.blur()' (focusout)="editMode=false"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="tab-content profile-tab" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="row" style="margin-bottom: 10px">
+                                <div class="col-6">
+                                    <label style="margin-top: 3px;">User Id</label>
+                                </div>
+                                <div class="col-6">
+                                    <p style="color: rgb(32, 32, 32);"
+                                        title="This field is non editable"> {{currentUser.LoginName}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label style="margin-top: 9px;">First Name</label>
+                                </div>
+                                <div class="col-6">
+                                    <p>
+                                        <ejs-inplaceeditor id="element" style="font-weight: 700; font-size: large;"
+                                            type="Text" data-underline="false" value="{{currentUser.FirstName}}"
+                                            (actionSuccess)="updateAction($event.value, 'FirstName')">
+                                        </ejs-inplaceeditor>
+
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label style="margin-top: 9px;">Last Name</label>
+                                </div>
+                                <div class="col-6">
+                                    <p>
+                                        <ejs-inplaceeditor id="element" style="font-weight: 700; font-size: large;"
+                                            type="Text" data-underline="false" value="{{currentUser.LastName}}"
+                                            (actionSuccess)="updateAction($event.value, 'LastName')">
+                                        </ejs-inplaceeditor>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label style="margin-top: 9px;">Email</label>
+                                </div>
+                                <div class="col-6" style="display: block;   white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;">
+                                    <p>
+                                        <ejs-inplaceeditor id="inplace_editor" style="font-weight: 700; font-size: large;"
+                                            type="Text" data-underline="false" value="{{currentUser.Email}}"
+                                            (actionSuccess)="updateAction($event.value, 'Email')">
+                                        </ejs-inplaceeditor>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label style="margin-top: 9px;">Phone</label>
+                                </div>
+                                <div class="col-6">
+                                    <p>
+                                        <ejs-inplaceeditor id="element" style="font-weight: 700; font-size: large;"
+                                            type="Text" data-underline="false" value="{{currentUser.Phone}}"
+                                            (actionSuccess)="updateAction($event.value, 'Phone')">
+                                        </ejs-inplaceeditor>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label style="margin-top: 9px;">Landline</label>
+                                </div>
+                                <div class="col-6">
+                                    <p>
+                                        <ejs-inplaceeditor id="element" style="font-weight: 700; font-size: large;"
+                                            type="Text" data-underline="false" value="{{currentUser.CellPhone}}"
+                                            (actionSuccess)="updateAction($event.value, 'CellPhone')">
+                                        </ejs-inplaceeditor>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label style="margin-top: 9px;">Profession</label>
+                                </div>
+                                <div class="col-6">
+                                    <p>
+                                        <ejs-inplaceeditor id="element" style="font-weight: 700; font-size: large;"
+                                            type="Text" data-underline="false" value="{{currentUser.SpecialOption}}"
+                                            (actionSuccess)="updateAction($event.value, 'SpecialOption')">
+                                        </ejs-inplaceeditor>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="lastActivity" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label>Experience</label>
+                                </div>
+                                <div class="col-6">
+                                    <p>Expert</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label>Hourly Rate</label>
+                                </div>
+                                <div class="col-6">
+                                    <p>10$/hr</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label>Total Projects</label>
+                                </div>
+                                <div class="col-6">
+                                    <p>230</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label>English Level</label>
+                                </div>
+                                <div class="col-6">
+                                    <p>Expert</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label>Availability</label>
+                                </div>
+                                <div class="col-6">
+                                    <p>6 months</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <label>Your Bio</label><br />
+                                    <p>Your detail description</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <notifier-container></notifier-container>
+    </div>
+</div>

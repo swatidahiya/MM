@@ -1,0 +1,364 @@
+<div id="container" *ngIf="deviceDetector(); else mobileView">
+    <!-- <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1"> -->
+
+    <div class="row" style="width: 99%;">
+        <div class="col-lg-3" style="border-right: 1px solid rgb(179, 179, 179);">
+            <div style="border-bottom: 1px solid rgb(179, 179, 179);">
+                <h2 style="padding: 20px">
+                    <a style="font-size: 30px; color: cornsilk;">
+                        Filter
+                    </a>
+                    <!-- <button mat-raised-button color="warn" class="float-right" (click)="resetFilter()">Reset Filter</button> -->
+                </h2>
+            </div>
+            <br>
+            <div style="padding: 20px">
+            <!-- <form #filterDeciForm="ngForm" (ngSubmit)="submit(filterDeciForm)"> -->
+                <div style="padding: 10px 0px;">
+                    <label style="font-size: 16px; color: cornsilk; margin-bottom: 10px;">Decision Result Status</label><br>
+                    <!-- <mat-radio-group aria-label="Select an option" class="form-group" style="margin-bottom: 10px;">
+                        <mat-radio-button value="1" style="color: white; font-size: 16px; margin-left: 10px;"
+                         >Completed </mat-radio-button>
+                        <mat-radio-button value="2" style="color: white; font-size: 16px; margin-left: 10px;"
+                         >In Progress</mat-radio-button>
+                        <mat-radio-button value="3" style="color: white; font-size: 16px; margin-left: 10px;"
+                        >Overdue</mat-radio-button>    
+                    </mat-radio-group> -->
+                    <mat-checkbox style="color: white; font-size: 18px; " (click)="statusCheck('overdue')">Overdue</mat-checkbox>
+                    <mat-checkbox style="color: white; font-size: 18px; margin-left: 5px;" (click)="statusCheck('inProgress')">In Progress
+                    </mat-checkbox>
+                    <mat-checkbox style="color: white; font-size: 18px; margin-left: 5px;" (click)="statusCheck('completed')">Completed
+                    </mat-checkbox>
+
+                </div>
+                <div style="padding: 10px 0px;">
+                    <label style="font-size: 16px; color: cornsilk; margin-bottom: 10px;">By Project</label>
+                    <input type="text" placeholder="Project Name"
+                        style="padding: 5px; border-right: 10px; height: 50px;" class="form-control" name="projectName"  [(ngModel)]="projectNameText">
+                </div>
+                <div style="padding: 10px 0px;">
+                    <label style="font-size: 16px; color: cornsilk; margin-bottom: 10px;margin-top: 10px;">Created By</label>
+                    <input type="text" placeholder="Choose Any" aria-label="Number" matInput class="form-control"
+                        style="height: 50px" [matAutocomplete]="auto" name="fullName"  [(ngModel)]="fullNameText">
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)='getPosts($event.option.value)'>
+                        <mat-option *ngFor="let option of options" [value]="option.DisplayName">
+                            {{option.FirstName}} {{option.LastName}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </div>
+
+                <div style="padding: 10px 0px;">
+                    <label
+                        style="font-size: 16px; color: cornsilk; margin-bottom: 10px;margin-top: 10px;">Priority</label><br>
+                        <mat-checkbox style="color: white; font-size: 18px; " (click)="priorityCheck('low')">Low</mat-checkbox>
+                        <mat-checkbox style="color: white; font-size: 18px; margin-left: 15px;" (click)="priorityCheck('mid')">Mid
+                        </mat-checkbox>
+                        <mat-checkbox style="color: white; font-size: 18px; margin-left: 15px;" (click)="priorityCheck('high')">High
+                        </mat-checkbox>
+                </div>
+
+                <!-- <div style="padding: 10px 0px;">
+                    <label
+                        style="font-size: 16px; color: cornsilk; margin-bottom: 10px;margin-top: 10px;">Due</label><br> -->
+                    <!-- <mat-radio-group aria-label="Select an option" class="form-group" style="margin-bottom: 10px;">
+                        <mat-radio-button value="1" style="color: white; font-size: 16px; margin-left: 10px;">Overdue
+                        </mat-radio-button>
+                        <mat-radio-button value="2" style="color: white; font-size: 16px; margin-left: 10px;">Tomorrow
+                        </mat-radio-button>
+                    </mat-radio-group> -->
+                    <!-- <mat-checkbox style="color: white; font-size: 18px; " (click)="dueCheck('overdue')">Overdue</mat-checkbox>
+                    <mat-checkbox style="color: white; font-size: 18px; margin-left: 15px;" (click)="dueCheck('tomorrow')">Tomorrow
+                    </mat-checkbox>
+                    <br> -->
+                    <!-- <mat-radio-group aria-label="Select an option" class="form-group" style="margin-bottom: 10px;">
+                        <mat-radio-button value="1" style="color: white; font-size: 16px; margin-left: 10px;">Today
+                        </mat-radio-button>
+                        <mat-radio-button value="2" style="color: white; font-size: 16px; margin-left: 10px;">This Week
+                        </mat-radio-button>
+                    </mat-radio-group> -->
+                    <!-- <mat-checkbox style="color: white; font-size: 18px; " (click)="dueCheck('today')">Today</mat-checkbox>
+                    <mat-checkbox style="color: white; font-size: 18px; margin-left: 32px;" (click)="dueCheck('this Week')">This Week
+                    </mat-checkbox>
+                </div> -->
+                <mat-divider></mat-divider>
+                <!-- </form> -->
+               
+               
+            </div>
+            <button mat-raised-button color="primary" class="form-control" style="margin-left: 7px;" (click)="filterDecision()">Filter Decision Item</button>
+            <br>
+            <br>
+            <button mat-raised-button color="warn" class="form-control" style="margin-left: 7px;" (click)="resetFilter()">Reset Filter</button>
+        </div>
+        <div class="col-lg-9">
+            <div style="border-bottom: 1px solid rgb(179, 179, 179);">
+                <h1 style="padding: 20px">
+                    <a style="font-size: 40px; color: cornsilk;">
+                        Decision List
+                    </a>
+                    <button mat-raised-button color="warn" class="float-right" [matMenuTriggerFor]="menu"
+                        style="width: 100px;">Sort By</button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="dueDate()">Date</button>
+                        <button mat-menu-item (click)="priority()">Decision ID</button>
+                        <button mat-menu-item (click)="upcoming()">Status</button>
+                    </mat-menu>
+                </h1>
+            </div>
+            <br>
+            <div *ngFor="let decisionItem of decisionItems">
+                <div class="cardActionItem" (click)="detailedAction(decisionItem.DecisionItemID)">
+                    <div class="card-title">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
+
+                                <div class="row">
+                                    <div class="col-lg-9">
+                                        <div class="ribbon ribbon-2" style="background: #21759a;"
+                                            *ngIf="decisionItem.Status === 1; else Overdue">
+                                            <!-- <b style="font-size: 16px; margin-top: 10px;">
+                                            {{actionItem.Status === 0 ? 'In Progress' : 'Overdue'}}</b> -->
+                                            <b style="font-size: 16px; margin-top: 10px;">In Progress</b>
+                                        </div>
+                                        <ng-template #Overdue>
+                                            <ng-container *ngIf="decisionItem.Status === 0; else Complete">
+                                                <div class="ribbon ribbon-2"
+                                                    style="background: #e74c3c; padding: 8px 30px;">
+                                                    <!-- <b style="font-size: 16px; margin-top: 10px;">
+                                                {{actionItem.Status === 0 ? 'In Progress' : 'Overdue'}}</b> -->
+                                                    <b style="font-size: 16px; margin-top: 10px;">Overdue</b>
+                                                </div>
+                                            </ng-container>
+                                        </ng-template>
+                                        <ng-template #Complete>
+                                            <div class="ribbon ribbon-2"
+                                                style="background: #2bc440; padding: 8px 28px; color: white;">
+                                                <!-- <b style="font-size: 16px; margin-top: 10px;">
+                                                {{actionItem.Status === 0 ? 'In Progress' : 'Overdue'}}</b> -->
+                                                <b style="font-size: 16px; margin-top: 10px;">Complete</b>
+                                            </div>
+                                        </ng-template>
+                                        <table class="meetingMain">
+                                            <tr>
+                                                <td class="meetingLabel" style="font-size: 24px;width: 100%;">
+                                                    {{decisionItem.Description}}</td>
+                                            </tr>
+                                        </table>
+                                        <table class="meetingMain">
+                                            <tr>
+                                                <td class="meetingLabel"> Meeting :</td>
+                                                <td class="meetingContent" style="color: rgb(47, 68, 45);">
+                                                    {{decisionItem.DecisionItem_Title}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="meetingLabel"> Project :</td>
+                                                <td class="meetingContent" style="color: rgb(47, 68, 45);">
+                                                    {{decisionItem.project_Name}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="meetingLabel"> Objective :</td>
+                                                <td class="meetingContent"> {{decisionItem.Description}}
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <!-- <div class="row">
+                                        <div class="col-6">
+                                            <table class="meetingMain">
+                                                <tr>
+                                                    <td style="font-size: 16px;color: grey;">
+                                                        Due Date :
+                                                    </td>
+                                                    <td
+                                                        style="font-size: 16px;color: rgb(66, 66, 66);">
+                                                        {{decisionItem.DecisionDate | date:'mediumDate'}}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-4">
+                                            <table>
+                                                <tr>
+                                                    <td style="font-size: 16px;color: grey;">
+                                                        Last Recieved :
+                                                    </td>
+                                                    <td
+                                                        style="font-size: 16px;color: rgb(66, 66, 66);">
+                                                        3 Hours Ago
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div> -->
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <table>
+                                            <td class="meetingLabel">
+                                                <img style="height: 60px; width: 60px;margin-top: 15px;"
+                                                    src="../../../assets/facebook.png">
+                                            </td>
+                                            <td style="text-align: start;">
+                                                <a style="font-size: 16px;">Assignee</a><br>
+                                                <a style="font-size: 20px;">{{decisionItem.DecisionAssignedTo}}</a>
+                                            </td>
+                                        </table>
+                                        <div style="margin-top: 10px;">
+                                            <a style="font-size: 16px; color: grey;">Priority :</a>
+                                            <button *ngIf="decisionItem.Priority === 'High'; else medium"
+                                                style="margin-left: 10px; width: 120px; font-size: 18px; padding: 10px; border-radius: 50px; background: rgb(231, 25, 25); color: white; font-weight: 600;"
+                                                color="warn">{{decisionItem.Priority}}</button>
+                                            <ng-template #medium>
+                                                <ng-container *ngIf="decisionItem.Priority === 'medium'; else low">
+                                                    <button
+                                                        style="margin-left: 10px; width: 120px; font-size: 18px; padding: 10px; border-radius: 50px; background: rgb(250, 96, 40); color: white; font-weight: 600;"
+                                                        color="warn">{{decisionItem.Priority}}</button>
+                                                </ng-container>
+                                            </ng-template>
+                                            <ng-template #low>
+                                                <button
+                                                    style="margin-left: 10px; width: 120px; font-size: 18px; padding: 10px; border-radius: 50px; background: rgb(241, 160, 38); color: black; font-weight: 600;"
+                                                    color="warn">{{decisionItem.Priority}}</button>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="cardActionItem">
+                <div class="card-title">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
+
+                            <div class="row">
+                                <div class="col-9">
+                                    <div class="ribbon ribbon-2">
+                                        <b style="font-size: 16px; margin-top: 10px;">
+                                            Overdue</b>
+                                    </div>
+                                    <table class="meetingMain">
+                                        <tr>
+                                            <td class="meetingLabel" style="font-size: 24px;width: 100%;">It is a
+                                                long established fact that a reader will be
+                                                distracted by the readable content</td>
+                                        </tr>
+                                    </table>
+                                    <table class="meetingMain">
+                                        <tr>
+                                            <td class="meetingLabel"> Meeting :</td>
+                                            <td class="meetingContent" style="color: rgb(47, 68, 45);"> UI-UX research
+                                                on MeetingManager</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="meetingLabel"> Project :</td>
+                                            <td class="meetingContent" style="color: rgb(47, 68, 45);"> Meeting Manager
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="meetingLabel"> Objective :</td>
+                                            <td class="meetingContent"> There are many
+                                                variations of passages of Lorem
+                                                Ipsum
+                                                available, but the majority have suffered
+                                                alteration in some form, by
+                                                injected
+                                                humour or randomized words which don't look.
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <table class="meetingMain">
+                                                <tr>
+                                                    <td style="font-size: 16px;color: grey;">
+                                                        Created :
+                                                    </td>
+                                                    <td style="font-size: 16px;color: rgb(66, 66, 66);">
+                                                        March 18 @ 4:24PM
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-4">
+                                            <table>
+                                                <tr>
+                                                    <td style="font-size: 16px;color: grey;">
+                                                        Last Recieved :
+                                                    </td>
+                                                    <td style="font-size: 16px;color: rgb(66, 66, 66);">
+                                                        3 Hours Ago
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <table>
+                                        <td class="meetingLabel">
+                                            <img style="height: 60px; width: 60px;margin-top: 15px;"
+                                                src="../../../assets/facebook.png">
+                                        </td>
+                                        <td style="text-align: start;">
+                                            <a style="font-size: 16px;">Meeting Host</a><br>
+                                            <a style="font-size: 20px;">Facebook.com</a>
+                                        </td>
+                                    </table>
+                                    <div style="margin-top: 10px;">
+                                        <a style="font-size: 16px; color: grey;">Priority :</a>
+                                        <button mat-flat-button
+                                            style="margin-left: 10px; width: 80px; padding: 4px; border-radius: 50px;"
+                                            color="warn">High</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            <!-- </div>
+        </div> -->
+    </div>
+</div>
+</div>
+
+<ng-template #mobileView>
+    <div id="container">
+        <br>
+        <!-- <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around center" fxLayoutGap="25px"> -->
+        <mat-card *ngFor="let decisionItem of decisionItems" (click)="detailedAction(decisionItem.DecisionItemID)"
+            style="margin: 0px 10px 10px 10px; max-height: 150px;">
+            <mat-card-header>
+                <div mat-card-avatar class="example-header-image" *ngIf="decisionItem.Status === 1; else Overdue"><img
+                        style="width: 40px;" src="../../../assets/in_prgress.jpg"></div>
+                <ng-template #Overdue>
+                    <div mat-card-avatar class="example-header-image"
+                        *ngIf="decisionItem.Status === 0; else Completed"><img style="width: 40px;"
+                            src="../../../assets/overdue.jpg"></div>
+                </ng-template>
+                <ng-template #Completed>
+                    <div mat-card-avatar class="example-header-image" *ngIf="decisionItem.Status === 2"><img
+                            style="width: 40px;" src="../../../assets/Completed.jpg"></div>
+                </ng-template>
+                <mat-card-title>{{decisionItem.project_Name}}</mat-card-title>
+                <mat-card-subtitle>{{decisionItem.DecisionItem_Title}}</mat-card-subtitle>
+            </mat-card-header>
+            <!-- <img mat-card-image [src]="member.url" alt="Photo of {{member.title}}"> -->
+            <!-- {{meeting.Meeting_objective}} -->
+            <mat-card-content>
+                <p class="text-oneline">
+                    <b>Created Date  : </b> {{decisionItem.DecisionDate | date:'mediumDate'}}
+                </p>
+                <p class="text-oneline">
+                    <b>Objective  : </b>  {{decisionItem.Description}}
+                </p>
+            </mat-card-content>
+        </mat-card>
+        <!-- </div> -->
+
+    </div>
+</ng-template>

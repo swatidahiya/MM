@@ -1,0 +1,31 @@
+<h1 mat-dialog-title style="text-align: center;">Add Your Response</h1>
+<mat-divider></mat-divider>
+<br>
+<div mat-dialog-content *ngIf="questionLoad">
+    <select type="text" class="form-control browser-default custom-select" placeholder="Select Your option" [(ngModel)]="selectedValue" (change)='selectOption()'>
+        <option value="" disabled selected>Select your option</option>
+        <option *ngFor="let poll of allPoll">{{poll.Question}}</option>
+    </select>
+    <div *ngIf="dataLoad">
+        <div *ngFor="let answer of activePoll.options?.split(','); let i = index" style="margin-top: 20px">
+
+            <div>
+                <button mat-flat-button color="warn" class="form-control" (click)="addResponse(answer)">{{answer}}</button>
+            </div>
+        </div>
+    </div>
+    <div class="input-group form-group" *ngIf="showmsg" style="margin-top: 20px">
+        <label style="margin-right: 10px; color: rgb(117, 117, 117); margin-top: 8px;">Your Selected Answer: </label>
+        <a style="margin-left: 10px; margin-top: 8px; color: rgb(99, 96, 96); font-size: 18px;">{{finalAnswer}}</a> 
+    </div>
+    <div class="input-group form-group" *ngIf="showmsg">
+        <label style="margin-right: 10px; color: rgb(117, 117, 117); margin-top: 8px;">Total number of votes now on selected field: </label>
+        <a style="margin-left: 10px; margin-top: 8px; color: rgb(99, 96, 96); font-size: 18px;">{{voteCount + 1}}</a> 
+    </div>
+</div>
+<mat-divider></mat-divider>
+<br>
+<div mat-dialog-actions style="justify-content: center;">
+    <button mat-raised-button mat-dialog-close color="primary">Cancel</button>
+    <button mat-raised-button mat-dialog-close cdkFocusInitial color="primary" (click)="submit()">Submit</button>
+</div>

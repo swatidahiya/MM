@@ -1,0 +1,139 @@
+.main{
+    background-color: rgb(235, 235, 235);
+    align-content: center;
+    height: auto;
+}
+
+#container{
+    background-image: url('src/assets/background.jpg');
+    /* height: 100%; */
+    min-height: 1000px;
+    background-size: cover;
+    background-repeat: repeat-y;
+    align-content: center;
+}
+
+.card{
+    /* height: 770px; */
+    margin-top: 30px;
+    margin-bottom: auto;
+    width: 90%;
+    /* height: 100%; */
+    margin: 0% 5%;
+    background-color: rgb(253, 253, 253) !important;
+    border-radius: 20px;
+    /* border-radius: 20px; */
+    }
+
+.cardActionItem {
+        /* height: 770px; */
+        margin-top: 30px;
+        margin-bottom: 30px;
+        width: 100%;
+        /* height: 100%; */
+        /* margin: 0% 5%; */
+        background-color: rgb(253, 253, 253) !important;
+        border-top: 1px solid rgb(179, 179, 179);
+        border-bottom: 1px solid rgb(179, 179, 179);
+}
+
+.cardActionItem:hover {
+    cursor: pointer;
+}
+    
+.card-header h1{
+    color: rgb(59, 59, 59);
+    justify-content: center;
+    /* text-align: center; */
+}
+
+.card-title {
+    margin-bottom: 0.75rem;
+}
+
+.card-header {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-bottom: 0 solid rgba(0, 0, 0, 0.125);
+  }
+  
+.card-header:first-child {
+    border-radius: calc(0.25rem - 0) calc(0.25rem - 0) 0 0;
+}
+  
+.card-header + .list-group .list-group-item:first-child {
+    border-top: 0;
+}
+  
+.card-footer {
+    padding: 0.75rem 1.25rem;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-top: 0 solid rgba(0, 0, 0, 0.125);
+}
+  
+.card-footer:last-child {
+    border-radius: 0 0 calc(0.25rem - 0) calc(0.25rem - 0);
+}
+  
+.card-header-tabs {
+    margin-right: -0.625rem;
+    margin-bottom: -0.75rem;
+    margin-left: -0.625rem;
+    border-bottom: 0;
+}
+  
+.card-header-pills {
+    margin-right: -0.625rem;
+    margin-left: -0.625rem;
+}
+  
+.card-img-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1.25rem;
+}
+
+.ribbon {
+    position: absolute;
+}
+
+.ribbon-1 {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #21759a;
+    top: 20px;
+    left: -35px;
+    padding: 8px 17px;
+    color: white;
+    text-align: left    ;
+    justify-content: left;
+    font-size: 10px;
+}
+
+.contactList {
+    border: 1px inset rgb(113, 165, 113);
+    height: 40px;
+    padding: 10px;
+    width: 80%;
+    max-width: 300px;
+    border-radius: 10px;
+    margin: 10px;
+    margin-left: 30px;
+    background: rgba(232, 255, 232, 0.856);
+}
+
+.fa-times {
+    font-size: 18px;
+    float: right;
+    color: rgb(113, 165, 113);
+}
+.alert1 {
+    font-size: 18px;
+    color: red;
+    /* margin-left: 25px; */
+}

@@ -1,0 +1,40 @@
+<div id="container" *ngIf="dataLoad; else loading">
+    <div class="card" style="border-radius: 20px;">
+        <div class="card-header">
+            <h1 class="card-title"><b>Total number of search items found :- {{searchedMeetings.length}}</b></h1>
+        </div>
+        <div class="card-body">
+            <label style="font-size: 14px; margin-top: 20px; border-radius: 10px; color: rgb(112, 110, 110);">
+                Searched String : {{searchString}}</label>
+            <div *ngFor="let meeting of searchedMeetings" (click)="getMeeting(meeting.MeetingID)" class="selectedFile">
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 45%;">
+                            Meeting ID :
+                        </td>
+                        <td>
+                            MM - {{meeting.MeetingID}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 45%;">
+                            Project Name :
+                        </td>
+                        <td>
+                            {{meeting.project_Name}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer" style="text-align: center;">
+            <button mat-raised-button mat-dialog-close type="button" color="primary">
+                Cancel</button>
+        </div>
+    </div>
+</div>
+<ng-template #loading>
+    <div style="text-align: center; padding: 10%;">
+        <img src="../../../assets/loading_2.gif">
+    </div>
+</ng-template>
