@@ -57,11 +57,13 @@ export class UserService {
     }
 
     checkUser(id: any) {
-      return this.request('get', this.baseUrl + '/User/UserExists/?id='+id);
+      return this.request('get', this.baseUrl + '/User/UserExists/'+id);
     }
 
-    authenticateUser(Loginname: any, password: any){
-      return this.request('get', this.baseUrl + '/User/UserAuthnticate?Loginname=' + Loginname + '&password='+ password);
+    authenticateUser(data: any){
+      console.log("data")
+      console.log(data)
+      return this.request('post', this.baseUrl + '/User/UserAuthenticate', data );
     }
 
     deleteUser(userID: any) {
@@ -69,7 +71,7 @@ export class UserService {
     }
 
     checkEmail(email: any) {
-      return this.request('get', this.baseUrl + '/User/UserEmailExists?id=' + email)
+      return this.request('get', this.baseUrl + '/User/UserEmailExists/' + email)
     }
 
     updateProfile(id: any, uploadFile: any) {

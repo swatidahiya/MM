@@ -48,10 +48,15 @@ export class LoginComponent implements OnInit {
     //  alert ('lower case true');
     // }
     if (loginForm.valid) {
-      const data = this.userService.authenticateUser(loginForm.value.LoginName, loginForm.value.Password).then(result => {
-      //  console.log("resuktttt")
-      //  console.log(result);
-        if(result) {
+      let obj = {};
+      obj['LoginName'] = loginForm.value.LoginName;
+      obj['Password'] = loginForm.value.Password;
+      console.log(obj)
+      const data = this.userService.authenticateUser(obj).then(result => {
+
+       console.log("resuktttt")
+       console.log(result);
+        
           this.currentUser = this.users.find(({LoginName}) => LoginName === loginForm.value.LoginName);
           // console.log(this.currentUser);
           
@@ -64,11 +69,10 @@ export class LoginComponent implements OnInit {
             alert("You are not an active user.")
             localStorage.removeItem('currentUser');
           }
-        }
-         else {
-          alert("Please enter Valid Username and Password");
-        }
+      
+      
       })
+      .catch(error => {alert("Please enter valid credentials")})
     }
     
   }

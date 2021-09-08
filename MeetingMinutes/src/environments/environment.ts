@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'https://mm-server.checkboxtechnology.com/api'
+  apiBaseUrl: 'http://localhost:3000'
 };
 
 /*

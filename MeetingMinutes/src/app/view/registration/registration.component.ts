@@ -50,23 +50,21 @@ export class RegistrationComponent implements OnInit {
       registerForm.value.CreatedDate = new Date();
       registerForm.value.CreatedByID = 1;
       registerForm.value.isActive = true;
-  
-      const data = await this.userService.checkUser(registerForm.value.LoginName).then( async result => {
-        if(!result){
-          const emailVerify = await this.userService.checkEmail(registerForm.value.email).then( async result => {
-            if(!result) {
-              const data = await this.userService.createUser(registerForm.value).then( data => {
-                console.log("User created successfully");
-                this.route.navigateByUrl('/login')
-              })
-            } else {
-              alert("Email ID is already registered");
-            }
+     
+      await this.userService.checkUser(registerForm.value.LoginName).then(async result => {
+       
+        await this.userService.checkEmail(registerForm.value.Email).then(async result1 => {
+       
+          await this.userService.createUser(registerForm.value).then( result2 => {
+            console.log("User created successfully");
+            this.route.navigateByUrl('/login')
           })
-        } else {
-          alert("User already exists");
-        }
+        })
+        .catch(error => {alert("Email ID is already registered")})
       })
+      .catch(error => {alert("User already Exists")})
+      
+
     }
   }
 
