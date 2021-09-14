@@ -62,11 +62,8 @@ export class NewMeetingComponent implements OnInit {
     this.refresh();
     this.currentUser = this.userService.currentUserValue;
     var data = this.userService.checkUser(this.currentUser.LoginName).then(result => {
-      console.log("-----result of check User")
-      console.log(result)
       if (result) {
         if (this.currentUser.IsActive === true) {
-          // console.log(this.userCheck())
           this.refresh();
         } else {
           alert("Your account has been blocked. Please contact admin!");
@@ -83,12 +80,8 @@ export class NewMeetingComponent implements OnInit {
 
   async refresh() {
     // this.currentUser = this.userService.currentUserValue;
-    console.log("-----------------inside refresh of new meeting------------------")
     const data = this.userService.getAllUsers().then(result => {
-      console.log("result!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-      console.log(result)
       this.options = result;
-      // console.log(this.options)
     })
 
   }
@@ -116,21 +109,16 @@ export class NewMeetingComponent implements OnInit {
     // temp.setDate(temp.getDate() + 1);
 
     this.meeting.MeetingDate = temp;
-    // this.meeting.MeetingTime = this.secondFormGroup.value.MeetingTime;
-    console.log(this.meeting.MeetingDate)
     this.meeting.MeetingTime = temp.toLocaleString("en-US", {timeZone: "Asia/Kolkata"});
-    console.log(this.meeting.MeetingTime)
-    // console.log(temp.getTimezoneOffset())
+ 
     this.meeting.Status = 0;
     this.meeting.HostUser = this.currentUser.LoginName;
     this.meeting.RoomKey = Math.floor(Math.random() * 0xFFFFFF);
-    console.log(this.meeting.RoomKey)
   }
 
   async form3() {
     this.contacts.push(this.currentUser.Email);
     this.meeting.Partipatents = this.contacts.toString();
-    console.log(this.meeting)
     var object = {};
     object["subject"] = "Meeting Invitation",
     object["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + this.meeting.project_Name;
@@ -140,36 +128,29 @@ export class NewMeetingComponent implements OnInit {
     // object["ShareLink"] = "http://meetingminutes.checkboxtechnology.com:8098/login";
    
     object["MeetingDescription"] = this.meeting.Agenda;
+
+    console.log(this.meeting)
+
     await this.meetingService.postMeeting(this.meeting).then(async () => {
-      console.log("success");
       this.displayName.push(this.currentUser)
       object["toname"] = this.currentUser.FirstName +" "+ this.currentUser.LastName
       for(var i = 0; i< this.displayName.length; i++) {
-        // object["toname"] = this.displayName[i].FirstName;
         object["toemail"] = this.displayName[i].Email;
         var temp = this.options.find(({ Email }) => Email === this.displayName[i].Email);
-        // object["Meeting_Location"]="https://mmconferenceroom.checkboxtechnology.com:9002/#MM"+this.meeting.RoomKey+"$"+temp.LoginName+"$"+this.meeting.MeetingID+"$1";
         object["Meeting_Location"] = "https://meetingminutes.checkboxtechnology.com/videoRoom/"+this.meeting.RoomKey;
-        await this.meetingService.sendMail(object).then(result => {
-          console.log("Message sent");
-        })
+        console.log(object)
+
+        // await this.meetingService.sendMail(object).then(result => {
+        // })
       }
     })
   }
 
   getPosts(val: any) {
-    // if(!this.contacts.includes(val)){
-    // this.thirdFormGroup.value.Partipatents = val;
-    // this.contacts.push(val);
-    // var tempUser = this.options.find(({ Email }) => Email === val);
-    // this.displayName.push(tempUser)
-    // } else {
-    //   alert("The user is already added");
-    // }
+ 
     this.thirdFormGroup.value.Partipatents = val;
     if(this.contacts.indexOf(val) === -1) {
       this.contacts.push(val);
-    // this.contacts.push(val);
     var tempUser = this.options.find(({ Email }) => Email === val);
     if(this.displayName.indexOf(tempUser) === -1) {
       this.displayName.push(tempUser)
@@ -191,7 +172,6 @@ export class NewMeetingComponent implements OnInit {
       this.displayName.splice(index1, 1);
     }
 
-    console.log(this.contacts)
   }
 
 }

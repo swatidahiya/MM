@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 const meetingSchema = new Schema({
     AppUserID: {type: Number, required: false},
-    FirstName: {type: String, required: true},
-    MeetingID: {type: Number},
+    FirstName: {type: String, required: false},
+    MeetingID: {type: Number, default: 0},
     project_Name: {type: String},
     Meeting_Subject: {type: String},
     Meeting_objective: {type: String},
@@ -23,7 +23,7 @@ const meetingSchema = new Schema({
     HostUser: {type: String},
     //Comment: {type: Comment},
     // Action_Item: MeetingActions,
-    Decision_Item: {type: Decisions},
+    // Decision_Item: {type: Decisions},
     // Meeting_Notes: {}
 
 });

@@ -10,7 +10,7 @@ module.exports = {
     checkEmail,
     createUser,
     authenticateUser,
-    getAllUsers
+    getAllUsers,
 }
 
 async function getById(idParam){

@@ -13,7 +13,7 @@ const actionSchema = new Schema({
     Priority: {type: String},
     Action_Description: {type: String},
     MeetingID: {type: Number},
-    Meeting: {type: Meeting}
+    // Meeting: {type: Meeting}
 });
 
 actionSchema.set('toJSON', { virtuals: true });

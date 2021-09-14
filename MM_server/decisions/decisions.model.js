@@ -13,7 +13,7 @@ const decisionSchema = new Schema({
     Priority: {type: String},
     Status: {type: Number},
     MeetingID: {type: Number},
-    Meeting: {type: Meeting}
+    // Meeting: {type: Meeting}
 });
 
 decisionSchema.set('toJSON', { virtuals: true });

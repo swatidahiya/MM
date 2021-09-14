@@ -14,7 +14,8 @@ function jwt() {
             /^\/User\/UserEmailExists\/.*/,
             '/User',
             '/User/UserAuthenticate',
-            '/User/getAllUsers'
+            '/User/getAllUsers',
+            '/Meeting'
             
         ]
     });

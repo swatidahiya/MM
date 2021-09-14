@@ -33,8 +33,9 @@ export class MeetingService {
         return this.request('get', this.baseUrl + '/Meeting');
     }
 
-    postMeeting(meeting: any) : any {
-        return this.request('post', this.baseUrl + '/Meeting', meeting)
+    postMeeting(meeting: any) {
+      console.log("working")
+      return this.request('post', this.baseUrl + '/Meeting', meeting)
     }
 
     getMeetingById(meetingId: any) {
