@@ -6,7 +6,7 @@ const userService = require('./users.service');
 router.get('/UserExists/:id', checkUser);
 router.get('/UserEmailExists/:id', checkEmail);
 router.post('/', createUser);
-router.get('', getAllUsers);
+router.get('/getAllUsers', getAllUsers);
 router.post('/UserAuthenticate',authenticateUser);
 
 function checkUser(req, res, next) {
@@ -31,14 +31,14 @@ function createUser(req, res, next){
 
 function getAllUsers(req, res, next){
     userService.getAllUsers()
-        .then(() => res.json())
+        .then(user => res.json(user))
         .catch(err => next(err));
 }
 
 function authenticateUser(req, res, next){
-    console.log(req)
+    // console.log(req)
     userService.authenticateUser(req.body)
-        .then(() => res.json())
+        .then (user => user ? res.json(user) : res.status(400).json({ message: 'Username or password is incorrect' }))
         .catch(err => next(err));
 }
 

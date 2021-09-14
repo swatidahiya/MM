@@ -14,6 +14,7 @@ function jwt() {
             /^\/User\/UserEmailExists\/.*/,
             '/User',
             '/User/UserAuthenticate',
+            '/User/getAllUsers'
             
         ]
     });
@@ -22,6 +23,7 @@ function jwt() {
         
 
 async function isRevoked(req, payload, done) {
+    console.log(payload.sub)
     const user = await userService.getById(payload.sub);
 
     // revoke token if user no longer exists

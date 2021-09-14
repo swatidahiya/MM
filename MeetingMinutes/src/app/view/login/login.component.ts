@@ -33,13 +33,16 @@ export class LoginComponent implements OnInit {
   }
 
   async refresh() {
+    console.log("inside refresh ----------------------------------------------")
     localStorage.removeItem('currentUser');
     const data = this.userService.getAllUsers().then( user => {
+      console.log("user-------------------")
+      console.log(user)
       this.users = user;
     })
   }
 
-  onSubmit(loginForm: NgForm) {
+  async onSubmit(loginForm: NgForm) {
     console.log(loginForm)
     // if (loginForm.value.LoginName == loginForm.value.LoginName.toUpperCase()) {
     //  alert ('upper case true');
@@ -52,14 +55,10 @@ export class LoginComponent implements OnInit {
       obj['LoginName'] = loginForm.value.LoginName;
       obj['Password'] = loginForm.value.Password;
       console.log(obj)
-      const data = this.userService.authenticateUser(obj).then(result => {
-
-       console.log("resuktttt")
-       console.log(result);
-        
+      const data =  await this.userService.authenticateUser(obj).then(result => {
+       
           this.currentUser = this.users.find(({LoginName}) => LoginName === loginForm.value.LoginName);
-          // console.log(this.currentUser);
-          
+          console.log(this.currentUser);
           localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
           if(this.currentUser.IsActive === true){
           this.route.navigateByUrl('/dashboard');
@@ -69,10 +68,10 @@ export class LoginComponent implements OnInit {
             alert("You are not an active user.")
             localStorage.removeItem('currentUser');
           }
-      
-      
       })
-      .catch(error => {alert("Please enter valid credentials")})
+      .catch(error => {console.log(error)})
+
+      console.log(data)
     }
     
   }

@@ -5,6 +5,7 @@ const db = require('../db');
 const User = db.User;
 
 module.exports = {
+    getById,
     checkUser,
     checkEmail,
     createUser,
@@ -12,11 +13,14 @@ module.exports = {
     getAllUsers
 }
 
+async function getById(idParam){
+    return await User.findById(id).select('-hash');
+}
+
 async function checkUser(loginNameParam){
     if (await User.findOne({ LoginName: loginNameParam })) {
         throw 'Username "' + loginNameParam + '" is already taken';
     }
-
     return true
 }
 
@@ -37,14 +41,13 @@ async function createUser(userParam){
 async function authenticateUser(userParam){
     console.log("inside authenticateUser")
     console.log(userParam)
-    const user = await User.findOne({ LoginName: userParam.LoginName });
+    const user = await User.findOne({ $and: [ { LoginName: userParam.LoginName }, { Password: userParam.Password } ] });
     console.log(user)
-    if(userParam.Password === user.Password){
-        console.log("matched")
-        return true;
-    }
+    return user;   
 }
 
 async function getAllUsers(){
-    return await User.find().select();
+    const users = await User.find().select();
+    console.log(users);
+    return users;
 }

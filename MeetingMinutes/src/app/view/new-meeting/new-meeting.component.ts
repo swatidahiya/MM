@@ -59,10 +59,11 @@ export class NewMeetingComponent implements OnInit {
     this.thirdFormGroup = this._formBuilder.group({
       Partipatents: ['', Validators.required]
     });
-
+    this.refresh();
     this.currentUser = this.userService.currentUserValue;
     var data = this.userService.checkUser(this.currentUser.LoginName).then(result => {
-      // console.log(result)
+      console.log("-----result of check User")
+      console.log(result)
       if (result) {
         if (this.currentUser.IsActive === true) {
           // console.log(this.userCheck())
@@ -82,9 +83,14 @@ export class NewMeetingComponent implements OnInit {
 
   async refresh() {
     // this.currentUser = this.userService.currentUserValue;
+    console.log("-----------------inside refresh of new meeting------------------")
     const data = this.userService.getAllUsers().then(result => {
+      console.log("result!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+      console.log(result)
       this.options = result;
+      // console.log(this.options)
     })
+
   }
 
   get f() { return this.firstFormGroup.controls;}

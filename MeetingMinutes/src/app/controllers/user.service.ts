@@ -45,7 +45,7 @@ export class UserService {
     }
 
     getAllUsers() {
-        return this.request('get', this.baseUrl + '/User');
+        return this.request('get', this.baseUrl + '/User/getAllUsers');
     }
 
     getUserById(id: any) {

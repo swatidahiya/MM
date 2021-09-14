@@ -9,6 +9,9 @@ mongoose.connection.on('error', () => console.log('Connection failed with - ',er
 mongoose.Promise = global.Promise;
 
 module.exports = {
-    User: require('./users/users.model').userModel,  
+    User: require('./users/users.model').userModel, 
+    Meeting: require('./meetings/meetings.model').meetingModel,
+    Action: require('./actions/actions.model').actionModel,
+    Decision: require('./decisions/decisions.model').decisionModel, 
     
 };
