@@ -47,7 +47,8 @@ export class MeetingService {
     }
 
     sendMail(data: any) {
-      return this.request('post', this.baseUrl + '/user/SendEmail', data);
+      console.log("inside meeting service.ts")
+      return this.request('post', this.baseUrl + '/Meeting/SendEmail', data);
     }
 
     sendMailReschedule(data: any) {

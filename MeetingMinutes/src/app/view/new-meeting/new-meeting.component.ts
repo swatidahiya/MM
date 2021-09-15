@@ -61,19 +61,19 @@ export class NewMeetingComponent implements OnInit {
     });
     this.refresh();
     this.currentUser = this.userService.currentUserValue;
-    var data = this.userService.checkUser(this.currentUser.LoginName).then(result => {
-      if (result) {
-        if (this.currentUser.IsActive === true) {
-          this.refresh();
-        } else {
-          alert("Your account has been blocked. Please contact admin!");
-          this.route.navigateByUrl('/login')
-        }
-      } else {
-        alert("Your account has been deleted. Please contact admin!");
-        this.route.navigateByUrl('/login')
-      }
-    });
+    // var data = this.userService.checkUser(this.currentUser.LoginName).then(result => {
+    //   if (result) {
+    //     if (this.currentUser.IsActive === true) {
+    //       this.refresh();
+    //     } else {
+    //       alert("Your account has been blocked. Please contact admin!");
+    //       this.route.navigateByUrl('/login')
+    //     }
+    //   } else {
+    //     alert("Your account has been deleted. Please contact admin!");
+    //     this.route.navigateByUrl('/login')
+    //   }
+    // });
 
     // this.refresh();
   }
@@ -140,8 +140,9 @@ export class NewMeetingComponent implements OnInit {
         object["Meeting_Location"] = "https://meetingminutes.checkboxtechnology.com/videoRoom/"+this.meeting.RoomKey;
         console.log(object)
 
-        // await this.meetingService.sendMail(object).then(result => {
-        // })
+        await this.meetingService.sendMail(object).then(result => {
+          console.log("Message sent");
+        })
       }
     })
   }

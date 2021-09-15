@@ -2,10 +2,15 @@ const config = require('../config.json');
 const jwt = require('jsonwebtoken');
 const db = require('../db');
 const Meeting = db.Meeting;
+var fs = require("fs");
+const emailService = require('../emails/emails.service');
+
+
 
 module.exports = {
     postMeeting,
-    getMeetings
+    getMeetings,
+    sendMail
 }
 
 async function postMeeting(body){
@@ -28,4 +33,19 @@ async function getMeetings() {
     const meetings = await Meeting.find().sort({ MeetingID: -1 });
     return meetings;
 
+}
+
+async function sendMail(mailParam){
+ console.log(mailParam)
+    fs.readFile('meetingInvitation.html', 'utf8', function (err, data) {
+        data = data.replace(/%UserName%/g, mailParam.toname);
+        data = data.replace(/%MeetingSubject%/g, mailParam.MeetingSubject);
+        data = data.replace(/%ShareLink%/g, mailParam.Meeting_Location);
+        data = data.replace(/%MeetingDate%/g, mailParam.MeetingDate);
+        data = data.replace(/%HostUser%/g, mailParam.HostUser);
+        data = data.replace(/%meetingdescription%/g, mailParam.MeetingDescription);
+
+        emailService.sendEmail(mailParam.toemail, 'Meeting Invitation', data)
+
+    });
 }

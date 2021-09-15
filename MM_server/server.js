@@ -11,7 +11,7 @@ const errorHandler = require('./error-handler');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
-app.use(jwt());
+// app.use(jwt());
 app.use(errorHandler);
 
 app.use('/User', require('./users/users.controller'));

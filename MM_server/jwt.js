@@ -12,8 +12,8 @@ function jwt() {
             // public routes that don't require authentication
             /^\/User\/UserExists\/.*/,
             /^\/User\/UserEmailExists\/.*/,
-            '/User',
-            '/User/UserAuthenticate',
+            // '/User',
+            // '/User/UserAuthenticate',
             '/User/getAllUsers',
             '/Meeting'
             
@@ -24,6 +24,7 @@ function jwt() {
         
 
 async function isRevoked(req, payload, done) {
+    console.log("inside isrevoked")
     console.log(payload.sub)
     const user = await userService.getById(payload.sub);
 

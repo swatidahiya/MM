@@ -43,7 +43,17 @@ async function authenticateUser(userParam){
     console.log(userParam)
     const user = await User.findOne({ $and: [ { LoginName: userParam.LoginName }, { Password: userParam.Password } ] });
     console.log(user)
-    return user;   
+    if (user) {
+        
+        const token = jwt.sign({ sub: user.id }, config.secret, {
+            expiresIn: '4d'
+        });
+        return {
+            
+            token
+        }
+    }
+      
 }
 
 async function getAllUsers(){
