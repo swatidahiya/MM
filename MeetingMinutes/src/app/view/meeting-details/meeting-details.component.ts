@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { MeetingService } from 'src/app/controllers/meetings.service';
+import { ActionService } from 'src/app/controllers/action.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Meetings } from 'src/app/models/meetings.model';
 import { MeetingActions } from 'src/app/models/actions.model';
@@ -21,7 +22,7 @@ import { SwiperConfigInterface } from 'ngx-swiper-wrapper'
   selector: 'app-meeting-details',
   templateUrl: './meeting-details.component.html',
   styleUrls: ['./meeting-details.component.css'],
-  providers: [MeetingService, UserService, CommentService, MeetingNoteService]
+  providers: [MeetingService, UserService, CommentService, MeetingNoteService, ActionService]
 })
 export class MeetingDetailsComponent implements OnInit {
 
@@ -112,6 +113,7 @@ export class MeetingDetailsComponent implements OnInit {
     private modalService: NgbModal,
     private commentService: CommentService,
     private meetingNoteService: MeetingNoteService,
+    private actionService : ActionService,
     private deviceDetectorService: DeviceDetectorService,
     private _snackBar: MatSnackBar) { }
 
@@ -125,21 +127,22 @@ export class MeetingDetailsComponent implements OnInit {
     // document.getElementById('nav-home-tab').style.background = '#e74c3c';
 
     this.currentUser = this.userService.currentUserValue;
-    var data = this.userService.checkUser(this.currentUser.LoginName).then(result => {
-      // console.log(result)
-      if (result) {
-        if (this.currentUser.IsActive === true) {
-          // console.log(this.userCheck())
-          this.refresh();
-        } else {
-          alert("Your account has been blocked. Please contact admin!");
-          this.route.navigateByUrl('/login')
-        }
-      } else {
-        alert("Your account has been deleted. Please contact admin!");
-        this.route.navigateByUrl('/login')
-      }
-    });
+    this.refresh();
+    // var data = this.userService.checkUser(this.currentUser.LoginName).then(result => {
+    //   // console.log(result)
+    //   if (result) {
+    //     if (this.currentUser.IsActive === true) {
+    //       // console.log(this.userCheck())
+    //       this.refresh();
+    //     } else {
+    //       alert("Your account has been blocked. Please contact admin!");
+    //       this.route.navigateByUrl('/login')
+    //     }
+    //   } else {
+    //     alert("Your account has been deleted. Please contact admin!");
+    //     this.route.navigateByUrl('/login')
+    //   }
+    // });
   }
 
   async refresh() {
@@ -148,13 +151,15 @@ export class MeetingDetailsComponent implements OnInit {
     // this.currentUser = this.userService.currentUserValue;
     const id = this._route.snapshot.params['id'];
 
-    const tempComment = await this.commentService.getAllComments().then(result => {
-      this.allComments = result;
-      console.log(this.allComments)
-    })
+    // const tempComment = await this.commentService.getAllComments().then(result => {
+    //   this.allComments = result;
+    //   console.log(this.allComments)
+    // })
 
     const data = await this.meetingService.getMeetingById(id).then(data => {
-      this.meeting = data;
+      console.log("meeting data-----------------------------------------------")
+      console.log(data)
+      this.meeting = data[0];
       this.tempAgenda = this.meeting.Agenda;
 
       this.mNotes = this.meeting.Meeting_Notes;
@@ -211,27 +216,42 @@ export class MeetingDetailsComponent implements OnInit {
         this.isConclude = false;
       }
 
-      if (data.Action_Item.length == 0) {
-        console.log("ACtion items are null");
-        this.tempActionPage = false;
-      } else {
-        data.Action_Item.sort((a: any, b: any) => {
-          return b.ActionItemID - a.ActionItemID;
-        });
-        this.actionItems = this.meeting.Action_Item;
-        this.tempActionPage = true;
-      }
+      const actionData = this.actionService.getActionByMeetingId(this.meeting.MeetingID).then(result =>{
+         console.log("actions#############################")
+         console.log(result)
+         if(result == null){
+           this.tempActionPage = false;
+         }
+         else{
+          // result.sort((a: any, b: any) => {
+          //       return b.ActionItemID - a.ActionItemID;
+          //     });
+              this.actionItems = result;
+              this.tempActionPage = true;
+         }
+      })
 
-      if (data.Decision_Item.length == 0) {
-        this.tempDecisionPage = false;
-      } else {
-        data.Decision_Item.sort((a: any, b: any) => {
-          return b.DecisionItemID - a.DecisionItemID;
-        })
-        this.decisions = this.meeting.Decision_Item;
-        console.log(this.decisions)
-        this.tempDecisionPage = true;
-      }
+      // if (data.Action_Item.length == 0) {
+      //   console.log("ACtion items are null");
+      //   this.tempActionPage = false;
+      // } else {
+      //   data.Action_Item.sort((a: any, b: any) => {
+      //     return b.ActionItemID - a.ActionItemID;
+      //   });
+      //   this.actionItems = this.meeting.Action_Item;
+      //   this.tempActionPage = true;
+      // }
+
+      // if (data.Decision_Item.length == 0) {
+      //   this.tempDecisionPage = false;
+      // } else {
+      //   data.Decision_Item.sort((a: any, b: any) => {
+      //     return b.DecisionItemID - a.DecisionItemID;
+      //   })
+      //   this.decisions = this.meeting.Decision_Item;
+      //   console.log(this.decisions)
+      //   this.tempDecisionPage = true;
+      // }
       this.dataLoaded = true;
     })
     const data1 = this.userService.getAllUsers().then(result => {

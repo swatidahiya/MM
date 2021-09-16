@@ -87,21 +87,22 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = this.userService.currentUserValue;
-    var data = this.userService.checkUser(this.currentUser.LoginName).then(result => {
-      // console.log(result)
-      if (result) {
-        if (this.currentUser.IsActive === true) {
-          console.log(this.currentUser.IsActive)
-          this.refresh();
-        } else {
-          alert("Your account has been blocked. Please contact admin!");
-          this.route.navigateByUrl('/login')
-        }
-      } else {
-        alert("Your account has been deleted. Please contact admin!");
-        this.route.navigateByUrl('/login')
-      }
-    });
+    this.refresh();
+    // var data = this.userService.checkUser(this.currentUser.LoginName).then(result => {
+    //   // console.log(result)
+    //   if (result) {
+    //     if (this.currentUser.IsActive === true) {
+    //       console.log(this.currentUser.IsActive)
+          
+    //     } else {
+    //       alert("Your account has been blocked. Please contact admin!");
+    //       this.route.navigateByUrl('/login')
+    //     }
+    //   } else {
+    //     alert("Your account has been deleted. Please contact admin!");
+    //     this.route.navigateByUrl('/login')
+    //   }
+    // });
   }
 
   deviceDetector() {
@@ -114,6 +115,8 @@ export class DashboardComponent implements OnInit {
     // if(this.userCheck()){
     console.log("CurrentUser")
     await this.meetingService.getMeetings().then(data => {
+      console.log("data")
+      console.log(data)
       data.sort((a: any, b: any) => {
         return b.MeetingID - a.MeetingID;
       });
@@ -147,13 +150,13 @@ export class DashboardComponent implements OnInit {
       this.actions = actions.slice(0, 4)
     });
 
-    await this.decisionService.getDecision().then(decisions => {
-      this.assignmentResultLength = decisions.length;
-      decisions.sort((a: any, b: any) => {
-        return b.DecisionItemID - a.DecisionItemID;
-      });
-      this.decisions = decisions.slice(0, 4)
-    });
+    // await this.decisionService.getDecision().then(decisions => {
+    //   this.assignmentResultLength = decisions.length;
+    //   decisions.sort((a: any, b: any) => {
+    //     return b.DecisionItemID - a.DecisionItemID;
+    //   });
+    //   this.decisions = decisions.slice(0, 4)
+    // });
     console.log(this.meetingLenght)
     this.demodoughnutChartData.push(this.meetingLenght, this.assignmentLength, this.assignmentResultLength)
     this.dataLoaded = false;

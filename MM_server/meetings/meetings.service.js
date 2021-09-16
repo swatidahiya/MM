@@ -10,7 +10,8 @@ const emailService = require('../emails/emails.service');
 module.exports = {
     postMeeting,
     getMeetings,
-    sendMail
+    sendMail,
+    getMeetingById
 }
 
 async function postMeeting(body){
@@ -31,6 +32,7 @@ async function postMeeting(body){
 
 async function getMeetings() {
     const meetings = await Meeting.find().sort({ MeetingID: -1 });
+    console.log(meetings)
     return meetings;
 
 }
@@ -48,4 +50,10 @@ async function sendMail(mailParam){
         emailService.sendEmail(mailParam.toemail, 'Meeting Invitation', data)
 
     });
+}
+
+async function getMeetingById(id){
+    const meeting = await Meeting.find({MeetingID : id})
+    console.log(meeting)
+    return meeting;
 }

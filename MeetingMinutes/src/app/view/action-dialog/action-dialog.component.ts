@@ -41,12 +41,18 @@ export class ActionDialogComponent implements OnInit {
   ngOnInit() {
     this.minDate = new Date();
     this.userService.getAllUsers().then(result => {
+      console.log("all users")
+      console.log(result)
       this.options = result; 
     })
     var matched = this.router.url.match(/browse\/([\d]*)/);
     const id = matched.pop();
+    console.log("meeting id ================================" , id)
      this.meetingService.getMeetingById(id).then(data => {
+       console.log(data)
       this.meeting = data;
+      console.log("meeting data")
+      console.log(this.meeting)
     })
   }
 
@@ -75,7 +81,7 @@ export class ActionDialogComponent implements OnInit {
     this.action.Status = 0;
     this.action.ActionAssignedTo=this.contacts.toString();
     this.action.MeetingID = this.data.meetingID;
-    this.action.project_Name= this.meeting.project_Name;
+    this.action.project_Name= this.meeting[0].project_Name;
     this.action.ActionDate = action.ActionDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
     this.action.ActionTime = new Date().toUTCString()
     console.log(action)

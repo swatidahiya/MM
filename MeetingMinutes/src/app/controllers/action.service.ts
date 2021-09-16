@@ -29,15 +29,19 @@ export class ActionService {
     }
 
     getActions() {
-        return this.request('get', this.baseUrl + '/Action')
+        return this.request('get', this.baseUrl + '/Action/getActions')
     }
 
     postAction(action: any): any {
-        return this.request('post', this.baseUrl + '/Action', action)
+        return this.request('post', this.baseUrl + '/Action/postAction', action)
     }
 
     getActionById(actionItemID: any) {
       return this.request('get', this.baseUrl + '/Action/' + actionItemID)
+    }
+
+    getActionByMeetingId(id : any){
+      return this.request('get', this.baseUrl + '/Action/getActionByMeetingId/' + id)
     }
 
     updateAction(actionItemID: any, object: any): any{

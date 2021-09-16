@@ -16,6 +16,7 @@ app.use(errorHandler);
 
 app.use('/User', require('./users/users.controller'));
 app.use('/Meeting', require('./meetings/meetings.controller'));
+app.use('/Action', require('./actions/actions.controller'))
 
 var server = http.listen(3000, function () {
     console.log("server started listen on 3000")
