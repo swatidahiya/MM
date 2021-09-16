@@ -15,7 +15,8 @@ function jwt() {
             // '/User',
             // '/User/UserAuthenticate',
             '/User/getAllUsers',
-            '/Meeting'
+            '/Meeting',
+            '/Meeting/filterMeetings'
             
         ]
     });
