@@ -73,3 +73,7 @@ cursor: pointer;
     overflow: hidden;
     white-space: nowrap;
   }
+mat-radio-button {
+    font-weight: 500;
+    color: white;
+}

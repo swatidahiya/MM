@@ -6,6 +6,7 @@ router.post('/',postMeeting);
 router.get('/',getMeetings)
 router.post('/SendEmail', sendMail)
 router.get('/:id', getMeetingById)
+router.post('/filterMeetings', filterMeetings)
 
 function postMeeting(req, res, next) {
     meetingService.postMeeting(req.body)
@@ -15,6 +16,12 @@ function postMeeting(req, res, next) {
 
 function getMeetings(req, res, next){
     meetingService.getMeetings()
+        .then(meetings => res.json(meetings))
+        .catch(err => next(err));
+}
+
+function filterMeetings(req, res, next){
+    meetingService.filterMeetings(req.body)
         .then(meetings => res.json(meetings))
         .catch(err => next(err));
 }

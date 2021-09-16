@@ -29,28 +29,26 @@ export class ProfileComponent implements OnInit {
   constructor(private userService: UserService,
     private route: Router,
     notifierService: NotifierService,
-    private meetingService: MeetingService, ) {
+    private meetingService: MeetingService,) {
     this.notifier = notifierService;
   }
 
   ngOnInit() {
     this.currentUser = this.userService.currentUserValue;
-    var data = this.userService.checkUser(this.currentUser.LoginName).then(result => {
-      // console.log(result)
-      if (result) {
-        if (this.currentUser.IsActive === true) {
-          // console.log(this.userCheck())
-          this.refresh();
-        } else {
-          alert("Your account has been blocked. Please contact admin!");
-          this.route.navigateByUrl('/login')
-        }
-      } else {
-        alert("Your account has been deleted. Please contact admin!");
-        this.route.navigateByUrl('/login')
-      }
-    });
-    // this.refresh();
+    // var data = this.userService.checkUser(this.currentUser.LoginName).then(result => {
+    //   if (result) {
+    //     if (this.currentUser.IsActive === true) {
+    //       this.refresh();
+    //     } else {
+    //       alert("Your account has been blocked. Please contact admin!");
+    //       this.route.navigateByUrl('/login')
+    //     }
+    //   } else {
+    //     alert("Your account has been deleted. Please contact admin!");
+    //     this.route.navigateByUrl('/login')
+    //   }
+    // });
+    this.refresh()
   }
 
   async onFocusOut() {
@@ -65,75 +63,58 @@ export class ProfileComponent implements OnInit {
   }
 
   async refresh() {
-    var tempUser = this.userService.currentUserValue
-    var userId = tempUser.AppUserID
-    // this.currentUser = this.userService.currentUserValue;
-    const user = await this.userService.getUserById(userId).then( result => {
-      this.currentUser = result;
-      localStorage.removeItem('currentUser');
-      localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-    })
-    console.log(this.currentUser);
+    // var tempUser = this.userService.currentUserValue
+    // var userId = tempUser.AppUserID
+    // const user = await this.userService.getUserById(userId).then( result => {
+    //   this.currentUser = result;
+    //   console.log("result",result)
+    //   localStorage.removeItem('currentUser');
+    //   localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+    // })
+    // console.log(this.currentUser);
+
     const data = this.meetingService.getMeetings().then(data => {
       data.sort((a: any, b: any) => {
         return b.MeetingID - a.MeetingID;
-      }); ``
-      // this.meetings = data;
+      });
+
       this.meetings = [];
-      for (var i = 0; i < data.length; i++) {
 
-        if (data[i].reoccrence === 'Yes' || data[i].reoccrence === null) {
+      if (data.length > 0) {
+        for (var i = 0; i < data.length; i++) {
 
-          if (this.currentUser.Initials === 'sAdmin') {
-            this.meetings.push(data[i]);
-          }
-          else {
-            if (data[i].Partipatents !== null) {
-              this.participants = data[i].Partipatents.split(',');
-            }
-            var c = 0;
-            for (var j = 0; j < this.participants.length; j++) {
-              if (this.currentUser.Email === this.participants[j]) {
-                c = j;
-              }
-            }
-            if (this.currentUser.LoginName === data[i].HostUser || this.currentUser.Email === this.participants[c]) {
+          if (data[i].reoccrence === 'Yes' || data[i].reoccrence === null) {
+            if (this.currentUser.Initials === 'sAdmin') {
               this.meetings.push(data[i]);
+            }
+            else {
+              if (data[i].Partipatents !== null) {
+                this.participants = data[i].Partipatents.split(',');
+              }
+              var c = 0;
+              for (var j = 0; j < this.participants.length; j++) {
+                if (this.currentUser.Email === this.participants[j]) {
+                  c = j;
+                }
+              }
+              if (this.currentUser.LoginName === data[i].HostUser || this.currentUser.Email === this.participants[c]) {
+                this.meetings.push(data[i]);
+              }
             }
           }
         }
       }
-      console.log("this.meetings")
-      console.log(this.meetings);
+
+
     })
     this.getProfilePic();
   }
 
-  // async updateAction(val: any, field: any) {
-  //   // var object = {};
-  //   var id = this.currentUser.AppUserID
-
-  //   // object[field] = val;
-  //   this.currentUser[field] = val
-  //   // this.currentUser.IsActive = true;
-  //   const data = await this.userService.updateUser(id, this.currentUser).then( result => {
-  //     localStorage.removeItem('currentUser');
-  //     // this.currentUser = this.users.find(({AppUserID}) => AppUserID === id);
-  //     localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-  //     // console.log("success")
-  //     // this.refresh();
-  //     // location.reload();
-  //     // this.showNotification('success', 'Attachment uploaded');
-  //     console.log(this.currentUser)
-  //   })
-  // }
 
   async updateAction(val: any, field: any) {
     var id = this.currentUser.AppUserID
-    // var object = {};
 
     if (field === 'Email') {
-      console.log("Inside Email cahnge")
       const emailVerify = await this.userService.checkEmail(val).then(async result => {
         if (!result) {
           this.currentUser[field] = val;
@@ -157,7 +138,6 @@ export class ProfileComponent implements OnInit {
         this.refresh();
       })
     }
-    // location.reload();
 
   }
 
@@ -165,14 +145,6 @@ export class ProfileComponent implements OnInit {
     this.notifier.show({ type, message });
   }
 
-  // checkTimeLine(val: any) {
-  //   switch(val) {
-  //     case 'false': this.generalInfo = true;
-  //       break;
-  //     case 'true': this.generalInfo = false;
-  //       break;
-  //   }
-  // }
 
   onSelectFile(event) {
     var id = this.currentUser.AppUserID;

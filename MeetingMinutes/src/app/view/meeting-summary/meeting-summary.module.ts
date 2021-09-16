@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import {MatRadioModule} from '@angular/material/radio';
 import { MeetingSummaryComponent } from './meeting-summary.component';
 import { MeetingSummaryRoutingModule } from './meeting-summary-routing.module'
 // import { AngularFontAwesomeModule } from 'angular-font-awesome';
@@ -38,7 +38,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatExpansionModule,
     MatToolbarModule,
     MatAutocompleteModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatRadioModule
   ],
   exports: [
     MeetingSummaryComponent

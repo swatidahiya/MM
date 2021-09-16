@@ -11,7 +11,8 @@ module.exports = {
     postMeeting,
     getMeetings,
     sendMail,
-    getMeetingById
+    getMeetingById,
+    filterMeetings
 }
 
 async function postMeeting(body){
@@ -34,6 +35,54 @@ async function getMeetings() {
     const meetings = await Meeting.find().sort({ MeetingID: -1 });
     console.log(meetings)
     return meetings;
+
+}
+
+async function filterMeetings(object) {
+    var projectName = object.projectName;
+    var status = object.status;
+    var user = object.user;
+    var meetings = [];
+
+    let data = await Meeting.find({ Status: object.status });
+   
+    if(data.length > 0) {
+        if(projectName === undefined && user === undefined) {
+            return data;
+        }
+
+        else if(projectName !== undefined && user === undefined){
+            data.forEach(meeting => {
+                var name = meeting.project_Name;
+                if(name.toLowerCase() === projectName) {
+                    meetings.push(meeting)
+                }
+            })
+            return meetings;
+        }
+
+        else if(user !== undefined && projectName === undefined ) {
+            data.forEach(meeting => {
+                if(meeting.HostUser === user) {
+                    meetings.push(meeting)
+                }
+            });
+            return meetings;
+        }
+        else if(projectName !== undefined && projectName !== null) {
+            data.forEach(meeting => {
+                var name = meeting.project_Name.toLowerCase();
+                if(name === projectName && meeting.HostUser === user) {
+                    meetings.push(meeting)
+                }
+            })
+            return meetings;
+        }
+        
+    }
+    else {
+        return null;
+    }
 
 }
 

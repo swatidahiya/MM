@@ -94,8 +94,7 @@ export class MeetingService {
       return this.request('get', this.baseUrl + '/Meeting/Search?searchString=' + searchString);
     }
 
-    filterMeetings(projectName: any,loginName: any,status: any){
-      console.log("filterMeetings");
-      return this.request('get', this.baseUrl +'/Meeting/SearchFilter?project=' + projectName + '&createdby=' + loginName + '&Status=' + status);
+    filterMeetings(object: any){
+      return this.request('post', this.baseUrl +'/Meeting/filterMeetings', object);
     }
 }
