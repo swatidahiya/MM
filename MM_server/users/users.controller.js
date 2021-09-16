@@ -7,9 +7,16 @@ router.get('/UserExists/:id', checkUser);
 router.get('/UserEmailExists/:id', checkEmail);
 router.post('/', createUser);
 router.get('/getAllUsers', getAllUsers);
+router.get('/:id',getById)
 router.put('/:id', updateUser);
 router.post('/UserAuthenticate',authenticateUser);
 router.delete('/:id',deleteUser);
+
+function getById(req, res, next) {
+    userService.getById(req.params.id)
+        .then(user => res.json(user))
+        .catch(err => next(err));
+}
 
 function checkUser(req, res, next) {
     console.log("inside controller")

@@ -16,7 +16,7 @@ module.exports = {
 }
 
 async function getById(idParam) {
-    return await User.findById(id).select('-hash');
+    return await User.findOne({AppUserID:idParam}).select('-hash');
 }
 
 async function checkUser(loginNameParam) {
