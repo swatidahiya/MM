@@ -32,7 +32,6 @@ function createUser(req, res, next){
 }
 
 function updateUser(req, res, next){
-    console.log("controller works")
     userService.updateUser(req)
         .then(user => res.json(user))
         .catch(err => next(err));
