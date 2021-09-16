@@ -16,8 +16,9 @@ function jwt() {
             // '/User/UserAuthenticate',
             '/User/getAllUsers',
             '/Meeting',
-            '/Meeting/filterMeetings'
-            
+            '/Meeting/filterMeetings',
+            '/User/updateUser',
+            '/User/deleteUser'
         ]
     });
 }

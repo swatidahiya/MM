@@ -7,7 +7,9 @@ router.get('/UserExists/:id', checkUser);
 router.get('/UserEmailExists/:id', checkEmail);
 router.post('/', createUser);
 router.get('/getAllUsers', getAllUsers);
+router.put('/:id', updateUser);
 router.post('/UserAuthenticate',authenticateUser);
+router.delete('/:id',deleteUser);
 
 function checkUser(req, res, next) {
     console.log("inside controller")
@@ -29,6 +31,13 @@ function createUser(req, res, next){
         .catch(err => next(err));
 }
 
+function updateUser(req, res, next){
+    console.log("controller works")
+    userService.updateUser(req)
+        .then(user => res.json(user))
+        .catch(err => next(err));
+}
+
 function getAllUsers(req, res, next){
     userService.getAllUsers()
         .then(user => res.json(user))
@@ -42,6 +51,11 @@ function authenticateUser(req, res, next){
         .catch(err => next(err));
 }
 
+function deleteUser(req, res, next) {
+    userService.deleteUser(req.params.id)
+        .then(users => res.json(users))
+        .catch(err => next(err));
+}
 
 
 

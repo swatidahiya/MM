@@ -33,7 +33,6 @@ export class ManageUsersComponent implements OnInit {
 
   deleteUser(username: any){
     this.tempDelete = this.users.find(({LoginName}) => LoginName === username);
-    console.log(this.tempDelete)
     const data = this.userService.deleteUser(this.tempDelete.AppUserID).then( result => {
       alert("User Succesfully Deleted")
       this.refresh();
@@ -48,7 +47,6 @@ export class ManageUsersComponent implements OnInit {
       this.tempUpdateUser.Phone = '8090909090'
     }
     const data = this.userService.updateUser(this.tempUpdateUser.AppUserID, this.tempUpdateUser).then( result => {
-      console.log(result);
       this.refresh();
       this.tempUpdateUser = null;
     })
