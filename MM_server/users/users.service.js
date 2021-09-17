@@ -64,7 +64,6 @@ async function updateUser(req) {
 }
 
 async function updateProfile(id, body) {
-    console.log('service m ja ra h')
 
     const user = await User.findOne({ AppUserID: id })
     Object.assign(user, body);
