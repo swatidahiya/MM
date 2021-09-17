@@ -74,8 +74,10 @@ export class UserService {
       return this.request('get', this.baseUrl + '/User/UserEmailExists/' + email)
     }
 
-    updateProfile(id: any, uploadFile: any) {
-      return this.request('post', this.baseUrl + '/ProfileUpload?UserID='+ id, uploadFile)
+    updateProfile(uploadFile: any, id: any, ) {
+      return this.request('post', this.baseUrl + '/Profile/' + id, uploadFile);
+
+      // return this.request('post', this.baseUrl + '/ProfileUpload?UserID='+ id, uploadFile)
     }
 
     getUploadProfile(id: any, profileName: any) {

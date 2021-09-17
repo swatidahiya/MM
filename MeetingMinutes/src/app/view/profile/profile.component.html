@@ -3,15 +3,33 @@
         <form method="post">
             <div class="row">
                 <div class="col-md-4">
-                    <div class="profile-img">
+                    <!-- <div class="profile-img">
                         <img [src]="imageToShow" alt="Place image title" *ngIf="!isImageLoading; else noImageFound">
                         <ng-template #noImageFound>
                             <img src="../../../assets/avatar1.png" alt="Fallbackimage">
                         </ng-template>
                         <div class="file btn btn-lg btn-primary" (click)="fileInput.click()">
                             Change Photo
-                            <input #fileInput type="file" name="file" (change)="onSelectFile($event)" />
+                            <input #fileInput type="file" name="file" (change)="uploadFile($event)" />
                         </div>
+                    </div> -->
+                    <div class="profile-img">
+                        <img *ngIf="!isImageLoading; else noImageFound" [src]="transform()" class="image m-1">
+                        <ng-template #noImageFound>
+                            <img src="../../../assets/avatar1.png" alt="Fallbackimage">
+                        </ng-template>
+
+                        <div class="middle">
+                            <p class="file btn btn-lg btn-primary" (click)="fileInput.click()">Edit<span>
+                                <i class="fas fa-pen ml-2"></i></span></p>
+                        </div>
+                        <form accept="image/x-png,image/jpeg" method="post" enctype="multipart/form-data"
+                            action="/attachment">
+                            <div id="center">
+                                <input hidden type="file" #fileInput name="attachment" (change)="uploadFile($event)"
+                                    multiple>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -57,8 +75,8 @@
                                     <label style="margin-top: 3px;">User Id</label>
                                 </div>
                                 <div class="col-6">
-                                    <p style="color: rgb(32, 32, 32);"
-                                        title="This field is non editable"> {{currentUser.LoginName}}
+                                    <p style="color: rgb(32, 32, 32);" title="This field is non editable">
+                                        {{currentUser.LoginName}}
                                     </p>
                                 </div>
                             </div>
@@ -97,8 +115,9 @@
                                 overflow: hidden;
                                 text-overflow: ellipsis;">
                                     <p>
-                                        <ejs-inplaceeditor id="inplace_editor" style="font-weight: 700; font-size: large;"
-                                            type="Text" data-underline="false" value="{{currentUser.Email}}"
+                                        <ejs-inplaceeditor id="inplace_editor"
+                                            style="font-weight: 700; font-size: large;" type="Text"
+                                            data-underline="false" value="{{currentUser.Email}}"
                                             (actionSuccess)="updateAction($event.value, 'Email')">
                                         </ejs-inplaceeditor>
                                     </p>

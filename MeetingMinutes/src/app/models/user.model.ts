@@ -25,4 +25,6 @@ export class User {
     CreatedDate: Date;
     ModifiedByID: number;
     ModifiedDate: Date;
+    imageSrc: string;
+    profilePic: string;
 }

@@ -121,4 +121,7 @@
         width: 60px;
         overflow: hidden;
         text-overflow: ellipsis;
-      }
+    }
+.image {
+    border-radius: 50%;
+}

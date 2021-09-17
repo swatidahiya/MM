@@ -18,7 +18,8 @@ function jwt() {
             '/Meeting',
             '/Meeting/filterMeetings',
             '/User/updateUser',
-            '/User/deleteUser'
+            '/User/deleteUser',
+            '/User/updateProfile'
         ]
     });
 }

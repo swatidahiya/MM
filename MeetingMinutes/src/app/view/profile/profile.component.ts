@@ -5,6 +5,7 @@ import { NotifierService } from 'angular-notifier';
 import { MeetingService } from 'src/app/controllers/meetings.service';
 import { Meetings } from '../../models/meetings.model'
 import { Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile',
@@ -13,13 +14,14 @@ import { Router } from '@angular/router';
   providers: [UserService, MeetingService]
 })
 export class ProfileComponent implements OnInit {
-  currentUser: User
+  currentUser: User;
   users: User[];
   generalInfo = false;
   imageToShow: any;
   isImageLoading = true;
   meetings: Array<any> = [];
   participants = [];
+  imageSrc: any;
 
   private readonly notifier: NotifierService;
 
@@ -29,12 +31,16 @@ export class ProfileComponent implements OnInit {
   constructor(private userService: UserService,
     private route: Router,
     notifierService: NotifierService,
-    private meetingService: MeetingService,) {
+    private meetingService: MeetingService,
+    private domSanitizer: DomSanitizer,) {
     this.notifier = notifierService;
   }
 
   ngOnInit() {
     this.currentUser = this.userService.currentUserValue;
+    this.imageSrc = this.currentUser.imageSrc;
+
+
     // var data = this.userService.checkUser(this.currentUser.LoginName).then(result => {
     //   if (result) {
     //     if (this.currentUser.IsActive === true) {
@@ -73,6 +79,11 @@ export class ProfileComponent implements OnInit {
     // })
     // console.log(this.currentUser);
 
+
+    if (this.currentUser.imageSrc !== null) {
+      this.isImageLoading = false;
+    }
+
     const data = this.meetingService.getMeetings().then(data => {
       data.sort((a: any, b: any) => {
         return b.MeetingID - a.MeetingID;
@@ -105,9 +116,7 @@ export class ProfileComponent implements OnInit {
         }
       }
 
-
     })
-    this.getProfilePic();
   }
 
 
@@ -127,6 +136,8 @@ export class ProfileComponent implements OnInit {
         } else {
           alert("Email Id is already registered");
         }
+      }).catch(err => {
+        alert("Email Id is already registered");
       });
 
     } else {
@@ -145,27 +156,30 @@ export class ProfileComponent implements OnInit {
     this.notifier.show({ type, message });
   }
 
+  uploadFile(event: any) {
+    const fileList: FileList = event.target.files;
 
-  onSelectFile(event) {
-    var id = this.currentUser.AppUserID;
-
-    const fileList = event.target.files;
     if (fileList.length > 0) {
       const file: File = fileList[0];
-      console.log(file.name)
       let checkFileType = file.name.split('.').pop();
-      console.log(checkFileType)
       if (checkFileType == "png" || checkFileType == "jpeg" || checkFileType == "jpg" || checkFileType == "Gif" || checkFileType == "tiff" || checkFileType == "eps" || checkFileType == "ai" || checkFileType == "indd" || checkFileType == "raw") {
+        const formData: FormData = new FormData();
+        formData.append('uploadPic', file, file.name);
 
 
-        let formData: FormData = new FormData();
-        formData.append('uploadFile', file);
-        console.log(formData)
-        this.userService.updateProfile(id, formData).then(result => {
-          console.log("Success");
-          console.log(result)
-          this.updateAction(file.name, 'MiddleName');
-        });
+        var c = confirm("Do you want to update your Profile?");
+        if (c == true) {
+          this.userService.updateProfile(formData, this.currentUser.AppUserID).then(user => {
+
+            this.imageSrc = user.imageSrc;
+            this.transform();
+            this.refresh();
+
+          });
+        }
+        else {
+          alert("Process Terminated")
+        }
       }
       else {
         alert("Please choose valid image file type ")
@@ -173,30 +187,35 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  async getProfilePic() {
-    this.isImageLoading = true;
-    var id = this.currentUser.AppUserID;
-
-    this.userService.getUploadProfile(id, this.currentUser.MiddleName)
-      .subscribe(res => {
-        this.createImageFromBlob(res);
-        this.isImageLoading = false;
-
-      }, error => {
-        this.isImageLoading = true;
-        console.log(error);
-      });
+  transform() {
+    return this.domSanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + this.imageSrc);
   }
 
-  createImageFromBlob(image: Blob) {
-    let reader = new FileReader();
-    reader.addEventListener("load", () => {
-      this.imageToShow = reader.result;
-    }, false);
 
-    if (image) {
-      reader.readAsDataURL(image);
-    }
-  }
+  // async getProfilePic() {
+  //   this.isImageLoading = true;
+  //   var id = this.currentUser.AppUserID;
+
+  //   this.userService.getUploadProfile(id, this.currentUser.MiddleName)
+  //     .subscribe(res => {
+  //       this.createImageFromBlob(res);
+  //       this.isImageLoading = false;
+
+  //     }, error => {
+  //       this.isImageLoading = true;
+  //       console.log(error);
+  //     });
+  // }
+
+  // createImageFromBlob(image: Blob) {
+  //   let reader = new FileReader();
+  //   reader.addEventListener("load", () => {
+  //     this.imageToShow = reader.result;
+  //   }, false);
+
+  //   if (image) {
+  //     reader.readAsDataURL(image);
+  //   }
+  // }
 
 }

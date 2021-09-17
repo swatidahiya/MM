@@ -12,7 +12,8 @@ module.exports = {
     authenticateUser,
     getAllUsers,
     updateUser,
-    deleteUser
+    deleteUser,
+    updateProfile
 }
 
 async function getById(idParam) {
@@ -58,6 +59,15 @@ async function updateUser(req) {
 
     const user = await User.findOne({ AppUserID: req.params.id })
     Object.assign(user, req.body);
+    await user.save();
+    return user;
+}
+
+async function updateProfile(id, body) {
+    console.log('service m ja ra h')
+
+    const user = await User.findOne({ AppUserID: id })
+    Object.assign(user, body);
     await user.save();
     return user;
 }

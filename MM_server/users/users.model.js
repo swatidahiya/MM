@@ -27,7 +27,9 @@ const userSchema = new Schema({
     CreatedByID: {type: Number},
     CreatedDate: {type: Date, default: Date.now},
     ModifiedByID: {type: Number},
-    ModifiedDate: {type: Date}
+    ModifiedDate: {type: Date},
+    profilePic: { type: String, required: false},
+    imageSrc: { type: String, required: false},
 
 });
 
