@@ -7,7 +7,7 @@
     </div>
 
     <div class="input-group form-group">
-        <input type="text" class="form-control" readonly [value]="meeting.project_Name">
+        <input type="text" class="form-control" readonly [value]="meeting[0].project_Name">
         <!-- [(ngModel)]="decision.project_Name" -->
     </div>
 
@@ -28,7 +28,7 @@
         <input type="text" placeholder="Choose Any" aria-label="Number" matInput class="form-control"
                         style="height: 50px" [matAutocomplete]="auto">
                     <mat-autocomplete #auto="matAutocomplete" (optionSelected)='getPosts($event.option.value)'>
-                        <mat-option *ngFor="let option of options" [value]="option.DisplayName">
+                        <mat-option *ngFor="let option of options" [value]="option.FirstName">
                             {{option.FirstName}} {{option.LastName}}
                         </mat-option>
                     </mat-autocomplete>

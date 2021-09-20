@@ -29,11 +29,15 @@ export class DecisionService {
     }
 
     getDecision() {
-        return this.request('get', this.baseUrl + '/Decision')
+        return this.request('get', this.baseUrl + '/Decision/getDecisions')
     }
 
     postDecision(action: any): any {
-        return this.request('post', this.baseUrl + '/Decision', action)
+        return this.request('post', this.baseUrl + '/Decision/postDecision', action)
+    }
+
+    getDecisionByMeetingId(id : any){
+      return this.request('get', this.baseUrl + '/Decision/getDecisionByMeetingId/' + id)
     }
 
     getDecisionById(actionItemID: any) {

@@ -48,9 +48,9 @@ export class ActionItemsComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser = this.userService.currentUserValue;
-    var data1 = this.userService.checkUser(this.currentUser.LoginName).then(result => {
-      // console.log(result)
-      if (result) {
+    // var data1 = this.userService.checkUser(this.currentUser.LoginName).then(result => {
+    //   // console.log(result)
+    //   if (result) {
         if (this.currentUser.IsActive === true) {
           // console.log(this.userCheck())
           this.userService.getAllUsers().then(result => {
@@ -80,11 +80,11 @@ export class ActionItemsComponent implements OnInit {
           alert("Your account has been blocked. Please contact admin!");
           this._route.navigateByUrl('/login')
         }
-      } else {
-        alert("Your account has been deleted. Please contact admin!");
-        this._route.navigateByUrl('/login')
-      }
-    });
+    //   } else {
+    //     alert("Your account has been deleted. Please contact admin!");
+    //     this._route.navigateByUrl('/login')
+    //   }
+    // });
   }
 
   async refresh() {

@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { MeetingService } from 'src/app/controllers/meetings.service';
 import { ActionService } from 'src/app/controllers/action.service';
+import { DecisionService } from 'src/app/controllers/decision.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Meetings } from 'src/app/models/meetings.model';
 import { MeetingActions } from 'src/app/models/actions.model';
@@ -22,7 +23,7 @@ import { SwiperConfigInterface } from 'ngx-swiper-wrapper'
   selector: 'app-meeting-details',
   templateUrl: './meeting-details.component.html',
   styleUrls: ['./meeting-details.component.css'],
-  providers: [MeetingService, UserService, CommentService, MeetingNoteService, ActionService]
+  providers: [MeetingService, UserService, CommentService, MeetingNoteService, ActionService, DecisionService]
 })
 export class MeetingDetailsComponent implements OnInit {
 
@@ -114,6 +115,7 @@ export class MeetingDetailsComponent implements OnInit {
     private commentService: CommentService,
     private meetingNoteService: MeetingNoteService,
     private actionService : ActionService,
+    private decisionService : DecisionService,
     private deviceDetectorService: DeviceDetectorService,
     private _snackBar: MatSnackBar) { }
 
@@ -230,6 +232,21 @@ export class MeetingDetailsComponent implements OnInit {
               this.tempActionPage = true;
          }
       })
+
+      const decisionData = this.decisionService.getDecisionByMeetingId(this.meeting.MeetingID).then(result =>{
+        // console.log("actions#############################")
+        console.log(result)
+        if(result == null){
+          this.tempDecisionPage = false;
+        }
+        else{
+         // result.sort((a: any, b: any) => {
+         //       return b.ActionItemID - a.ActionItemID;
+         //     });
+             this.decisions = result;
+             this.tempDecisionPage = true;
+        }
+     })
 
       // if (data.Action_Item.length == 0) {
       //   console.log("ACtion items are null");

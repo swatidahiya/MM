@@ -72,7 +72,7 @@ export class DecisionDialogComponent implements OnInit {
     else {
       this.decision.Status = 0;
       this.decision.DecisionAssignedTo= this.contacts.toString();
-      this.decision.project_Name= this.meeting.project_Name;
+      this.decision.project_Name= this.meeting[0].project_Name;
       this.decision.MeetingID = this.data.meetingID;
       this.decision.DecisionTime = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
       console.log(decision)

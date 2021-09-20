@@ -150,13 +150,13 @@ export class DashboardComponent implements OnInit {
       this.actions = actions.slice(0, 4)
     });
 
-    // await this.decisionService.getDecision().then(decisions => {
-    //   this.assignmentResultLength = decisions.length;
-    //   decisions.sort((a: any, b: any) => {
-    //     return b.DecisionItemID - a.DecisionItemID;
-    //   });
-    //   this.decisions = decisions.slice(0, 4)
-    // });
+    await this.decisionService.getDecision().then(decisions => {
+      this.assignmentResultLength = decisions.length;
+      decisions.sort((a: any, b: any) => {
+        return b.DecisionItemID - a.DecisionItemID;
+      });
+      this.decisions = decisions.slice(0, 4)
+    });
     console.log(this.meetingLenght)
     this.demodoughnutChartData.push(this.meetingLenght, this.assignmentLength, this.assignmentResultLength)
     this.dataLoaded = false;
