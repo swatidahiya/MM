@@ -28,6 +28,8 @@ export class SchedulerComponent implements OnInit {
 
   async refresh() {
     const data = await this.meetingService.getMeetings().then(result => {
+      console.log("inside scheduler and printing result")
+      console.log(result)
       for (var i = 0; i < result.length; i++) {
         var check = Date.parse(result[i].MeetingTime)
         console.log(check.valueOf())
@@ -64,3 +66,4 @@ export class SchedulerComponent implements OnInit {
   };
 
 }
+

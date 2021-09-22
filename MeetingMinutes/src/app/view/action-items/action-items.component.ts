@@ -36,6 +36,7 @@ export class ActionItemsComponent implements OnInit {
   priority1Text:any
   priority2Text:any
    deviceDetectorInfo = null;
+   selectedStatus: Number;
 
   options: User[];
   // string[] = ['Anuj Arora', 'Danish Ahmad', 'Ankur Garg', 'Mohit Sharma', 'Anil k. Garg', 'Susmita Kumari'];
@@ -97,6 +98,7 @@ export class ActionItemsComponent implements OnInit {
   }
 
   getPosts(val : any) {
+    this.contacts = [];
     this.contacts.push(val);
   }
 
@@ -160,12 +162,29 @@ export class ActionItemsComponent implements OnInit {
           break;
         }
       }
-
-      this.actionService.filterActions(this.projectNameText,this.users,this.mainValue,this.value).then(data => {
+      var object = {};
+      if (this.projectNameText !== undefined) {
+        if(this.projectNameText.length > 0) {
+          object['project_Name'] = this.projectNameText.toLowerCase();
+        }
+      }
+      // object['project_Name']= this.projectNameText;
+      object['user']= this.contacts[0];
+      object['status']= this.selectedStatus;
+      console.log("--------------------------------------")
+      console.log(object);
+      if (this.selectedStatus != undefined || this.selectedStatus != null){
+    
+      this.actionService.filterActions(object).then(data => {
         this.actionItems= data;
         console.log(this.actionItems);
         this.refresh();
       })
+      }
+      else{
+        alert("Status is mandatory.\nPlease select one of the status!!");
+      }
+      
  
     })
   }
@@ -182,6 +201,8 @@ export class ActionItemsComponent implements OnInit {
     this.priority0Text="";
     this.priority1Text="";
     this.priority2Text="";
+    this.selectedStatus= undefined;
+    this.contacts= [];
 
     const data = this.actionService.getActions().then( data => {
       data.sort((a: any, b: any) => {

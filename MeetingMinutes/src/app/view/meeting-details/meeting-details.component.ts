@@ -360,6 +360,9 @@ export class MeetingDetailsComponent implements OnInit {
       }
         break;
     }
+    console.log("updating meeting")
+    console.log(id);
+    console.log(object);
     const data = this.meetingService.updateMeeting(id, object).then(data => {
       this.refresh();
     })
@@ -529,7 +532,6 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
   blockParticipant(val: any) {
-
     const index: number = this.participants.indexOf(val);
     if (index !== -1) {
       this.participants.splice(index, 1);

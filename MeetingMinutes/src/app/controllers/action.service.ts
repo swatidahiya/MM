@@ -52,8 +52,7 @@ export class ActionService {
       return this.request('delete', this.baseUrl + '/Action/' + id)
     }
 
-    filterActions(projectName:any, createdby:any,status :any ,priority:any){
-      console.log("filterMeetings");
-      return this.request('get',this.baseUrl +'/Action/SearchFilter?project=' + projectName + '&createdby=' + createdby + '&Status=' + status +'&Priority='+priority)
+    filterActions(object: any){
+      return this.request('post', this.baseUrl +'/Action/filterActions', object);
     }
 }

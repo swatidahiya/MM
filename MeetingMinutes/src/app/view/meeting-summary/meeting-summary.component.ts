@@ -179,7 +179,6 @@ export class MeetingSummaryComponent implements OnInit {
     if (this.projectNameText !== undefined) {
       if(this.projectNameText.length > 0) {
         object['projectName'] = this.projectNameText.toLowerCase();
-
       }
     }
     object['user'] = this.contacts[0];

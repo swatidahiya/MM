@@ -50,7 +50,7 @@ export class SingleActionItemComponent implements OnInit {
       if (result) {
         if (this.currentUser.IsActive === true) {
           // console.log(this.userCheck())
-          this.refresh();
+         
         } else {
           alert("Your account has been blocked. Please contact admin!");
           this.route.navigateByUrl('/login')

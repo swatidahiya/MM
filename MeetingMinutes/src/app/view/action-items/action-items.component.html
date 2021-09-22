@@ -27,15 +27,22 @@
                             >In Progress</mat-radio-button>
                             <mat-radio-button value="3" style="color: white; font-size: 16px; margin-left: 10px;" 
                            >Overdue</mat-radio-button> -->
-                    <mat-checkbox style="color: white; font-size: 18px; " (click)="statusCheck('overdue')">Overdue
+                    <!-- <mat-checkbox style="color: white; font-size: 18px; " (click)="statusCheck('overdue')">Overdue
                     </mat-checkbox>
                     <mat-checkbox style="color: white; font-size: 18px; margin-left: 5px;"
                         (click)="statusCheck('inProgress')">In Progress
                     </mat-checkbox>
                     <mat-checkbox style="color: white; font-size: 18px; margin-left: 5px;"
                         (click)="statusCheck('completed')">Completed
-                    </mat-checkbox>
+                    </mat-checkbox> -->
                     <!-- </mat-radio-group> -->
+
+                    <mat-radio-group [(ngModel)]="selectedStatus" style="color: white;">
+                        <mat-radio-button value="0">Overdue</mat-radio-button><br>
+                        <mat-radio-button value="1">In Progress</mat-radio-button><br>
+                        <mat-radio-button value="2">Completed</mat-radio-button>
+    
+                    </mat-radio-group>
 
                 </div>
                 <div style="padding: 10px 0px;">
@@ -46,19 +53,19 @@
                 </div>
                 <div style="padding: 10px 0px;">
                     <label
-                        style="font-size: 16px; color: cornsilk; margin-bottom: 10px;margin-top: 10px;">Created By</label>
+                        style="font-size: 16px; color: cornsilk; margin-bottom: 10px;margin-top: 10px;">Assigned to</label>
                     <input type="text" placeholder="Choose Any" aria-label="Number" matInput class="form-control"
                         style="height: 50px" [matAutocomplete]="auto" name="fullName" [(ngModel)]="fullNameText">
                     <mat-autocomplete #auto="matAutocomplete" (optionSelected)='getPosts($event.option.value)'>
-                        <mat-option *ngFor="let option of options" [value]="option.DisplayName">
+                        <mat-option *ngFor="let option of options" [value]="option.LoginName">
                             {{option.FirstName}} {{option.LastName}}
                         </mat-option>
                     </mat-autocomplete>
                 </div>
 
                 <div style="padding: 10px 0px;">
-                    <label
-                        style="font-size: 16px; color: cornsilk; margin-bottom: 10px;margin-top: 10px;">Priority</label><br>
+                    <!-- <label -->
+                        <!-- style="font-size: 16px; color: cornsilk; margin-bottom: 10px;margin-top: 10px;">Priority</label><br> -->
                     <!-- <mat-radio-group aria-label="Select an option" class="form-group" style="margin-bottom: 10px;"> -->
                     <!-- <mat-radio-button value="1" style="color: white; font-size: 16px; margin-left: 10px;"
                             >Low
@@ -70,14 +77,14 @@
                             >High
                             </mat-radio-button> -->
                     <!-- </mat-radio-group> -->
-                    <mat-checkbox style="color: white; font-size: 18px; " (click)="priorityCheck('low')">Low
+                    <!-- <mat-checkbox style="color: white; font-size: 18px; " (click)="priorityCheck('low')">Low
                     </mat-checkbox>
                     <mat-checkbox style="color: white; font-size: 18px; margin-left: 15px;"
                         (click)="priorityCheck('mid')">Mid
                     </mat-checkbox>
                     <mat-checkbox style="color: white; font-size: 18px; margin-left: 15px;"
                         (click)="priorityCheck('high')">High
-                    </mat-checkbox>
+                    </mat-checkbox> -->
                 </div>
 
                 <!-- <div style="padding: 10px 0px;">
