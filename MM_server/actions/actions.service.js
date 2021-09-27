@@ -5,7 +5,9 @@ module.exports = {
    postAction,
    getActions,
    getActionByMeetingId,
-   filterActions
+   filterActions,
+   getActionById,
+   updateAction
 }
 
 async function postAction(actionParam){
@@ -22,6 +24,12 @@ async function getActions(){
 
 async function getActionByMeetingId(id){
     const action = await Action.find({MeetingID : id})
+    console.log(action)
+    return action;
+}
+
+async function getActionById(id){
+    const action = await Action.findById(id)
     console.log(action)
     return action;
 }
@@ -85,8 +93,11 @@ async function filterActions(object){
         return null;
     }
 
+}
 
-
-
-
+async function updateAction(id, object) {
+    const action = await Action.findById(id)
+    Object.assign(action, object);
+    await action.save();
+    return action;
 }

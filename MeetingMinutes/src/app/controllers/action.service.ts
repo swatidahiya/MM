@@ -37,7 +37,7 @@ export class ActionService {
     }
 
     getActionById(actionItemID: any) {
-      return this.request('get', this.baseUrl + '/Action/' + actionItemID)
+      return this.request('get', this.baseUrl + '/Action/getActionById/' + actionItemID)
     }
 
     getActionByMeetingId(id : any){
@@ -45,7 +45,7 @@ export class ActionService {
     }
 
     updateAction(actionItemID: any, object: any): any{
-      return this.request('put', this.baseUrl + '/Action/' + actionItemID, object)
+      return this.request('put', this.baseUrl + '/Action/updateAction/' + actionItemID, object)
     }
 
     deleteAction(id: any) {

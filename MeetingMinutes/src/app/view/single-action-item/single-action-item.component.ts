@@ -45,22 +45,22 @@ export class SingleActionItemComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser = this.userService.currentUserValue;
-    var data = this.userService.checkUser(this.currentUser.LoginName).then(result => {
-      // console.log(result)
-      if (result) {
-        if (this.currentUser.IsActive === true) {
-          // console.log(this.userCheck())
+    // var data = this.userService.checkUser(this.currentUser.LoginName).then(result => {
+    //   // console.log(result)
+    //   if (result) {
+    //     if (this.currentUser.IsActive === true) {
+    //       // console.log(this.userCheck())
          
-        } else {
-          alert("Your account has been blocked. Please contact admin!");
-          this.route.navigateByUrl('/login')
-        }
-      } else {
-        alert("Your account has been deleted. Please contact admin!");
-        this.route.navigateByUrl('/login')
-      }
-    });
-    // this.refresh();
+    //     } else {
+    //       alert("Your account has been blocked. Please contact admin!");
+    //       this.route.navigateByUrl('/login')
+    //     }
+    //   } else {
+    //     alert("Your account has been deleted. Please contact admin!");
+    //     this.route.navigateByUrl('/login')
+    //   }
+    // });
+    this.refresh();
   }
 
   async refresh() {
@@ -70,10 +70,10 @@ export class SingleActionItemComponent implements OnInit {
 
     this.currentUser = this.userService.currentUserValue;
 
-    const tempComment = await this.commentService.getAllComments().then(result => {
-      this.allComments = result;
-      console.log(this.allComments)
-    })
+    // const tempComment = await this.commentService.getAllComments().then(result => {
+    //   this.allComments = result;
+    //   console.log(this.allComments)
+    // })
 
     const data = await this.actionService.getActionById(id).then(data => {
       this.actionItem = data;
@@ -96,7 +96,7 @@ export class SingleActionItemComponent implements OnInit {
 
       this.dataLoaded = true;
     })
-    this.getProfilePic();
+    // this.getProfilePic();
   }
 
   deviceDetector() {

@@ -32,6 +32,7 @@ export class DecisionListComponent implements OnInit {
   priority0Text:any
   priority1Text:any
   priority2Text:any
+  selectedStatus: Number
 
   deviceDetectorInfo = null;
 
@@ -104,6 +105,7 @@ export class DecisionListComponent implements OnInit {
   }
 
   getPosts(val : any) {
+    this.contacts = [];
     this.contacts.push(val);
   }
 
@@ -169,6 +171,29 @@ export class DecisionListComponent implements OnInit {
         }
       }
 
+      var object = {};
+      if (this.projectNameText !== undefined) {
+        if(this.projectNameText.length > 0) {
+          object['project_Name'] = this.projectNameText.toLowerCase();
+        }
+      }
+      // object['project_Name']= this.projectNameText;
+      object['user']= this.contacts[0];
+      object['status']= this.selectedStatus;
+     
+      if (this.selectedStatus != undefined || this.selectedStatus != null){
+    
+        this.decisionService.filterDecision(object).then(data => {
+          this.decisionItems= data;
+          console.log(this.decisionItems);
+          this.refresh();
+         
+        })
+      }
+      else{
+        alert("Status is mandatory.\nPlease select one of the status!!");
+      }
+
       // var a;
       // if (this.mainValue === 0 || this.mainValue === 1 || this.mainValue === 2) {
       //   a = this.mainValue;
@@ -178,12 +203,7 @@ export class DecisionListComponent implements OnInit {
       // }
 
 
-      this.decisionService.filterDecision(this.projectNameText,this.users,this.mainValue,this.value).then(data => {
-        this.decisionItems= data;
-        console.log(this.decisionItems);
-        this.refresh();
-       
-      })
+    
     })
     
   }
@@ -200,6 +220,8 @@ export class DecisionListComponent implements OnInit {
     this.priority0Text="";
     this.priority1Text="";
     this.priority2Text="";
+    this.selectedStatus= undefined;
+    this.contacts= [];
    
     const data = this.decisionService.getDecision().then( data => {
       data.sort((a: any, b: any) => {

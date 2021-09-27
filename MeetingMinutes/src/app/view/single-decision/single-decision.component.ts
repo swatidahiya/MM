@@ -45,22 +45,22 @@ export class SingleDecisionComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser = this.userService.currentUserValue;
-    var data = this.userService.checkUser(this.currentUser.LoginName).then(result => {
-      // console.log(result)
-      if (result) {
-        if (this.currentUser.IsActive === true) {
-          // console.log(this.userCheck())
-          this.refresh();
-        } else {
-          alert("Your account has been blocked. Please contact admin!");
-          this.route.navigateByUrl('/login')
-        }
-      } else {
-        alert("Your account has been deleted. Please contact admin!");
-        this.route.navigateByUrl('/login')
-      }
-    });
-    // this.refresh();
+    // var data = this.userService.checkUser(this.currentUser.LoginName).then(result => {
+    //   // console.log(result)
+    //   if (result) {
+    //     if (this.currentUser.IsActive === true) {
+    //       // console.log(this.userCheck())
+    //       this.refresh();
+    //     } else {
+    //       alert("Your account has been blocked. Please contact admin!");
+    //       this.route.navigateByUrl('/login')
+    //     }
+    //   } else {
+    //     alert("Your account has been deleted. Please contact admin!");
+    //     this.route.navigateByUrl('/login')
+    //   }
+    // });
+    this.refresh();
   }
 
   deviceDetector() {
@@ -75,10 +75,10 @@ export class SingleDecisionComponent implements OnInit {
 
     this.currentUser = this.userService.currentUserValue;
 
-    const tempComment = await this.commentService.getAllComments().then(result => {
-      this.allComments = result;
-      console.log(this.allComments)
-    })
+    // const tempComment = await this.commentService.getAllComments().then(result => {
+    //   this.allComments = result;
+    //   console.log(this.allComments)
+    // })
 
     const id = this._route.snapshot.params['id'];
     const data = await this.decisionService.getDecisionById(id).then(data => {
@@ -101,7 +101,7 @@ export class SingleDecisionComponent implements OnInit {
 
       this.dataLoaded = true;
     })
-    this.getProfilePic();
+    // this.getProfilePic();
   }
 
   onFocusOut() {

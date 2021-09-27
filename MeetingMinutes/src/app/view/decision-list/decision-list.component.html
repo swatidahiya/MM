@@ -25,11 +25,17 @@
                         <mat-radio-button value="3" style="color: white; font-size: 16px; margin-left: 10px;"
                         >Overdue</mat-radio-button>    
                     </mat-radio-group> -->
-                    <mat-checkbox style="color: white; font-size: 18px; " (click)="statusCheck('overdue')">Overdue</mat-checkbox>
+                    <!-- <mat-checkbox style="color: white; font-size: 18px; " (click)="statusCheck('overdue')">Overdue</mat-checkbox>
                     <mat-checkbox style="color: white; font-size: 18px; margin-left: 5px;" (click)="statusCheck('inProgress')">In Progress
                     </mat-checkbox>
                     <mat-checkbox style="color: white; font-size: 18px; margin-left: 5px;" (click)="statusCheck('completed')">Completed
-                    </mat-checkbox>
+                    </mat-checkbox> -->
+                    <mat-radio-group [(ngModel)]="selectedStatus" style="color: white;">
+                        <mat-radio-button value="0">Overdue</mat-radio-button><br>
+                        <mat-radio-button value="1">In Progress</mat-radio-button><br>
+                        <mat-radio-button value="2">Completed</mat-radio-button>
+    
+                    </mat-radio-group>
 
                 </div>
                 <div style="padding: 10px 0px;">
@@ -42,13 +48,13 @@
                     <input type="text" placeholder="Choose Any" aria-label="Number" matInput class="form-control"
                         style="height: 50px" [matAutocomplete]="auto" name="fullName"  [(ngModel)]="fullNameText">
                     <mat-autocomplete #auto="matAutocomplete" (optionSelected)='getPosts($event.option.value)'>
-                        <mat-option *ngFor="let option of options" [value]="option.DisplayName">
+                        <mat-option *ngFor="let option of options" [value]="option.LoginName">
                             {{option.FirstName}} {{option.LastName}}
                         </mat-option>
                     </mat-autocomplete>
                 </div>
 
-                <div style="padding: 10px 0px;">
+                <!-- <div style="padding: 10px 0px;">
                     <label
                         style="font-size: 16px; color: cornsilk; margin-bottom: 10px;margin-top: 10px;">Priority</label><br>
                         <mat-checkbox style="color: white; font-size: 18px; " (click)="priorityCheck('low')">Low</mat-checkbox>
@@ -56,7 +62,7 @@
                         </mat-checkbox>
                         <mat-checkbox style="color: white; font-size: 18px; margin-left: 15px;" (click)="priorityCheck('high')">High
                         </mat-checkbox>
-                </div>
+                </div> -->
 
                 <!-- <div style="padding: 10px 0px;">
                     <label
@@ -108,7 +114,7 @@
             </div>
             <br>
             <div *ngFor="let decisionItem of decisionItems">
-                <div class="cardActionItem" (click)="detailedAction(decisionItem.DecisionItemID)">
+                <div class="cardActionItem" (click)="detailedAction(decisionItem.id)">
                     <div class="card-title">
                         <div class="row">
                             <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">

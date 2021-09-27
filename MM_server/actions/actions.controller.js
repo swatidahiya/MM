@@ -6,6 +6,8 @@ router.post('/postAction',postAction);
 router.get('/getActions', getActions);
 router.get('/getActionByMeetingId/:id', getActionByMeetingId);
 router.post('/filterActions', filterActions);
+router.get('/getActionById/:id', getActionById);
+router.put('/updateAction/:id', updateAction);
 
 function postAction(req, res, next) {
     console.log("inside controller of action")
@@ -29,6 +31,18 @@ function getActionByMeetingId(req, res, next){
 
 function filterActions(req, res, next){
     actionService.filterActions(req.body)
+        .then(action => res.json(action))
+        .catch(err => next(err))
+}
+
+function getActionById(req, res, next){
+    actionService.getActionById(req.params.id)
+        .then(action => res.json(action))
+        .catch(err => next(err))
+}
+
+function updateAction(req, res, next){
+    actionService.updateAction(req.params.id, req.body)
         .then(action => res.json(action))
         .catch(err => next(err))
 }

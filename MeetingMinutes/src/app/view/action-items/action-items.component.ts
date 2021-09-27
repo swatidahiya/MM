@@ -171,8 +171,7 @@ export class ActionItemsComponent implements OnInit {
       // object['project_Name']= this.projectNameText;
       object['user']= this.contacts[0];
       object['status']= this.selectedStatus;
-      console.log("--------------------------------------")
-      console.log(object);
+     
       if (this.selectedStatus != undefined || this.selectedStatus != null){
     
       this.actionService.filterActions(object).then(data => {

@@ -28,7 +28,7 @@
         <input type="text" placeholder="Choose Any" aria-label="Number" matInput class="form-control"
                         style="height: 50px" [matAutocomplete]="auto">
                     <mat-autocomplete #auto="matAutocomplete" (optionSelected)='getPosts($event.option.value)'>
-                        <mat-option *ngFor="let option of options" [value]="option.FirstName">
+                        <mat-option *ngFor="let option of options" [value]="option.LoginName">
                             {{option.FirstName}} {{option.LastName}}
                         </mat-option>
                     </mat-autocomplete>

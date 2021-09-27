@@ -41,14 +41,14 @@ export class DecisionService {
     }
 
     getDecisionById(actionItemID: any) {
-      return this.request('get', this.baseUrl + '/Decision/' + actionItemID)
+      return this.request('get', this.baseUrl + '/Decision/getDecisionById/' + actionItemID)
     }
 
     updateDecision(actionItemID: any, object: any): any{
-      return this.request('put', this.baseUrl + '/Decision/' + actionItemID, object)
+      return this.request('put', this.baseUrl + '/Decision/updateDecision/' + actionItemID, object)
     }
-    filterDecision(projectName:any, loginName:any,status :any ,priority:any){
-      console.log("filterMeetings");
-      return this.request('get',this.baseUrl +'/Decision/SearchFilter?project=' + projectName + '&createdby=' + loginName + '&Status=' + status +'&Priority='+priority)
+  
+    filterDecision(object: any){
+      return this.request('post', this.baseUrl +'/Decision/filterDecision', object);
     }
 }
