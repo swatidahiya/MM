@@ -153,10 +153,10 @@ export class MeetingDetailsComponent implements OnInit {
     // this.currentUser = this.userService.currentUserValue;
     const id = this._route.snapshot.params['id'];
 
-    // const tempComment = await this.commentService.getAllComments().then(result => {
-    //   this.allComments = result;
-    //   console.log(this.allComments)
-    // })
+    const tempComment = await this.commentService.getAllComments(id).then(result => {
+      this.allComments = result;
+      console.log(this.allComments)
+    })
 
     const data = await this.meetingService.getMeetingById(id).then(data => {
       console.log("meeting data-----------------------------------------------")

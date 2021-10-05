@@ -20,8 +20,10 @@ app.use(errorHandler);
 
 app.use('/User', require('./users/users.controller'));
 app.use('/Meeting', require('./meetings/meetings.controller'));
-app.use('/Action', require('./actions/actions.controller'))
-app.use('/Decision', require('./decisions/decisions.controller'))
+app.use('/Action', require('./actions/actions.controller'));
+app.use('/Decision', require('./decisions/decisions.controller'));
+app.use('/Comment', require('./comments/comments.controller'));
+app.use('/Poll', require('./polls/polls.controller'));
 
 app.post('/Profile/:id', uploadDocs.single("uploadPic"), async function (req, res, next) {
     var object = {};

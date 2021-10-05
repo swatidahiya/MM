@@ -7,7 +7,7 @@
         <option *ngFor="let poll of allPoll">{{poll.Question}}</option>
     </select>
     <div *ngIf="dataLoad">
-        <div *ngFor="let answer of activePoll.options?.split(','); let i = index" style="margin-top: 20px">
+        <div *ngFor="let answer of activePoll.options; let i = index" style="margin-top: 20px">
 
             <div>
                 <button mat-flat-button color="warn" class="form-control" (click)="addResponse(answer)">{{answer}}</button>

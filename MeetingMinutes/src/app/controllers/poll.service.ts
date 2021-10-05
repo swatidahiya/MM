@@ -29,11 +29,11 @@ export class PollService {
     }
 
     createPoll( data: any) {
-        return this.request('post', this.baseUrl + '/Poll', data);
+        return this.request('post', this.baseUrl + '/Poll/createPoll', data);
     }
 
     getAllPoll() {
-        return this.request('get', this.baseUrl + '/Poll')
+        return this.request('get', this.baseUrl + '/Poll/getAllPoll')
     }
 
     createPollOption( data: any) {

@@ -46,7 +46,12 @@ export class CreatePollComponent implements OnInit {
       this.field = 'Option 2'
     }
     else {
-      this.poll.options = this.optionOne + "," + this.optionTwo;
+      var arr= [];
+      arr[0]= this.optionOne;
+      arr[1] = this.optionTwo;
+      this.poll.options = arr;
+      console.log(this.poll.options)
+      // this.poll.options.push(this.optionTwo);
       this.poll.Active = true;
       var temp = new Date(this.poll.Polldate);
       temp.setDate(temp.getDate() + 1);

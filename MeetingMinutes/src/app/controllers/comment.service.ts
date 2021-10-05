@@ -29,11 +29,11 @@ export class CommentService {
     }
 
     postComment(data: any) : any {
-        return this.request('post', this.baseUrl + '/Comment', data)
+        return this.request('post', this.baseUrl + '/Comment/postComment', data)
     }
 
-    getAllComments() {
-        return this.request('get', this.baseUrl + '/Comment');
+    getAllComments(id: any) {
+        return this.request('get', this.baseUrl + '/Comment/getAllComments/' + id);
     }
 
     updateComment(data: any, id: any) {

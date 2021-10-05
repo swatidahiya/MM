@@ -67,6 +67,7 @@ export class RespondPollComponent implements OnInit {
   selectOption() {
     console.log(this.selectedValue)
     this.activePoll = this.allPoll.find(({Question}) => Question === this.selectedValue);
+    console.log("activePoll value")
     console.log(this.activePoll)
     this.pollOptionTemp = this.activePoll.PollOptions;
     if(this.activePoll != null){

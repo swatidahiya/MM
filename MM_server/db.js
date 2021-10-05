@@ -13,5 +13,7 @@ module.exports = {
     Meeting: require('./meetings/meetings.model').meetingModel,
     Action: require('./actions/actions.model').actionModel,
     Decision: require('./decisions/decisions.model').decisionModel, 
+    Comment: require('./comments/comments.model').commentModel,
+    Poll: require('./polls/polls.model').pollModel
     
 };

@@ -10,8 +10,8 @@ const commentSchema = new Schema({
     Status: {type: Number},
     HostUser:   {type: String},
     MeetingID: {type: Number},
-    ActionID: {type: Number},
-    DecisionID: {type: Number}
+    ActionID: {type: String},
+    DecisionID: {type: String},
 });
 
 commentSchema.set('toJSON', { virtuals: true });

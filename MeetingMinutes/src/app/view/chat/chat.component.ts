@@ -40,7 +40,6 @@ export class ChatComponent implements OnInit {
     }  
   }  
   private subscribeToEvents(): void {  
-  
     this.chatService.messageReceived.subscribe((message: Message) => {  
       this._ngZone.run(() => {  
         if (message.clientuniqueid !== this.uniqueID) {  
