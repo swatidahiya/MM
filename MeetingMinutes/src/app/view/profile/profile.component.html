@@ -14,10 +14,7 @@
                         </div>
                     </div> -->
                     <div class="profile-img">
-                        <img *ngIf="!isImageLoading; else noImageFound" [src]="transform()" class="image m-1">
-                        <ng-template #noImageFound>
-                            <img src="../../../assets/avatar1.png" alt="Fallbackimage">
-                        </ng-template>
+                        <img [src]="transform()" class="image m-1">
 
                         <div class="middle">
                             <p class="file btn btn-lg btn-primary" (click)="fileInput.click()">Edit<span>

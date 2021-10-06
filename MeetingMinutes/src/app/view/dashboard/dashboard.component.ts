@@ -226,6 +226,7 @@ export class DashboardComponent implements OnInit {
         return b.MeetingID - a.MeetingID;
       });
 
+      this.newAllMeeting = [];
       for (var i = 0; i < data.length; i++) {
         if (data[i].reoccrence === 'Yes' || data[i].reoccrence === null) {
           if (data[i].Partipatents !== null) {

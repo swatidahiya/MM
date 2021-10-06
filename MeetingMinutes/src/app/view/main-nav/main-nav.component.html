@@ -24,20 +24,20 @@
       <a mat-list-item routerLink="/dashboard" routerLinkActive="active-list-item"
         style="color: rgb(157, 179, 139); font-size: 18px;font-weight: bold;"><i class="nav-icon fas fa-tachometer-alt"
           style="margin-right: 5px;"></i> Dashboard</a>
-      <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;"
+      <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;" routerLinkActive="active-list-item"
         routerLink="/meetingSummary"><i class="nav-icon far fa-calendar-alt" style="margin-right: 5px;"></i> Meeting
         Summary
       </a>
-      <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;" routerLink="/actionItems"><i
-          class="nav-icon fas fa-bullseye" style="margin-right: 5px;"></i> Action Items</a>
-      <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;"
+      <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;" routerLink="/actionItems" routerLinkActive="active-list-item"><i
+          class="nav-icon fas fa-bullseye" style="margin-right: 5px;" ></i> Action Items</a>
+      <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;" routerLinkActive="active-list-item"
         routerLink="/decisionList"><i class="nav-icon fas fa-lightbulb" style="margin-right: 5px;"></i>
         Decision List</a>
       <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;"
-        *ngIf="currentUser.Initials === 'sAdmin'" routerLink="/manageUsers"><i class="nav-icon far fa-user-circle"
+        *ngIf="currentUser.Initials === 'sAdmin'" routerLink="/manageUsers" routerLinkActive="active-list-item"><i class="nav-icon far fa-user-circle"
           style="margin-right: 5px;"></i>
         Manage Users</a>
-        <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;" routerLink="/analysis">
+        <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;" routerLink="/analysis" routerLinkActive="active-list-item">
           <i class="fas fa-chart-pie" style="margin-right: 5px;"></i>Analysis</a>
     </mat-nav-list>
   </mat-sidenav>

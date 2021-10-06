@@ -18,7 +18,6 @@ export class ProfileComponent implements OnInit {
   users: User[];
   generalInfo = false;
   imageToShow: any;
-  isImageLoading = true;
   meetings: Array<any> = [];
   participants = [];
   imageSrc: any;
@@ -79,10 +78,6 @@ export class ProfileComponent implements OnInit {
     // })
     // console.log(this.currentUser);
 
-
-    if (this.currentUser.imageSrc !== null) {
-      this.isImageLoading = false;
-    }
 
     const data = this.meetingService.getMeetings().then(data => {
       data.sort((a: any, b: any) => {
@@ -173,6 +168,8 @@ export class ProfileComponent implements OnInit {
 
             this.imageSrc = user.imageSrc;
             this.transform();
+            localStorage.removeItem('currentUser');
+            localStorage.setItem('currentUser', JSON.stringify(user));
             this.refresh();
 
           });
@@ -193,16 +190,13 @@ export class ProfileComponent implements OnInit {
 
 
   // async getProfilePic() {
-  //   this.isImageLoading = true;
   //   var id = this.currentUser.AppUserID;
 
   //   this.userService.getUploadProfile(id, this.currentUser.MiddleName)
   //     .subscribe(res => {
   //       this.createImageFromBlob(res);
-  //       this.isImageLoading = false;
 
   //     }, error => {
-  //       this.isImageLoading = true;
   //       console.log(error);
   //     });
   // }
