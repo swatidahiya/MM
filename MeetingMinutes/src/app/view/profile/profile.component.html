@@ -3,21 +3,11 @@
         <form method="post">
             <div class="row">
                 <div class="col-md-4">
-                    <!-- <div class="profile-img">
-                        <img [src]="imageToShow" alt="Place image title" *ngIf="!isImageLoading; else noImageFound">
-                        <ng-template #noImageFound>
-                            <img src="../../../assets/avatar1.png" alt="Fallbackimage">
-                        </ng-template>
-                        <div class="file btn btn-lg btn-primary" (click)="fileInput.click()">
-                            Change Photo
-                            <input #fileInput type="file" name="file" (change)="uploadFile($event)" />
-                        </div>
-                    </div> -->
-                    <div class="profile-img">
+                    <div class="mx-auto profile-pic">
                         <img [src]="transform()" class="image m-1">
-
                         <div class="middle">
-                            <p class="file btn btn-lg btn-primary" (click)="fileInput.click()">Edit<span>
+                            <!-- <div class="text">Set Profile</div> -->
+                            <p class="text" (click)="fileInput.click()">Edit<span>
                                 <i class="fas fa-pen ml-2"></i></span></p>
                         </div>
                         <form accept="image/x-png,image/jpeg" method="post" enctype="multipart/form-data"
@@ -51,13 +41,13 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row mt-2">
                 <div class="col-md-4">
                     <div class="profile-work">
                         <p> Write Your Skills</p>
                         <div *ngIf='!editMode' (click)='editMode=true' style="margin-left: 6px;">
                             {{currentUser.AppUserNote}} <i class="fas fa-pencil-alt"
-                                style="color: rgb(211, 211, 211); margin-left: 10px;"></i></div>
+                                style="color: rgb(211, 211, 211); margin-left: 10px; cursor: pointer;"></i></div>
                         <textarea *ngIf='editMode' (focusout)="onFocusOut()" style="width: 100%; height: 130px;"
                             (keydown.enter)='$event.target.blur()' [(ngModel)]='currentUser.AppUserNote'
                             class='cellInput' appAutofocus type='text' name="AppUserNote"
@@ -68,20 +58,20 @@
                     <div class="tab-content profile-tab" id="myTabContent">
                         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <div class="row" style="margin-bottom: 10px">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <label style="margin-top: 3px;">User Id</label>
                                 </div>
-                                <div class="col-6">
-                                    <p style="color: rgb(32, 32, 32);" title="This field is non editable">
+                                <div class="col">
+                                    <p class="ml-2" style="color: rgb(32, 32, 32);" title="This field is non editable">
                                         {{currentUser.LoginName}}
                                     </p>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <label style="margin-top: 9px;">First Name</label>
                                 </div>
-                                <div class="col-6">
+                                <div class="col">
                                     <p>
                                         <ejs-inplaceeditor id="element" style="font-weight: 700; font-size: large;"
                                             type="Text" data-underline="false" value="{{currentUser.FirstName}}"
@@ -92,10 +82,10 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <label style="margin-top: 9px;">Last Name</label>
                                 </div>
-                                <div class="col-6">
+                                <div class="col">
                                     <p>
                                         <ejs-inplaceeditor id="element" style="font-weight: 700; font-size: large;"
                                             type="Text" data-underline="false" value="{{currentUser.LastName}}"
@@ -105,10 +95,10 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <label style="margin-top: 9px;">Email</label>
                                 </div>
-                                <div class="col-6" style="display: block;   white-space: nowrap;
+                                <div class="col" style="display: block;   white-space: nowrap;
                                 overflow: hidden;
                                 text-overflow: ellipsis;">
                                     <p>
@@ -121,10 +111,10 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <label style="margin-top: 9px;">Phone</label>
                                 </div>
-                                <div class="col-6">
+                                <div class="col">
                                     <p>
                                         <ejs-inplaceeditor id="element" style="font-weight: 700; font-size: large;"
                                             type="Text" data-underline="false" value="{{currentUser.Phone}}"
@@ -134,10 +124,10 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <label style="margin-top: 9px;">Landline</label>
                                 </div>
-                                <div class="col-6">
+                                <div class="col">
                                     <p>
                                         <ejs-inplaceeditor id="element" style="font-weight: 700; font-size: large;"
                                             type="Text" data-underline="false" value="{{currentUser.CellPhone}}"
@@ -147,10 +137,10 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <label style="margin-top: 9px;">Profession</label>
                                 </div>
-                                <div class="col-6">
+                                <div class="col">
                                     <p>
                                         <ejs-inplaceeditor id="element" style="font-weight: 700; font-size: large;"
                                             type="Text" data-underline="false" value="{{currentUser.SpecialOption}}"

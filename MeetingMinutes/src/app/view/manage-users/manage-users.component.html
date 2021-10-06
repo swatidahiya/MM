@@ -8,7 +8,7 @@
                         <div class="col-12">
                             <div style="border-bottom: 1px solid cornflowerblue; padding: 20px;"
                                 *ngFor="let user of users">
-                                <img src="../../../assets/avatar1.png"
+                                <img [src]="transform(user.imageSrc)"
                                     style="height: 50px; width: 50px; border-radius: 50%;" title="{{user.LoginName}}">
                                 <a style="font-size: 18px; color: darkcyan; margin-left: 20px;">{{user.FirstName}}
                                     {{user.LastName}}</a>
