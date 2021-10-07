@@ -40,8 +40,8 @@ export class PollService {
         return this.request('post', this.baseUrl + '/PollOption', data); 
     }
 
-    updatePoll(id: any, data: any) {
-        return this.request('put', this.baseUrl + '/PollOption/' + id, data);
+    updatePoll(data: any) {
+        return this.request('put', this.baseUrl + '/Poll/updatePoll', data);
     }
 
     deletePoll(id: any){

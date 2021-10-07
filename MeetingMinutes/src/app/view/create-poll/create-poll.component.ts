@@ -21,6 +21,7 @@ export class CreatePollComponent implements OnInit {
   optionTwo: any;
   showMessage = false;
   field:any;
+  
 
   constructor(public dialogRef: MatDialogRef<CreatePollComponent>,
               private pollService: PollService,
@@ -47,8 +48,15 @@ export class CreatePollComponent implements OnInit {
     }
     else {
       var arr= [];
-      arr[0]= this.optionOne;
-      arr[1] = this.optionTwo;
+      var obj1= {};
+      var obj2 = {};
+      obj1['option'] = this.optionOne;
+      obj1['voteCount'] = 0;
+      obj2['option'] = this.optionTwo;
+      obj2['voteCount'] = 0;
+      
+      arr[0]= obj1;
+      arr[1] = obj2;
       this.poll.options = arr;
       console.log(this.poll.options)
       // this.poll.options.push(this.optionTwo);

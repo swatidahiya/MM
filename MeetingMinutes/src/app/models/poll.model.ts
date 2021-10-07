@@ -5,7 +5,7 @@ export class Poll {
     Question: string;
     Polldate: Date;
     Active: boolean;
-    options: Array<String>;
-    Answered: Array<String>;
-    Vote: Number;
+    options: Array<Object>;
+    answered: Array<String>;
+    
 }

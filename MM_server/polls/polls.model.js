@@ -7,9 +7,7 @@ const pollSchema = new Schema({
     Polldate: {type: Date},
     Active: {type: Boolean},
     options: {type: Array},
-    Answers: {type: String},
-    Vote: {type: Number}
-
+    answered: {type: Array},
 });
 
 pollSchema.set('toJSON', { virtuals: true });

@@ -7,10 +7,10 @@
         <option *ngFor="let poll of allPoll">{{poll.Question}}</option>
     </select>
     <div *ngIf="dataLoad">
-        <div *ngFor="let answer of activePoll.options; let i = index" style="margin-top: 20px">
+        <div *ngFor="let answer of activePoll['options']; let i = index" style="margin-top: 20px">
 
             <div>
-                <button mat-flat-button color="warn" class="form-control" (click)="addResponse(answer)">{{answer}}</button>
+                <button mat-flat-button color="warn" class="form-control" (click)="addResponse(answer.option)">{{answer.option}}  ({{answer.voteCount}})</button>
             </div>
         </div>
     </div>
@@ -18,10 +18,10 @@
         <label style="margin-right: 10px; color: rgb(117, 117, 117); margin-top: 8px;">Your Selected Answer: </label>
         <a style="margin-left: 10px; margin-top: 8px; color: rgb(99, 96, 96); font-size: 18px;">{{finalAnswer}}</a> 
     </div>
-    <div class="input-group form-group" *ngIf="showmsg">
+    <!-- <div class="input-group form-group" *ngIf="showmsg">
         <label style="margin-right: 10px; color: rgb(117, 117, 117); margin-top: 8px;">Total number of votes now on selected field: </label>
         <a style="margin-left: 10px; margin-top: 8px; color: rgb(99, 96, 96); font-size: 18px;">{{voteCount + 1}}</a> 
-    </div>
+    </div> -->
 </div>
 <mat-divider></mat-divider>
 <br>
