@@ -64,7 +64,7 @@
                     </mat-card>
                 </ng-template>
                 <!-- end row -->
-                <div class="card-box">
+                <!-- <div class="card-box">
                     <h4 class="header-title mt-0 mb-3">Recent Meetings</h4>
                     <div class="" *ngFor="let meeting of allmeeting" (click)="meetingPage(meeting.MeetingID)">
                         <div class="recentMeetings">
@@ -75,8 +75,71 @@
                         </div>
                         <hr>
                     </div>
-                </div>
+                </div> -->
 
+                <div class="card-box">
+                    <mat-tab-group>
+                        <mat-tab label="Action Items">
+                            <!-- <h4 class="header-title mb-3">Assignment</h4> -->
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Project Name</th>
+                                            <th>Start Date</th>
+                                            <th>Status</th>
+                                            <th>Priority</th>
+                                            <th>Assignee</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let action of actions; let i = index"
+                                            (click)="actionListPage(action.ActionItemID)" class="recentMeetings">
+                                            <td>{{i+1}}</td>
+                                            <td>{{action.ActionItem_Title}}</td>
+                                            <td>{{action.ActionDate | date:'shortDate'}}</td>
+                                            <td *ngIf="action.Status === 1">In Progress</td>
+                                            <td *ngIf="action.Status === 0">Overdue</td>
+                                            <td *ngIf="action.Status === 2">Complete</td>
+                                            <td><span class="label label-info">{{action.Priority}}</span></td>
+                                            <td>{{action.ActionAssignedTo}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </mat-tab>
+                        <mat-tab label="Decision List">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Project Name</th>
+                                            <!-- <th>Start Date</th> -->
+                                            <th>Status</th>
+                                            <th>Priority</th>
+                                            <th>Assignee</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let decision of decisions; let i = index"
+                                            (click)="decisionListPage(decision.DecisionItemID)" class="recentMeetings">
+                                            <td>{{i+1}}</td>
+                                            <td>{{decision.DecisionItem_Title}}</td>
+                                            <!-- <td>{{decision.DecisionDate}}</td> -->
+                                            <td *ngIf="decision.Status === 1">In Progress</td>
+                                            <td *ngIf="decision.Status === 0">Overdue</td>
+                                            <td *ngIf="decision.Status === 2">Complete</td>
+                                            <td><span class="label label-info">{{decision.Priority}}</span></td>
+                                            <td>{{decision.DecisionAssignedTo}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
             </div>
             <div class="col-xl-4">
                 <!-- Personal-Information -->
@@ -89,7 +152,21 @@
                         <img style="height: 50px; width: 50px;" src="../../../assets/giphy_loading.gif">
                     </ng-template>
                 </div>
-                <!-- Personal-Information -->
+
+
+                <div class="card-box">
+                    <h4 class="header-title mt-0 mb-3">Recent Meetings</h4>
+                    <div class="" *ngFor="let meeting of allmeeting" (click)="meetingPage(meeting.MeetingID)">
+                        <div class="recentMeetings">
+                            <h5 class="text-custom">{{meeting.project_Name}}</h5>
+                            <p class="mb-0">{{meeting.Meeting_Subject}}</p>
+                            <p><b>{{meeting.MeetingTime}}</b></p>
+                            <p class="text-muted font-13 mb-0">{{meeting.Meeting_objective}}</p>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+                <!-- Personal-Information
                 <div class="card-box ribbon-box">
                     <div class="ribbon ribbon-primary">Activity Logs</div>
                     <div class="clearfix"></div>
@@ -160,13 +237,12 @@
                             </div>
                         </a>
                     </div>
-                </div>
+                </div> -->
             </div>
-            <div class="col-xl-12">
+            <!-- <div class="col-xl-12">
                 <div class="card-box">
                     <mat-tab-group>
                         <mat-tab label="Action Items">
-                            <!-- <h4 class="header-title mb-3">Assignment</h4> -->
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
@@ -202,7 +278,6 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Project Name</th>
-                                            <!-- <th>Start Date</th> -->
                                             <th>Status</th>
                                             <th>Priority</th>
                                             <th>Assignee</th>
@@ -213,7 +288,6 @@
                                             (click)="decisionListPage(decision.DecisionItemID)" class="recentMeetings">
                                             <td>{{i+1}}</td>
                                             <td>{{decision.DecisionItem_Title}}</td>
-                                            <!-- <td>{{decision.DecisionDate}}</td> -->
                                             <td *ngIf="decision.Status === 1">In Progress</td>
                                             <td *ngIf="decision.Status === 0">Overdue</td>
                                             <td *ngIf="decision.Status === 2">Complete</td>
@@ -226,7 +300,7 @@
                         </mat-tab>
                     </mat-tab-group>
                 </div>
-            </div>
+            </div> -->
             <!-- end col -->
         </div>
         <!-- end row -->

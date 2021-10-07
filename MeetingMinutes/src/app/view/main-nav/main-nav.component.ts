@@ -16,6 +16,7 @@ import { MeetingService } from 'src/app/controllers/meetings.service';
 import { SearchDialogComponent } from '../search-dialog/search-dialog.component';
 import { DeviceDetectorService } from 'ngx-device-detector'
 import { MatFabMenu } from '@angular-material-extensions/fab-menu';
+import { DomSanitizer } from '@angular/platform-browser';
 
 export interface ActionDailogData {
   meetingID: any;
@@ -34,7 +35,6 @@ export class MainNavComponent implements OnInit {
   dataLoad = false;
   allUser: User[];
   imageToShow: any;
-  isImageLoading = true;
 
   userId: string = "offline-demo";
   username: string;
@@ -98,7 +98,8 @@ export class MainNavComponent implements OnInit {
     private userService: UserService,
     private http: HttpClient,
     private deviceDetectorService: DeviceDetectorService,
-    private meetingService: MeetingService) { }
+    private meetingService: MeetingService,
+    private domSanitizer: DomSanitizer,) { }
 
   ngOnInit(): void {
     this.refresh();
@@ -209,18 +210,19 @@ export class MainNavComponent implements OnInit {
   }
 
   async getProfilePic() {
-    this.isImageLoading = true;
     var id = this.currentUser.AppUserID;
     this.userService.getUploadProfile(id, this.currentUser.MiddleName)
       .subscribe(res => {
         // console.log(res)
         this.createImageFromBlob(res);
-        this.isImageLoading = false;
 
       }, error => {
-        this.isImageLoading = true;
         console.log(error);
       });
+  }
+
+  transform() {
+    return this.domSanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + this.currentUser.imageSrc);
   }
 
   createImageFromBlob(image: Blob) {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/controllers/user.service';
 import { User } from 'src/app/models/user.model';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-manage-users',
@@ -18,7 +19,8 @@ export class ManageUsersComponent implements OnInit {
   deviceDetectorInfo = null;
 
   constructor(private userService: UserService,
-    private deviceDetectorService: DeviceDetectorService) { }
+    private deviceDetectorService: DeviceDetectorService,
+    private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.refresh()
@@ -57,5 +59,9 @@ export class ManageUsersComponent implements OnInit {
     const isDesktop = this.deviceDetectorService.isDesktop();
     // console.log("Device Info" + isDesktop)
     return isDesktop;
+  }
+
+  transform(imageSrc: any) {
+    return this.domSanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + imageSrc);
   }
 }

@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 // const bcrypt = require('bcryptjs');
 const db = require('../db');
 const User = db.User;
+var fs = require('fs');
 
 module.exports = {
     getById,
@@ -13,7 +14,8 @@ module.exports = {
     getAllUsers,
     updateUser,
     deleteUser,
-    updateProfile
+    updateProfile,
+    base64_encode
 }
 
 async function getById(idParam) {
@@ -38,21 +40,29 @@ async function checkEmail(emailParam) {
 async function createUser(userParam) {
     var users = await getAllUsers();
 
+    const default_profile = await base64_encode('assets/default_icon.png');
+
     if (users.length > 0) {
         users = users.sort(function (a, b) { return b.AppUserID - a.AppUserID });
         userParam.AppUserID = users[0].AppUserID + 1;
         const user = new User(userParam);
+        user.profilePic = fs.readFileSync('assets/default_icon.png');
+        user.imageSrc = default_profile;
         await user.save();
-        console.log(user)
 
     }
     else {
         userParam.AppUserID = 1;
         const user = new User(userParam);
+        user.profilePic = fs.readFileSync('assets/default_icon.png');
+        user.imageSrc = default_profile;
         await user.save();
-        console.log(user)
-
     }
+}
+
+async function base64_encode(file) {
+    var bitmap = fs.readFileSync(file);
+    return new Buffer(bitmap).toString('base64');
 }
 
 async function updateUser(req) {
