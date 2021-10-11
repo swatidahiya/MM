@@ -150,49 +150,46 @@ export class NewMeetingComponent implements OnInit {
 
     var count = 0;
     partipatents.forEach(email => {
-      if(email == this.currentUser.Email) {
+      if (email == this.currentUser.Email) {
         count++;
       }
     });
 
-    if(count == 0) {
+    if (count == 0) {
       partipatents.push(this.currentUser.Email)
     }
 
     object['Partipatents'] = partipatents;
     object['MeetingAssignedTo'] = assignee;
 
-    console.log(object)
+    var mailObject = {};
+    mailObject["subject"] = "Meeting Invitation",
+    mailObject["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + object.Meeting_Subject;
+    mailObject["MeetingSubject"] = object.Meeting_Subject;
+    mailObject["MeetingDate"] = object.MeetingTime;
+    mailObject["HostUser"] = object.HostUser;
+    mailObject["MeetingDescription"] = object.Meeting_objective;
 
 
-  await this.meetingService.postMeeting(object).then(result => {
-    console.log(result)
-      // this.displayName.push(this.currentUser)
-      // object["toname"] = this.currentUser.FirstName +" "+ this.currentUser.LastName
-      // for(var i = 0; i< this.displayName.length; i++) {
-      //   object["toemail"] = this.displayName[i].Email;
-      //   var temp = this.options.find(({ Email }) => Email === this.displayName[i].Email);
-      //   object["Meeting_Location"] = "https://meetingminutes.checkboxtechnology.com/videoRoom/"+this.meeting.RoomKey;
-      //   console.log(object)
+    await this.meetingService.postMeeting(object).then(result => {
+      this.displayName.push(this.currentUser)
+      mailObject["toname"] = this.currentUser.FirstName + " " + this.currentUser.LastName;
 
-      //   await this.meetingService.sendMail(object).then(result => {
-      //     console.log("Message sent");
-      //   })
-      // }
+      for (var i = 0; i < this.displayName.length; i++) {
+        mailObject["toemail"] = this.displayName[i].Email;
+        var temp = this.options.find(({ Email }) => Email === this.displayName[i].Email);
+        mailObject["Meeting_Location"] = "https://meetingminutes.checkboxtechnology.com/videoRoom/" + object.RoomKey;
+
+        this.meetingService.sendMail(mailObject).then(result => {
+          console.log("Message sent");
+        })
+      }
+      alert("Meeting scheduled successfully!")
+      this.route.navigate(['/dashboard/'])
+
     })
-  // }
-
-
-
-
-    // var mailObject = {};
-    // mailObject["subject"] = "Meeting Invitation",
-    // mailObject["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + object.Meeting_Subject;
-    // mailObject["MeetingSubject"] = object.Meeting_Subject;
-    // mailObject["MeetingDate"] = object.MeetingTime;
-    // mailObject["HostUser"] = this.me.HostUser;
-    // mailObject["MeetingDescription"] = this.meeting.Agenda;
   }
+
 
   getPosts(val: any) {
     if (this.contacts.indexOf(val) === -1) {
