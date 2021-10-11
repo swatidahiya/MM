@@ -44,7 +44,7 @@ export class MeetingDetailsComponent implements OnInit {
   decisions: Decisions;
   tempActionPage = false;
   tempDecisionPage = false;
-  participants: string[];
+  participants: any;
   newParticipant = false;
   filesLoaded = false;
   allFiles = [];
@@ -173,7 +173,7 @@ export class MeetingDetailsComponent implements OnInit {
       console.log(this.timeToDisplay)
 
       if (this.meeting.Partipatents.length !== 0) {
-        this.participants = this.meeting.Partipatents.split(',');
+        this.participants = this.meeting.Partipatents;
         console.log(this.meeting)
       }
       else{
@@ -330,7 +330,7 @@ export class MeetingDetailsComponent implements OnInit {
 
     object["MeetingID"] = this.meeting.MeetingID;
     object["Meeting_Subject"] = this.meeting.Meeting_Subject;
-    object["project_Name"] = this.meeting.project_Name;
+    // object["project_Name"] = this.meeting.project_Name;
     object["Meeting_objective"] = this.meeting.Meeting_objective;
     object["Agenda"] = this.meeting.Agenda;
     object["Agenda_SubItem"] = this.meeting.Agenda_SubItem
@@ -381,7 +381,7 @@ export class MeetingDetailsComponent implements OnInit {
     var object = {};
     object["MeetingID"] = this.meeting.MeetingID;
     object["Meeting_Subject"] = this.meeting.Meeting_Subject;
-    object["project_Name"] = this.meeting.project_Name;
+    // object["project_Name"] = this.meeting.project_Name;
     object["Meeting_objective"] = this.meeting.Meeting_objective;
     object["Agenda"] = this.meeting.Agenda;
     object["Agenda_SubItem"] = this.meeting.Agenda_SubItem
@@ -415,7 +415,7 @@ export class MeetingDetailsComponent implements OnInit {
     var object = {};
     object["MeetingID"] = this.meeting.MeetingID;
     object["Meeting_Subject"] = this.meeting.Meeting_Subject;
-    object["project_Name"] = this.meeting.project_Name;
+    // object["project_Name"] = this.meeting.project_Name;
     object["Meeting_objective"] = this.meeting.Meeting_objective;
     object["Agenda"] = this.meeting.Agenda;
     object["Agenda_SubItem"] = this.meeting.Agenda_SubItem
@@ -445,7 +445,7 @@ export class MeetingDetailsComponent implements OnInit {
     var object = {};
     object["MeetingID"] = this.meeting.MeetingID;
     object["Meeting_Subject"] = this.meeting.Meeting_Subject;
-    object["project_Name"] = this.meeting.project_Name;
+    // object["project_Name"] = this.meeting.project_Name;
     object["Meeting_objective"] = this.meeting.Meeting_objective;
     object["Agenda"] = this.meeting.Agenda;
     object["Agenda_SubItem"] = this.meeting.Agenda_SubItem
@@ -475,7 +475,7 @@ export class MeetingDetailsComponent implements OnInit {
     var object = {};
     object["MeetingID"] = this.meeting.MeetingID;
     object["Meeting_Subject"] = this.meeting.Meeting_Subject;
-    object["project_Name"] = this.meeting.project_Name;
+    // object["project_Name"] = this.meeting.project_Name;
     object["Meeting_objective"] = this.meeting.Meeting_objective;
     object["Agenda"] = this.meeting.Agenda;
     object["Agenda_SubItem"] = this.meeting.Agenda_SubItem
@@ -493,7 +493,7 @@ export class MeetingDetailsComponent implements OnInit {
 
     var mailobject = {};
     mailobject["subject"] = "Meeting Agenda Updated",
-      mailobject["message"] = "This is to inform you that, agenda has been change for meeting name '" + this.meeting.project_Name + "'" + ".<br/> <br/>" + "The new agenda is : " + this.meeting.Agenda;
+      mailobject["message"] = "This is to inform you that, agenda has been change for meeting name '" + this.meeting.Meeting_Subject + "'" + ".<br/> <br/>" + "The new agenda is : " + this.meeting.Agenda;
     mailobject["MeetingSubject"] = this.meeting.Meeting_Subject;
     mailobject["MeetingDate"] = this.meeting.MeetingTime;
     mailobject["NewMeetingDate"] = this.meeting.MeetingTime;
@@ -544,7 +544,7 @@ export class MeetingDetailsComponent implements OnInit {
     var object = {};
     object["MeetingID"] = this.meeting.MeetingID;
     object["Meeting_Subject"] = this.meeting.Meeting_Subject;
-    object["project_Name"] = this.meeting.project_Name;
+    // object["project_Name"] = this.meeting.project_Name;
     object["Meeting_objective"] = this.meeting.Meeting_objective;
     object["Agenda"] = this.meeting.Agenda;
     object["Agenda_SubItem"] = this.meeting.Agenda_SubItem
@@ -562,7 +562,7 @@ export class MeetingDetailsComponent implements OnInit {
 
     var mailobject = {};
     mailobject["subject"] = "Meeting Cancellation",
-      mailobject["message"] = "We are kindly to inform you that the meeting name " + this.meeting.project_Name + " has been cancelled.";
+      mailobject["message"] = "We are kindly to inform you that the meeting name " + this.meeting.Meeting_Subject + " has been cancelled.";
     mailobject["MeetingSubject"] = this.meeting.Meeting_Subject;
     mailobject["MeetingDate"] = this.meeting.MeetingTime;
     mailobject["HostUser"] = this.meeting.HostUser;
@@ -596,7 +596,7 @@ export class MeetingDetailsComponent implements OnInit {
       var object = {};
       object["MeetingID"] = this.meeting.MeetingID;
       object["Meeting_Subject"] = this.meeting.Meeting_Subject;
-      object["project_Name"] = this.meeting.project_Name;
+      // object["project_Name"] = this.meeting.project_Name;
       object["Meeting_objective"] = this.meeting.Meeting_objective;
       object["Agenda"] = this.meeting.Agenda;
       object["Agenda_SubItem"] = this.meeting.Agenda_SubItem
@@ -620,7 +620,7 @@ export class MeetingDetailsComponent implements OnInit {
 
       var mailobject = {};
       mailobject["subject"] = "Meeting Invitation",
-      mailobject["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + this.meeting.project_Name;
+      mailobject["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + this.meeting.Meeting_Subject;
       mailobject["MeetingSubject"] = this.meeting.Meeting_Subject;
       mailobject["MeetingDate"] = this.meeting.MeetingTime;
       mailobject["HostUser"] = this.meeting.HostUser;
@@ -650,7 +650,7 @@ export class MeetingDetailsComponent implements OnInit {
     var object = {};
     object["MeetingID"] = this.meeting.MeetingID;
     object["Meeting_Subject"] = this.meeting.Meeting_Subject;
-    object["project_Name"] = this.meeting.project_Name;
+    // object["project_Name"] = this.meeting.project_Name;
     object["Meeting_objective"] = this.meeting.Meeting_objective;
     object["Agenda"] = this.meeting.Agenda;
     object["Agenda_SubItem"] = this.meeting.Agenda_SubItem
@@ -688,7 +688,7 @@ export class MeetingDetailsComponent implements OnInit {
       var object = {};
       object["MeetingID"] = this.meeting.MeetingID;
       object["Meeting_Subject"] = this.meeting.Meeting_Subject;
-      object["project_Name"] = this.meeting.project_Name;
+      // object["project_Name"] = this.meeting.project_Name;
       object["Meeting_objective"] = this.meeting.Meeting_objective;
       object["Agenda"] = this.meeting.Agenda;
       object["Agenda_SubItem"] = this.meeting.Agenda_SubItem;
@@ -714,7 +714,7 @@ export class MeetingDetailsComponent implements OnInit {
 
       var mailObject = {};
       mailObject["subject"] = "Re-Schedule Meeting",
-      mailObject["message"] = "The meeting name " + "'" + this.meeting.project_Name + "'" + " is Re-scheduled on '" + this.meeting.MeetingDate + "' at " + this.meeting.MeetingTime;
+      mailObject["message"] = "The meeting name " + "'" + this.meeting.Meeting_Subject + "'" + " is Re-scheduled on '" + this.meeting.MeetingDate + "' at " + this.meeting.MeetingTime;
       mailObject["MeetingSubject"] = this.meeting.Meeting_Subject;
       mailObject["MeetingDate"] = this.meeting.MeetingTime;
       mailObject["NewMeetingDate"] = temp.toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
@@ -902,7 +902,7 @@ export class MeetingDetailsComponent implements OnInit {
       var id = this._route.snapshot.params['id'];
       // console.log(this.commentArea.nativeElement.value);
       var object = {};
-      object["project_Name"] = this.meeting.project_Name;
+      // object["project_Name"] = this.meeting.project_Name;
       object["Comment1"] = this.commentArea.nativeElement.value;
       var temp = new Date();
       temp.setDate(temp.getDate() + 1);
@@ -931,7 +931,7 @@ export class MeetingDetailsComponent implements OnInit {
         this.meeting = data;
       });
       this.meetingNotes.MeetingID = this.meeting.MeetingID;
-      this.meetingNotes.project_Name = this.meeting.project_Name;
+      // this.meetingNotes.project_Name = this.meeting.project_Name;
       this.meetingNotes.LoginName = this.currentUser.LoginName;
       this.meetingNotes.Status = this.meeting.Status;
       this.meetingNotes.meetingNotes = this.meetingText.nativeElement.value
@@ -970,22 +970,20 @@ export class MeetingDetailsComponent implements OnInit {
 
     var object = {};
     object["subject"] = " Thanks for taking the time to meet with me today";
-    object["message"] = " Thanks for meeting with me today. I enjoyed our meeting very much and look forward to meeting you again.<br/>" + "<br/> With the meeting '" + this.meeting.project_Name + "', we conclude to this : <br/> <br/>" + this.meeting.Conclusion;
+    object["message"] = " Thanks for meeting with me today. I enjoyed our meeting very much and look forward to meeting you again.<br/>" + "<br/> With the meeting '" + this.meeting.Meeting_Subject + "', we conclude to this : <br/> <br/>" + this.meeting.Conclusion;
     object["MeetingSubject"] = this.meeting.Meeting_Subject;
     object["MeetingDate"] = this.meeting.MeetingTime;
     object["HostUser"] = this.meeting.HostUser;
-    // object["ShareLink"] = "www.checkboxtechnology.com";
    
     object["MeetingDescription"] = this.meeting.Agenda;
     object["Conclusion"] = this.meeting.Conclusion;
 
     if (this.meeting.Partipatents !== null) {
-      this.participants = this.meeting.Partipatents.split(',');
+      this.participants = this.meeting.Partipatents;
     }
     for (var i = 0; i < this.participants.length; i++) {
       var temp = this.options.find(({ Email }) => Email === this.participants[i]);
       object["toname"] = temp.FirstName +" "+ temp.LastName;
-      // object["toemail"] = this.participants.toString();
       object["toemail"] = temp.Email;
       object["Meeting_Location"]="https://meetingminutes.checkboxtechnology.com/videoRoom/" + this.meeting.RoomKey + '$' + this.currentUser.FirstName;
       this.meetingService.sendMailConclusion(object).then(result => {

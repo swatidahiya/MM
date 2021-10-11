@@ -123,7 +123,7 @@ export class DashboardComponent implements OnInit {
       this.meetingLenght = data.length;
       for (var i = 0; i < data.length; i++) {
         if (data[i].Partipatents !== null) {
-          this.participants = data[i].Partipatents.split(',');
+          this.participants = data[i].Partipatents;;
         }
         var c = 0;
         for (var j = 0; j < this.participants.length; j++) {
@@ -230,7 +230,7 @@ export class DashboardComponent implements OnInit {
       for (var i = 0; i < data.length; i++) {
         if (data[i].reoccrence === 'Yes' || data[i].reoccrence === null) {
           if (data[i].Partipatents !== null) {
-            this.participants = data[i].Partipatents.split(',');
+            this.participants = data[i].Partipatents;
           }
           var c = 0;
           for (var j = 0; j < this.participants.length; j++) {

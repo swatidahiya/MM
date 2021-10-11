@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl, NgForm } from '@angular/forms';
 import { Meetings } from '../../models/meetings.model'
 import { MeetingService } from 'src/app/controllers/meetings.service';
 import { User } from 'src/app/models/user.model';
@@ -24,11 +24,9 @@ export class NewMeetingComponent implements OnInit {
   firstFormGroup: FormGroup
   secondFormGroup: FormGroup
   thirdFormGroup: FormGroup;
-  // options: string[] = ['Anuj Kumar', 'Danish Ahmad', 'Ankur Garg', 'Mohit Sharma', 'Anil Garg'];
   options: User[];
   contacts = [];
   displayName = [];
-  // project_NameText: any;
   showFirstMessage = "Please fill up all the fields";
 
   firstFormSubmit = false;
@@ -44,125 +42,172 @@ export class NewMeetingComponent implements OnInit {
 
   ngOnInit() {
     this.minDate = new Date();
-    this.firstFormGroup = this._formBuilder.group({
-      // 'project_Name': this.project_Name,
-      project_Name: [null, Validators.required],
-      Meeting_Subject: ['', Validators.required],
-      Meeting_objective: ['', Validators.required]
-    });
-    this.secondFormGroup = this._formBuilder.group({
-      Meeting_Location: ['', Validators.required],
-      Agenda: ['', Validators.required],
-      MeetingDate: ['', Validators.required],
-      // MeetingTime: ['', Validators.required]
-    });
-    this.thirdFormGroup = this._formBuilder.group({
-      Partipatents: ['', Validators.required]
-    });
-    this.refresh();
-    this.currentUser = this.userService.currentUserValue;
-    // var data = this.userService.checkUser(this.currentUser.LoginName).then(result => {
-    //   if (result) {
-    //     if (this.currentUser.IsActive === true) {
-    //       this.refresh();
-    //     } else {
-    //       alert("Your account has been blocked. Please contact admin!");
-    //       this.route.navigateByUrl('/login')
-    //     }
-    //   } else {
-    //     alert("Your account has been deleted. Please contact admin!");
-    //     this.route.navigateByUrl('/login')
-    //   }
+    // this.firstFormGroup = this._formBuilder.group({
+    //   project_Name: [null, Validators.required],
+    //   Meeting_Subject: ['', Validators.required],
+    //   Meeting_objective: ['', Validators.required]
     // });
+    // this.secondFormGroup = this._formBuilder.group({
+    //   Meeting_Location: ['', Validators.required],
+    //   Agenda: ['', Validators.required],
+    //   MeetingDate: ['', Validators.required],
+    // });
+    // this.thirdFormGroup = this._formBuilder.group({
+    //   Partipatents: ['', Validators.required]
+    // });
+    this.refresh();
 
-    // this.refresh();
   }
 
   async refresh() {
-    // this.currentUser = this.userService.currentUserValue;
+    this.currentUser = this.userService.currentUserValue;
     const data = this.userService.getAllUsers().then(result => {
       this.options = result;
     })
 
   }
 
-  get f() { return this.firstFormGroup.controls;}
+  get f() { return this.firstFormGroup.controls; }
 
-  form1() {
-    this.firstFormSubmit = true;
+  // form1() {
+  //   this.firstFormSubmit = true;
 
-    if(this.firstFormGroup.invalid){
-      return
+  //   if(this.firstFormGroup.invalid){
+  //     return
+  //   }
+
+  //   this.meeting.project_Name = this.firstFormGroup.value.project_Name;
+  //   this.meeting.Meeting_Subject = this.firstFormGroup.value.Meeting_Subject;
+  //   this.meeting.Meeting_objective = this.firstFormGroup.value.Meeting_objective;
+  //   this.meeting.Conclusion = "Add Your Conclusion Here!";
+  //   this.meeting.reoccrence = 'Yes';
+  // }
+
+  // form2() {
+  //   this.meeting.Meeting_Location = this.secondFormGroup.value.Meeting_Location;
+  //   this.meeting.Agenda = this.secondFormGroup.value.Agenda;
+  //   var temp = new Date(this.secondFormGroup.value.MeetingDate);
+
+  //   this.meeting.MeetingDate = temp;
+  //   this.meeting.MeetingTime = temp.toLocaleString("en-US", {timeZone: "Asia/Kolkata"});
+
+  //   this.meeting.Status = 0;
+  //   this.meeting.HostUser = this.currentUser.LoginName;
+  //   this.meeting.RoomKey = Math.floor(Math.random() * 0xFFFFFF);
+  // }
+
+  // async form3() {
+  //   this.contacts.push(this.currentUser.Email);
+  //   this.meeting.Partipatents = this.contacts.toString();
+  //   var object = {};
+  //   object["subject"] = "Meeting Invitation",
+  //   object["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + this.meeting.project_Name;
+  //   object["MeetingSubject"] = this.meeting.Meeting_Subject;
+  //   object["MeetingDate"] = this.meeting.MeetingTime;
+  //   object["HostUser"] = this.meeting.HostUser;
+
+  //   object["MeetingDescription"] = this.meeting.Agenda;
+
+  //   console.log(this.meeting)
+
+  //   await this.meetingService.postMeeting(this.meeting).then(async () => {
+  //     this.displayName.push(this.currentUser)
+  //     object["toname"] = this.currentUser.FirstName +" "+ this.currentUser.LastName
+  //     for(var i = 0; i< this.displayName.length; i++) {
+  //       object["toemail"] = this.displayName[i].Email;
+  //       var temp = this.options.find(({ Email }) => Email === this.displayName[i].Email);
+  //       object["Meeting_Location"] = "https://meetingminutes.checkboxtechnology.com/videoRoom/"+this.meeting.RoomKey;
+  //       console.log(object)
+
+  //       await this.meetingService.sendMail(object).then(result => {
+  //         console.log("Message sent");
+  //       })
+  //     }
+  //   })
+  // }
+
+  async createMeeting(formData: NgForm) {
+
+    var object = formData.value;
+    var partipatents = [];
+    var assignee = [];
+
+    var temp = new Date(formData.value.MeetingDate);
+
+    object.MeetingDate = temp;
+    object['MeetingTime'] = temp.toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+
+    object['Status'] = 0;
+    object['HostUser'] = this.currentUser.LoginName;
+    object['RoomKey'] = Math.floor(Math.random() * 0xFFFFFF);
+    object['Conclusion'] = "Add Your Conclusion Here!";
+    object['reoccrence'] = 'Yes';
+
+    this.displayName.forEach(user => {
+      partipatents.push(user.Email);
+      assignee.push(user.LoginName);
+    });
+
+    var count = 0;
+    partipatents.forEach(email => {
+      if(email == this.currentUser.Email) {
+        count++;
+      }
+    });
+
+    if(count == 0) {
+      partipatents.push(this.currentUser.Email)
     }
 
-    this.meeting.project_Name = this.firstFormGroup.value.project_Name;
-    this.meeting.Meeting_Subject = this.firstFormGroup.value.Meeting_Subject;
-    this.meeting.Meeting_objective = this.firstFormGroup.value.Meeting_objective;
-    this.meeting.Conclusion = "Add Your Conclusion Here!";
-    this.meeting.reoccrence = 'Yes';
-  }
+    object['Partipatents'] = partipatents;
+    object['MeetingAssignedTo'] = assignee;
 
-  form2() {
-    this.meeting.Meeting_Location = this.secondFormGroup.value.Meeting_Location;
-    this.meeting.Agenda = this.secondFormGroup.value.Agenda;
-    var temp = new Date(this.secondFormGroup.value.MeetingDate);
-    // temp.setDate(temp.getDate() + 1);
+    console.log(object)
 
-    this.meeting.MeetingDate = temp;
-    this.meeting.MeetingTime = temp.toLocaleString("en-US", {timeZone: "Asia/Kolkata"});
- 
-    this.meeting.Status = 0;
-    this.meeting.HostUser = this.currentUser.LoginName;
-    this.meeting.RoomKey = Math.floor(Math.random() * 0xFFFFFF);
-  }
 
-  async form3() {
-    this.contacts.push(this.currentUser.Email);
-    this.meeting.Partipatents = this.contacts.toString();
-    var object = {};
-    object["subject"] = "Meeting Invitation",
-    object["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + this.meeting.project_Name;
-    object["MeetingSubject"] = this.meeting.Meeting_Subject;
-    object["MeetingDate"] = this.meeting.MeetingTime;
-    object["HostUser"] = this.meeting.HostUser;
-    // object["ShareLink"] = "http://meetingminutes.checkboxtechnology.com:8098/login";
-   
-    object["MeetingDescription"] = this.meeting.Agenda;
+  await this.meetingService.postMeeting(object).then(result => {
+    console.log(result)
+      // this.displayName.push(this.currentUser)
+      // object["toname"] = this.currentUser.FirstName +" "+ this.currentUser.LastName
+      // for(var i = 0; i< this.displayName.length; i++) {
+      //   object["toemail"] = this.displayName[i].Email;
+      //   var temp = this.options.find(({ Email }) => Email === this.displayName[i].Email);
+      //   object["Meeting_Location"] = "https://meetingminutes.checkboxtechnology.com/videoRoom/"+this.meeting.RoomKey;
+      //   console.log(object)
 
-    console.log(this.meeting)
-
-    await this.meetingService.postMeeting(this.meeting).then(async () => {
-      this.displayName.push(this.currentUser)
-      object["toname"] = this.currentUser.FirstName +" "+ this.currentUser.LastName
-      for(var i = 0; i< this.displayName.length; i++) {
-        object["toemail"] = this.displayName[i].Email;
-        var temp = this.options.find(({ Email }) => Email === this.displayName[i].Email);
-        object["Meeting_Location"] = "https://meetingminutes.checkboxtechnology.com/videoRoom/"+this.meeting.RoomKey;
-        console.log(object)
-
-        await this.meetingService.sendMail(object).then(result => {
-          console.log("Message sent");
-        })
-      }
+      //   await this.meetingService.sendMail(object).then(result => {
+      //     console.log("Message sent");
+      //   })
+      // }
     })
+  // }
+
+
+
+
+    // var mailObject = {};
+    // mailObject["subject"] = "Meeting Invitation",
+    // mailObject["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + object.Meeting_Subject;
+    // mailObject["MeetingSubject"] = object.Meeting_Subject;
+    // mailObject["MeetingDate"] = object.MeetingTime;
+    // mailObject["HostUser"] = this.me.HostUser;
+    // mailObject["MeetingDescription"] = this.meeting.Agenda;
   }
 
   getPosts(val: any) {
- 
-    this.thirdFormGroup.value.Partipatents = val;
-    if(this.contacts.indexOf(val) === -1) {
+    if (this.contacts.indexOf(val) === -1) {
       this.contacts.push(val);
-    var tempUser = this.options.find(({ Email }) => Email === val);
-    if(this.displayName.indexOf(tempUser) === -1) {
-      this.displayName.push(tempUser)
-    } 
-  }
+      var tempUser = this.options.find(({ Email }) => Email === val);
+      if (this.displayName.indexOf(tempUser) === -1) {
+        this.displayName.push(tempUser)
+      }
+    }
     else {
       alert("The user is already added");
-     }
+    }
   }
 
-  onCancelUser(val: any,  email: any) {
+  onCancelUser(val: any, email: any) {
     const index: number = this.contacts.indexOf(email);
     if (index !== -1) {
       this.contacts.splice(index, 1);

@@ -1,102 +1,93 @@
-
- /* @import "plugins/select2/css/select2.min.css"; */
- /* href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css"> */
-
- .main{
+/* .main{
     background-color: rgb(235, 235, 235);
     align-content: center;
     height: 100%;
-}
+} */
 
 #container{
     background-image: url('src/assets/background.jpg');
     min-height: 900px;
     background-size: cover;
     background-repeat: repeat-y;
-    align-content: center;
 }
 
 .card{
-    /* height: 770px; */
     margin-top: 30px;
     margin-bottom: auto;
     width: 90%;
-    /* height: 100%; */
     margin: 0% 5%;
     background-color: rgb(253, 253, 253) !important;
     border-radius: 20px;
-    /* border-radius: 20px; */
 }
 
-.card-header h6{
+/* .card-header h6{
 color: black;
 justify-content: center;
 text-align: center;
-}
+} */
 
-.input-group-prepend span{
+/* .input-group-prepend span{
 width: 50px;
 background-color: rgb(54, 212, 67);
 color: black;
 border:0 !important;
-}
+} */
 
 
-input:focus{
+/* input:focus{
 outline: 0 0 0 0  !important;
 box-shadow: 0 0 0 0 !important;
 
-}
+} */
 
-.remember{
+/* .remember{
 color: white;
-}
+} */
 
-.remember input
+/* .remember input
 {
 width: 20px;
 height: 20px;
 margin-left: 15px;
 margin-right: 5px;
-}
+} */
 
-.login_btn{
+/* .login_btn{
 color: black;
 background-color: rgb(54, 212, 67);
 width: 100px;
-}
+} */
 
-.login_btn:hover{
+/* .login_btn:hover{
 color: rgb(255, 255, 255);
 background-color: rgb(35, 90, 25);
-}
+} */
 
- ::ng-deep .mat-step-header .mat-step-icon-selected {
+ /* ::ng-deep .mat-step-header .mat-step-icon-selected {
     background-color: rgb(54, 212, 67); 
- }
+ } */
 
-.spacer {
+/* .spacer {
     flex: 1 1 auto;
-}
+} */
 
-.ribbon {
+/* .ribbon {
     position: absolute;
-}
+} */
 
-.ribbon {
+/* .ribbon {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     background: white;
     top: 5px;
-    /* left: 150px; */
     margin-left: 70px;
     padding: 8px 1px;
     color: white;
     text-align: center    ;
     justify-content: center;
     font-size: 10px;
-}
+} */
 
 .contactList {
     border: 1px inset rgb(113, 165, 113);
@@ -113,4 +104,21 @@ background-color: rgb(35, 90, 25);
     font-size: 18px;
     float: right;
     color: rgb(113, 165, 113);
+}
+
+.meeting-heading span {
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.submit-btn {
+    background-color: none;
+    border: 1px solid chartreuse;
+    border-radius: 5px;
+    font-weight: 500;
+    color: rgb(0, 0, 0);
+    padding: 10px 20px;
+}
+.submit-btn:hover {
+    background-color: chartreuse;
 }

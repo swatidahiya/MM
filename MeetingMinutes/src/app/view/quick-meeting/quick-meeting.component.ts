@@ -142,7 +142,7 @@ export class QuickMeetingComponent implements OnInit {
       this.field = 'Meeting Agenda'
     }
     else {
-      this.meeting.Partipatents = this.contacts.toString();
+      this.meeting.Partipatents = this.contacts;
       var temp = Date.now();
       var temp1 = new Date(temp);
       temp1.setHours(temp1.getHours() + 1);
@@ -156,7 +156,7 @@ export class QuickMeetingComponent implements OnInit {
       console.log(this.meeting)
       var object = {};
       object["subject"] = "Meeting Invitation",
-        object["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + this.meeting.project_Name;
+        object["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + this.meeting.Meeting_Subject;
       object["MeetingSubject"] = this.meeting.Meeting_Subject;
       object["MeetingDate"] = this.meeting.MeetingTime;
       object["HostUser"] = this.meeting.HostUser;

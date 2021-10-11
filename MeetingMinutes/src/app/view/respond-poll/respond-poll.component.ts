@@ -76,19 +76,19 @@ export class RespondPollComponent implements OnInit {
     this.pollOptionTemp = this.activePoll.options;
     console.log(this.pollOptionTemp)
     console.log(this.pollOptionTemp[1])
-    console.log(this.pollOptionTemp[1].option);
+    // console.log(this.pollOptionTemp[1].option);
   }
 
   addResponse(answer: any) {
   
     
-      for(var i=0; i<this.pollOptionTemp.length; i++)
-      {
-        if(answer===this.pollOptionTemp[i].option){
-          this.pollOptionTemp[i].voteCount++;
-          // this.voteCount = this.pollOptionTemp[i].voteCount;
-        }
-      }
+      // for(var i=0; i<this.pollOptionTemp.length; i++)
+      // {
+      //   if(answer===this.pollOptionTemp[i].option){
+      //     this.pollOptionTemp[i].voteCount++;
+      //     // this.voteCount = this.pollOptionTemp[i].voteCount;
+      //   }
+      // }
       this.finalAnswer = answer;
       
       if(this.finalAnswer != null || this.voteCount != null){
