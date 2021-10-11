@@ -76,7 +76,7 @@ export class RespondPollComponent implements OnInit {
     this.pollOptionTemp = this.activePoll.options;
     console.log(this.pollOptionTemp)
     console.log(this.pollOptionTemp[1])
-    console.log(this.pollOptionTemp[1].option);
+    console.log(this.pollOptionTemp[1]['option']);
   }
 
   addResponse(answer: any) {
@@ -84,8 +84,8 @@ export class RespondPollComponent implements OnInit {
     
       for(var i=0; i<this.pollOptionTemp.length; i++)
       {
-        if(answer===this.pollOptionTemp[i].option){
-          this.pollOptionTemp[i].voteCount++;
+        if(answer===this.pollOptionTemp[i]['option']){
+          this.pollOptionTemp[i]['voteCount']++;
           // this.voteCount = this.pollOptionTemp[i].voteCount;
         }
       }
@@ -103,7 +103,7 @@ export class RespondPollComponent implements OnInit {
   submit() {
     let exists = false;
     for(var i=0; i< this.activePoll.answered.length; i++){
-      if(this.currentUser.LoginName === this.activePoll.answered[i]){
+      if(this.currentUser.LoginName === this.activePoll['answered'][i]){
         exists = true;
       }
     }
@@ -118,7 +118,6 @@ export class RespondPollComponent implements OnInit {
     })
     }else{
       alert("You have already responded")
-
     }
     // var object = {};
     // object["PollID"] = this.activePoll.PollID;

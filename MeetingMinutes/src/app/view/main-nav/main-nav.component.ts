@@ -111,7 +111,7 @@ export class MainNavComponent implements OnInit {
     const data = this.userService.getAllUsers().then(result => {
       this.allUser = result;
     })
-    this.getProfilePic();
+    // this.getProfilePic();
   }
 
   deviceDetector() {
@@ -209,17 +209,17 @@ export class MainNavComponent implements OnInit {
     }
   }
 
-  async getProfilePic() {
-    var id = this.currentUser.AppUserID;
-    this.userService.getUploadProfile(id, this.currentUser.MiddleName)
-      .subscribe(res => {
-        // console.log(res)
-        this.createImageFromBlob(res);
+  // async getProfilePic() {
+  //   // var id = this.currentUser.AppUserID;
+  //   this.userService.getUploadProfile(id, this.currentUser.MiddleName)
+  //     .subscribe(res => {
+  //       // console.log(res)
+  //       this.createImageFromBlob(res);
 
-      }, error => {
-        console.log(error);
-      });
-  }
+  //     }, error => {
+  //       console.log(error);
+  //     });
+  // }
 
   transform() {
     return this.domSanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + this.currentUser.imageSrc);

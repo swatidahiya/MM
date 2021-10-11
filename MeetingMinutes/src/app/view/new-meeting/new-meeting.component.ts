@@ -95,7 +95,7 @@ export class NewMeetingComponent implements OnInit {
       return
     }
 
-    this.meeting.project_Name = this.firstFormGroup.value.project_Name;
+    // this.meeting.project_Name = this.firstFormGroup.value.project_Name;
     this.meeting.Meeting_Subject = this.firstFormGroup.value.Meeting_Subject;
     this.meeting.Meeting_objective = this.firstFormGroup.value.Meeting_objective;
     this.meeting.Conclusion = "Add Your Conclusion Here!";
@@ -104,7 +104,7 @@ export class NewMeetingComponent implements OnInit {
 
   form2() {
     this.meeting.Meeting_Location = this.secondFormGroup.value.Meeting_Location;
-    this.meeting.Agenda = this.secondFormGroup.value.Agenda;
+    // this.meeting.Agenda = this.secondFormGroup.value.Agenda;
     var temp = new Date(this.secondFormGroup.value.MeetingDate);
     // temp.setDate(temp.getDate() + 1);
 
@@ -121,13 +121,13 @@ export class NewMeetingComponent implements OnInit {
     this.meeting.Partipatents = this.contacts.toString();
     var object = {};
     object["subject"] = "Meeting Invitation",
-    object["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + this.meeting.project_Name;
+    // object["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + this.meeting.project_Name;
     object["MeetingSubject"] = this.meeting.Meeting_Subject;
     object["MeetingDate"] = this.meeting.MeetingTime;
     object["HostUser"] = this.meeting.HostUser;
     // object["ShareLink"] = "http://meetingminutes.checkboxtechnology.com:8098/login";
    
-    object["MeetingDescription"] = this.meeting.Agenda;
+    // object["MeetingDescription"] = this.meeting.Agenda;
 
     console.log(this.meeting)
 

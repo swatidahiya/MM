@@ -7,6 +7,8 @@ router.get('/',getMeetings)
 router.post('/SendEmail', sendMail)
 router.get('/:id', getMeetingById)
 router.post('/filterMeetings', filterMeetings)
+router.put('/updateMeeting/:id', updateMeeting)
+router.post('/SendResheduleMeetingEmail', SendRescheduleMail)
 
 function postMeeting(req, res, next) {
     meetingService.postMeeting(req.body)
@@ -36,6 +38,18 @@ function getMeetingById(req, res, next){
     meetingService.getMeetingById(req.params.id)
         .then(meeting => res.json(meeting))
         .catch(err => next(err))
+}
+
+function updateMeeting(req, res, next){
+    meetingService.updateMeeting(req.params.id, req.body)
+        .then(meeting => res.json(meeting))
+        .catch(err => next(err))
+}
+
+function SendRescheduleMail(req, res, next){
+    meetingService.SendRescheduleMail(req.body)
+    .then(meeting => res.json(meeting))
+    .catch(err => next(err))
 }
 
 module.exports = router;

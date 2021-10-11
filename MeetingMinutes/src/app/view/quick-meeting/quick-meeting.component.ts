@@ -156,13 +156,13 @@ export class QuickMeetingComponent implements OnInit {
       console.log(this.meeting)
       var object = {};
       object["subject"] = "Meeting Invitation",
-        object["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + this.meeting.project_Name;
+        // object["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + this.meeting.project_Name;
       object["MeetingSubject"] = this.meeting.Meeting_Subject;
       object["MeetingDate"] = this.meeting.MeetingTime;
       object["HostUser"] = this.meeting.HostUser;
       // object["ShareLink"] = "www.checkboxtechnology.com";
       // object["Meeting_Location"]="https://mmconferenceroom.checkboxtechnology.com:9002/#MM"+this.meeting.RoomKey+"$"+this.currentUser.FirstName +" "+this.currentUser.LastName+"$"+this.meeting.MeetingID+"$1";
-      object["MeetingDescription"] = this.meeting.Agenda;
+      // object["MeetingDescription"] = this.meeting.Agenda;
       await this.meetingService.postMeeting(this.meeting).then(async () => {
         alert("The meeting has been created successfully");
         this.route.navigateByUrl('/dashboard')

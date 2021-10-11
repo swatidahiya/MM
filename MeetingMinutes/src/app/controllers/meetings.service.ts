@@ -43,7 +43,10 @@ export class MeetingService {
     }
 
     updateMeeting(meetingID: any, object: any): any {
-      return this.request('put', this.baseUrl + '/Meeting/' + meetingID, object)
+      console.log("inside service.ts")
+      console.log(meetingID)
+      console.log(object);
+      return this.request('put', this.baseUrl + '/Meeting/updateMeeting/' + meetingID, object)
     }
 
     sendMail(data: any) {
@@ -52,7 +55,7 @@ export class MeetingService {
     }
 
     sendMailReschedule(data: any) {
-      return this.request('post', this.baseUrl + '/user/SendResheduleMeetingEmail', data);
+      return this.request('post', this.baseUrl + '/Meeting/SendResheduleMeetingEmail', data);
     }
     
     sendMailCancellation(data: any) {

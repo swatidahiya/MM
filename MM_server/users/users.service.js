@@ -66,8 +66,12 @@ async function base64_encode(file) {
 }
 
 async function updateUser(req) {
-
+ 
     const user = await User.findOne({ AppUserID: req.params.id })
+    console.log("this is user")
+    console.log(user)
+    console.log("this is rq.body")
+    console.log(req.body)
     Object.assign(user, req.body);
     await user.save();
     return user;
@@ -94,7 +98,6 @@ async function authenticateUser(userParam) {
             token
         }
     }
-
 }
 
 async function getAllUsers() {
@@ -106,3 +109,8 @@ async function deleteUser(id) {
     const user = await User.findOne({AppUserID: id})
     await User.findByIdAndDelete(user._id);
 }
+
+
+
+
+

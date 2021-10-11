@@ -12,8 +12,12 @@ module.exports = {
     getMeetings,
     sendMail,
     getMeetingById,
-    filterMeetings
+    filterMeetings,
+    updateMeeting,
+    SendRescheduleMail
 }
+
+
 
 async function postMeeting(body){
     var meetingParams = body;
@@ -105,4 +109,21 @@ async function getMeetingById(id){
     const meeting = await Meeting.find({MeetingID : id})
     console.log(meeting)
     return meeting;
+}
+
+async function updateMeeting(id, object){
+    const meeting = await Meeting.findOne({MeetingID: id})
+    // console.log(meeting);
+    // console.log("-------------------------")
+    // console.log(object);
+    Object.assign(meeting, object);
+    await meeting.save();
+    return meeting;
+}
+
+async function SendRescheduleMail(mailParam){
+    console.log(mailParam)
+    // fs.readFile('meetingReschedule.html', 'utf8', function(err, data){
+    //     data = data.replace()
+    // });
 }

@@ -5,12 +5,9 @@ import { MeetingNote } from './meetingNote.model';
 
 export class Meetings {
     MeetingID: number;
-    project_Name: string;
     Meeting_Subject: string;
     Meeting_objective: string;
     Conclusion: string;
-    Agenda: string;
-    Agenda_SubItem: string;
     MeetingDate: Date;
     MeetingTime: string;
     MeetingAssignedTo: string;
@@ -24,5 +21,4 @@ export class Meetings {
     Comment: Comments;
     Action_Item: MeetingActions;
     Decision_Item: Decisions;
-    Meeting_Notes: MeetingNote;
 }
