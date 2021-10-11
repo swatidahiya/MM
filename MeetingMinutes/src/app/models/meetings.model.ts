@@ -10,10 +10,10 @@ export class Meetings {
     Conclusion: string;
     MeetingDate: Date;
     MeetingTime: string;
-    MeetingAssignedTo: string;
+    MeetingAssignedTo: Array<String>;
     reoccrence: string;
     Meeting_Location: string;
-    Partipatents: string;
+    Partipatents: Array<String>;
     Share_Link: string;
     Status: number;
     RoomKey: number;

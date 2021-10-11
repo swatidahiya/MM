@@ -55,7 +55,7 @@
                                                 {{meeting.MeetingID}}</a>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <!-- <tr>
                                         <td class="meetingLabel"> Project :</td>
                                         <td class="meetingContent" style="color: rgb(97, 96, 96);">
                                             <ejs-inplaceeditor id="element" style="font-weight: 700; font-size: large;"
@@ -64,7 +64,7 @@
                                                 (actionSuccess)="updateMeeting($event.value, 'project_Name')">
                                             </ejs-inplaceeditor>
                                         </td>
-                                    </tr>
+                                    </tr> -->
                                     <tr>
                                         <td class="meetingLabel"> Objective :</td>
                                         <td class="meetingContent">
@@ -851,8 +851,8 @@
                             style="width: 40px;" src="../../../assets/Completed.jpg"
                             (click)="updateMeeting(meeting.Status, 'Status')"></div>
                 </ng-template>
-                <mat-card-title>{{meeting.project_Name}}</mat-card-title>
-                <mat-card-subtitle>{{meeting.Meeting_Subject}}</mat-card-subtitle>
+                <mat-card-title>{{meeting.Meeting_Subject}}</mat-card-title>
+                <!-- <mat-card-subtitle>{{meeting.Meeting_Subject}}</mat-card-subtitle> -->
             </mat-card-header>
             <!-- <img mat-card-image [src]="member.url" alt="Photo of {{member.title}}"> -->
             <!-- {{meeting.Meeting_objective}} -->

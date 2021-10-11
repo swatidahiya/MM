@@ -44,7 +44,7 @@ export class MeetingDetailsComponent implements OnInit {
   decisions: Decisions;
   tempActionPage = false;
   tempDecisionPage = false;
-  participants: string[];
+  participants: any;
   newParticipant = false;
   filesLoaded = false;
   allFiles = [];
@@ -173,7 +173,7 @@ export class MeetingDetailsComponent implements OnInit {
       console.log(this.timeToDisplay)
 
       if (this.meeting.Partipatents.length !== 0) {
-        this.participants = this.meeting.Partipatents.split(',');
+        this.participants = this.meeting.Partipatents;
         console.log(this.meeting)
       }
       else{
@@ -702,7 +702,7 @@ export class MeetingDetailsComponent implements OnInit {
           var tempUser = this.options.find(({ Email }) => Email === this.participants[i]);
           mailObject["toname"] = tempUser.FirstName +" "+ tempUser.LastName;
           mailObject["toemail"] = tempUser.Email;
-          mailObject["Meeting_Location"] = "https://mmconferenceroom.checkboxtechnology.com:9002/#MM"+this.meeting.RoomKey+"$"+tempUser.LoginName+"$"+this.meeting.MeetingID+"$1";
+          mailObject["Meeting_Location"] = "https://mmconferenceroom.checkboxtechnology.com/#MM"+this.meeting.RoomKey+"$"+tempUser.LoginName+"$"+this.meeting.MeetingID+"$1";
           await this.meetingService.sendMailReschedule(mailObject).then(result => {
             console.log("Message sent");
           })
@@ -953,7 +953,7 @@ export class MeetingDetailsComponent implements OnInit {
     object["Conclusion"] = this.meeting.Conclusion;
 
     if (this.meeting.Partipatents !== null) {
-      this.participants = this.meeting.Partipatents.split(',');
+      this.participants = this.meeting.Partipatents;
     }
     for (var i = 0; i < this.participants.length; i++) {
       var temp = this.options.find(({ Email }) => Email === this.participants[i]);
