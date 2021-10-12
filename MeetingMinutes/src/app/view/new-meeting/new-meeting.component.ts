@@ -34,6 +34,9 @@ export class NewMeetingComponent implements OnInit {
   thirdFormSubmit = false;
   isLinear = true;
   minDate: Date;
+  otherUsers: any;
+  otherMails: Array<any> = [];
+  addMoreUser: boolean = false;
 
   constructor(private _formBuilder: FormBuilder, private meetingService: MeetingService,
     private userService: UserService,
@@ -159,12 +162,20 @@ export class NewMeetingComponent implements OnInit {
       partipatents.push(this.currentUser.Email)
     }
 
+    console.log("other", this.otherMails)
+    if (this.otherMails.length > 0) {
+      this.otherMails.forEach(mail => {
+        partipatents.push(mail);
+        console.log("ho gya")
+      });
+    }
+
     object['Partipatents'] = partipatents;
     object['MeetingAssignedTo'] = assignee;
 
     var mailObject = {};
     mailObject["subject"] = "Meeting Invitation",
-    mailObject["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + object.Meeting_Subject;
+      mailObject["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + object.Meeting_Subject;
     mailObject["MeetingSubject"] = object.Meeting_Subject;
     mailObject["MeetingDate"] = object.MeetingTime;
     mailObject["HostUser"] = object.HostUser;
@@ -184,6 +195,14 @@ export class NewMeetingComponent implements OnInit {
           console.log("Message sent");
         })
       }
+
+      this.otherMails.forEach(mail => {
+        mailObject["toemail"] = mail;
+        mailObject["Meeting_Location"] = "https://meetingminutes.checkboxtechnology.com/videoRoom/" + object.RoomKey;
+        this.meetingService.sendMail(mailObject).then(result => {
+          console.log("other mail sent");
+        })
+      });
       alert("Meeting scheduled successfully!")
       this.route.navigate(['/dashboard/'])
 
@@ -202,6 +221,51 @@ export class NewMeetingComponent implements OnInit {
     else {
       alert("The user is already added");
     }
+  }
+
+  addUsers() {
+    this.addMoreUser = !this.addMoreUser;
+
+    if (this.addMoreUser == false) {
+      this.otherMails = [];
+    }
+    console.log(this.addMoreUser)
+  }
+
+  addMail(val: any) {
+    if (this.otherMails.length > 0) {
+      var count = 0;
+      this.otherMails.forEach(mail => {
+        if (mail == val) {
+          count++;
+        }
+      });
+
+      if (count == 0) {
+        this.otherMails.push(val);
+        this.otherUsers = '';
+      }
+      else {
+        alert("This mail is already added!")
+        this.otherUsers = '';
+      }
+    }
+    else {
+      this.otherMails.push(val);
+      this.otherUsers = '';
+    }
+  }
+
+  onCancelMail(value: any) {
+
+    var index;
+    this.otherMails.forEach((mail, i) => {
+      if (mail == value) {
+        index = i;
+      }
+    });
+
+    this.otherMails.splice(index, 1);
   }
 
   onCancelUser(val: any, email: any) {

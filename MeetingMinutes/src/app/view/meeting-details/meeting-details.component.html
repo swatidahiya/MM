@@ -79,7 +79,7 @@
                                                 (focusout)="editMode=false"></textarea>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <!-- <tr>
                                         <td class="meetingLabel"> Agenda :</td>
                                         <td class="meetingContent">
                                             <div *ngIf='!editAgenda' (click)='editAgenda=true'
@@ -93,7 +93,7 @@
                                                 (keydown.enter)='$event.target.blur()'
                                                 (focusout)="editAgenda=false"></textarea>
                                         </td>
-                                    </tr>
+                                    </tr> -->
                                 </table>
                             </div>
                             <div class="col-md-3">
@@ -382,7 +382,7 @@
                                         <div id="textboxes" *ngFor="let mNote  of mNotes;let i = index">
                                             <ul>
                                                 <li>
-                                                    <ejs-inplaceeditor id="element"
+                                                    <!-- <ejs-inplaceeditor id="element"
                                                         style="font-weight: 700; font-size: large;" width="auto"
                                                         type="Text" mode="Inline" data-underline="false"
                                                         value="{{mNote.MeetingNotes}}"
@@ -392,7 +392,7 @@
                                                         <a *ngIf="isHost" class="fas fa-trash"
                                                             (click)="deleteMeetingNotes(mNote.MeetingNotesID)"
                                                             id="rightIcon"></a>
-                                                    </span>
+                                                    </span> -->
 
                                                 </li>
                                             </ul>
@@ -408,9 +408,9 @@
                                                         [(ngModel)]="meetingNotes.MeetingNotes" #meetingText></textarea>
                                                 </div>
                                                 <div class="col-1">
-                                                    <button mat-raised-button
+                                                    <!-- <button mat-raised-button
                                                         style="float: right;height: 45px; width: 90px; margin-left: 40px;"
-                                                        color="warn" (click)="sendNotes()">Send</button>
+                                                        color="warn" (click)="sendNotes()">Send</button> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -866,9 +866,9 @@
                 <p>
                     <b>Objective : </b>{{meeting.Meeting_objective}}
                 </p>
-                <p>
+                <!-- <p>
                     <b>Agenda : </b>{{meeting.Agenda}}
-                </p>
+                </p> -->
 
             </mat-card-content>
         </mat-card>
@@ -919,7 +919,7 @@
                                         <div id="textboxes" *ngFor="let mNote  of mNotes;let i = index">
                                             <ul>
                                                 <li>
-                                                    <ejs-inplaceeditor id="element"
+                                                    <!-- <ejs-inplaceeditor id="element"
                                                         style="font-weight: 700; font-size: large;" width="auto"
                                                         type="Text" mode="Inline" data-underline="false"
                                                         value="{{mNote.MeetingNotes}}"
@@ -928,7 +928,7 @@
                                                     &nbsp;<span style="display: inline-block;">
                                                         <a class="fas fa-trash float-right"
                                                             (click)="deleteMeetingNotes(mNote.MeetingNotesID)"></a>
-                                                    </span>
+                                                    </span> -->
 
                                                 </li>
                                             </ul>
@@ -938,8 +938,8 @@
                                                 aria-label="Recipient's username" aria-describedby="basic-addon2"
                                                 #meetingText>
                                             <div class="input-group-append">
-                                                <span class="input-group-text" id="basic-addon2"
-                                                    (click)="sendNotes()">Send</span>
+                                                <!-- <span class="input-group-text" id="basic-addon2"
+                                                    (click)="sendNotes()">Send</span> -->
                                             </div>
                                         </div>
                                     </mat-card-content>

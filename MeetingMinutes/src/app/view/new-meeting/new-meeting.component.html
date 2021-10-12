@@ -227,12 +227,14 @@
                         <div class="row mb-2">
                             <div class="col-sm-6 mb-2">
                                 <label>Meeting Subject</label><br>
-                                <input type="text" class="form-control" name="Meeting_Subject" [(ngModel)]="meeting.Meeting_Subject">
+                                <input type="text" class="form-control" name="Meeting_Subject"
+                                    [(ngModel)]="meeting.Meeting_Subject">
                             </div>
 
                             <div class="col-sm-6 mb-2">
                                 <label>Meeting Object</label><br>
-                                <input type="text" class="form-control" name="Meeting_objective" [(ngModel)]="meeting.Meeting_objective">
+                                <input type="text" class="form-control" name="Meeting_objective"
+                                    [(ngModel)]="meeting.Meeting_objective">
                             </div>
                         </div>
 
@@ -241,7 +243,8 @@
                         <div class="row my-2">
                             <div class="col-sm-6 mb-2">
                                 <label>Meeting Location</label><br>
-                                <input type="text" class="form-control" name="Meeting_Location" [(ngModel)]="meeting.Meeting_Location">
+                                <input type="text" class="form-control" name="Meeting_Location"
+                                    [(ngModel)]="meeting.Meeting_Location">
                             </div>
 
                             <div class="col-sm-6 mb-2">
@@ -258,20 +261,23 @@
                             <div class="col mb-2">
                                 <div style="text-align: center;">
                                     <span>Add users by searching for their name</span>
-                                    <div class="mt-2" style="min-height: 150px; height: auto; border: 1px solid gray; border-radius: 10px;">
+                                    <div class="mt-2"
+                                        style="min-height: 100px; height: auto; border: 1px solid gray; border-radius: 10px; overflow: auto;">
                                         <div class="row">
                                             <div *ngFor="let contact of displayName" class="contactList">
                                                 {{contact.FirstName}} {{contact.LastName}}
-                                                <i class="fa fa-times" (click)="onCancelUser(contact, contact.Email)" style="font-size: 18px; float: right;"></i>
+                                                <i class="fa fa-times" (click)="onCancelUser(contact, contact.Email)"
+                                                    style="font-size: 18px; float: right;"></i>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="my-sm-3 my-1">
                                     <span>Add Users : </span><br>
-                                    <input type="text" class="form-control mt-1" placeholder="Pick one" aria-label="Number" matInput
-                                    name="Partipatents" [matAutocomplete]="auto">
-                                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)='getPosts($event.option.value)'>
+                                    <input type="text" class="form-control mt-1" placeholder="Pick one"
+                                        aria-label="Number" matInput name="Partipatents" [matAutocomplete]="auto">
+                                    <mat-autocomplete #auto="matAutocomplete"
+                                        (optionSelected)='getPosts($event.option.value)'>
                                         <mat-option *ngFor="let option of options" [value]="option.Email">
                                             {{option.FirstName}} {{option.LastName}}
                                         </mat-option>
@@ -279,6 +285,43 @@
                                 </div>
                             </div>
 
+                        </div>
+
+                        <mat-divider></mat-divider>
+
+                        <div class="row my-2">
+                            <div class="col mb-2">
+                                <span>Other users </span>
+                            </div>
+                            <div class="col" style="text-align: right;">
+                                <span *ngIf="!addMoreUser" style="color: cornflowerblue; cursor: pointer;" (click)="addUsers()">+ <u>add more users</u></span>
+                                <span *ngIf="addMoreUser" style="color:crimson; cursor: pointer;" (click)="addUsers()"><u>Remove all users</u></span>
+
+                            </div>
+                        </div>
+
+                        <div class="row mt-2 mb-3" *ngIf="addMoreUser">
+                            <div class="col-md-6">
+                                <span>Users :</span><br>
+                                <div class="mt-1"
+                                    style="min-height: 100px; height: auto; border: 1px solid gray; border-radius: 10px; overflow: auto;">
+                                    <div class="mailbox">
+                                        <div *ngFor="let mail of otherMails;" class="mail">
+                                            {{mail}}
+                                            <i class="fa fa-times" (click)="onCancelMail(mail)"
+                                                style="font-size: 18px; float: right; cursor: pointer;"></i>
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6" style="text-align: right;">
+                                <p> </p><br>
+                                <input type="text" class="form-control" name="OtherUsers" [(ngModel)]="otherUsers" placeholder="eg. abc@gmail.com">
+                                <span class="mt-1 btn btn-info" (click)="addMail(otherUsers)">+ Add</span>
+                            </div>
                         </div>
 
                         <mat-divider></mat-divider>
