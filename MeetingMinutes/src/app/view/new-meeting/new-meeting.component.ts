@@ -7,6 +7,8 @@ import { UserService } from 'src/app/controllers/user.service'; //file path may 
 import { HttpClient } from '@angular/common/http';
 import { async } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { ActionDialogComponent } from '../action-dialog/action-dialog.component';
 // declare let Email: any;
 
 @Component({
@@ -41,7 +43,9 @@ export class NewMeetingComponent implements OnInit {
   constructor(private _formBuilder: FormBuilder, private meetingService: MeetingService,
     private userService: UserService,
     private http: HttpClient,
-    private route: Router) { }
+    private route: Router,
+    public dialog: MatDialog,
+    ) { }
 
   ngOnInit() {
     this.minDate = new Date();
@@ -175,7 +179,7 @@ export class NewMeetingComponent implements OnInit {
 
     var mailObject = {};
     mailObject["subject"] = "Meeting Invitation",
-      mailObject["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + object.Meeting_Subject;
+    mailObject["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + object.Meeting_Subject;
     mailObject["MeetingSubject"] = object.Meeting_Subject;
     mailObject["MeetingDate"] = object.MeetingTime;
     mailObject["HostUser"] = object.HostUser;
@@ -183,6 +187,7 @@ export class NewMeetingComponent implements OnInit {
 
 
     await this.meetingService.postMeeting(object).then(result => {
+      console.log(result)
       this.displayName.push(this.currentUser)
       mailObject["toname"] = this.currentUser.FirstName + " " + this.currentUser.LastName;
 
@@ -203,9 +208,17 @@ export class NewMeetingComponent implements OnInit {
           console.log("other mail sent");
         })
       });
-      alert("Meeting scheduled successfully!")
-      this.route.navigate(['/dashboard/'])
 
+      var c = confirm("Meeting scheduled successfully!\nDo you want add agenda?");
+      if (c == true) {
+        this.dialog.open(ActionDialogComponent, {
+          width: '400px',
+          data: { id: result.MeetingID, from: 1 }
+        });
+      }
+      else {
+        this.route.navigate(['/dashboard/'])
+      }
     })
   }
 

@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MeetingActions } from '../../models/actions.model';
 import { ActionService } from '../../controllers/action.service'
-import { ActivatedRoute,Router } from '@angular/router';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material';
 import { MainNavComponent, ActionDailogData } from '../main-nav/main-nav.component';
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/controllers/user.service';
@@ -14,14 +14,14 @@ import { Meetings } from 'src/app/models/meetings.model';
   selector: 'app-action-dialog',
   templateUrl: './action-dialog.component.html',
   styleUrls: ['./action-dialog.component.css'],
-  providers: [ActionService,UserService,MeetingService]
+  providers: [ActionService, UserService, MeetingService]
 })
 export class ActionDialogComponent implements OnInit {
 
 
   action = new MeetingActions;
   meetingID: any;
-  meeting= new Meetings;
+  meeting = new Meetings;
   showMessage = false;
   field: any;
   options: User[];
@@ -30,66 +30,92 @@ export class ActionDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<ActionDialogComponent>,
     private actionService: ActionService,
-    
+
     private userService: UserService,
     private meetingService: MeetingService,
-              private _route: ActivatedRoute,
-              public router: Router,
-              @Inject(MAT_DIALOG_DATA) public data: ActionDailogData) {
-               }
+    private _route: ActivatedRoute,
+    public router: Router,
+    public dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: ActionDailogData) {
+  }
 
   ngOnInit() {
+
+    console.log("meeting id: ", this.data['id'])
+
     this.minDate = new Date();
     this.userService.getAllUsers().then(result => {
-      console.log("all users")
-      console.log(result)
-      this.options = result; 
+      this.options = result;
     })
-    var matched = this.router.url.match(/browse\/([\d]*)/);
-    const id = matched.pop();
-    console.log("meeting id ================================" , id)
-     this.meetingService.getMeetingById(id).then(data => {
-       console.log(data)
-      this.meeting = data;
-      console.log("meeting data")
+
+    // var matched = this.router.url.match(/browse\/([\d]*)/);
+    // const id = matched.pop();
+    this.meetingService.getMeetingById(this.data['id']).then(data => {
+      this.meeting = data[0];
       console.log(this.meeting)
     })
   }
 
-  getPosts(val : any) {
+  getPosts(val: any) {
     this.contacts.push(val);
   }
 
-  async sendData(action : any) {
-    if(action.ActionItem_Title == null) {
+  async sendData(action: any) {
+    if (action.ActionItem_Title == null) {
       this.showMessage = true;
       this.field = 'Action Title';
-    } 
-    // else if (action.project_Name == null) {
-    //   this.showMessage = true;
-    //   this.field = 'Project Name'
-    // }
-     else if (action.ActionDate == null) {
+    }
+
+    else if (action.ActionDate == null) {
       this.showMessage = true;
       this.field = ' Valid Action Date'
     }
-     else if (action.Priority == null) {
+
+    else if (action.Priority == null) {
       this.showMessage = true;
       this.field = 'Priority'
     }
-     else {
-    this.action.Status = 0;
-    this.action.ActionAssignedTo=this.contacts.toString();
-    this.action.MeetingID = this.data.meetingID;
-    this.action.project_Name= this.meeting[0].project_Name;
-    this.action.ActionDate = action.ActionDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
-    this.action.ActionTime = new Date().toUTCString()
-    console.log(action)
-    await this.actionService.postAction(action).then(data => {
-      this.dialogRef.close();
-      alert("The action has been created")
-    })
+
+    else {
+      action.Status = 0;
+      action.meetingName = this.meeting.Meeting_Subject;
+      action.ActionAssignedTo = this.contacts.toString();
+      action.MeetingID = this.data.meetingID;
+      action.ActionDate = action.ActionDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
+      action.ActionTime = new Date().toUTCString()
+      await this.actionService.postAction(action).then(data => {
+
+        if (this.data['from'] == 1) {
+          var c = confirm("Agenda created successfully!\nDo you want add more agenda?");
+          if (c == true) {
+            this.dialogRef.close();
+            this.dialog.open(ActionDialogComponent, {
+              width: '400px',
+              data: { id: this.data['id'], from: 1 }
+            });
+          }
+          else {
+            this.dialogRef.close();
+            this.router.navigate(['/dashboard/'])
+          }
+        }
+        else {
+          alert("Agenda created successfully!")
+          this.dialogRef.close();
+        }
+      })
+    }
   }
+
+  onClose() {
+    if (this.data['from'] == 1) {
+      this.dialogRef.close();
+      this.router.navigate(['/dashboard/']);
+
+    }
+    else {
+      this.dialogRef.close();
+    }
   }
 
 }

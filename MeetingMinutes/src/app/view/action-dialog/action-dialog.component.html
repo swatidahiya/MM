@@ -1,26 +1,26 @@
-<h1 mat-dialog-title style="text-align: center;">Add Action Item</h1>
+<h1 mat-dialog-title style="text-align: center;">Add Agenda</h1>
 <mat-divider></mat-divider>
 <br>
 <div mat-dialog-content>
+
     <div class="input-group form-group">
-        <input type="text" class="form-control" style="width: 100%;" name="ActionItem_Title" [(ngModel)]="action.ActionItem_Title" placeholder="Action title">
+        <input type="text" class="form-control" readonly value="{{meeting.Meeting_Subject}}" name="Meeting_Subject">
     </div>
 
     <div class="input-group form-group">
-        <input type="text" class="form-control" readonly [value]="meeting[0].project_Name" name="project_Name" >
-        <!-- <a style="margin-left: 10px; margin-top: 8px; color: rgb(99, 96, 96); font-size: 18px;" [(ngModel)]="action.project_Name">{{meeting.project_Name}}</a>  -->
+        <input type="text" class="form-control" style="width: 100%;" name="project_Name"
+            [(ngModel)]="action.project_Name" placeholder="Project Name">
     </div>
 
     <div class="input-group form-group">
-        <textarea class="form-control" rows="3" placeholder="Description of Action Item" name="Action_Description" [(ngModel)]="action.Action_Description"></textarea>
+        <input type="text" class="form-control" style="width: 100%;" name="ActionItem_Title"
+            [(ngModel)]="action.ActionItem_Title" placeholder="Agenda Name">
     </div>
 
-    <!-- <mat-form-field>
-        <mat-label>Choose a date</mat-label>
-        <input matInput [matDatepicker]="picker" name="ActionDate" [(ngModel)]="action.ActionDate">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field> -->
+    <div class="input-group form-group">
+        <textarea class="form-control" rows="3" placeholder="Description of Agenda" name="Action_Description"
+            [(ngModel)]="action.Action_Description"></textarea>
+    </div>
 
     <mat-form-field>
         <mat-label>Choose a date</mat-label>
@@ -31,14 +31,13 @@
 
     <div class="input-group form-group">
         <label style="margin-right: 10px; color: rgb(117, 117, 117); margin-top: 8px;">Assigned To: </label>
-        <!-- <input type="text" class="form-control" placeholder="Assignee Name"  name="ActionAssignedTo" [(ngModel)]="action.ActionAssignedTo"> -->
-        <input type="text" placeholder="Choose Any" aria-label="Number" matInput class="form-control"
-                        style="height: 50px" [matAutocomplete]="auto">
-                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)='getPosts($event.option.value)'>
-                        <mat-option *ngFor="let option of options" [value]="option.LoginName">
-                            {{option.FirstName}} {{option.LastName}}
-                        </mat-option>
-                    </mat-autocomplete>
+        <input type="text" placeholder="Choose Any" aria-label="Number" matInput class="form-control" style="border-bottom: 1px solid black;"
+         [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)='getPosts($event.option.value)'>
+            <mat-option *ngFor="let option of options" [value]="option.LoginName">
+                {{option.FirstName}} {{option.LastName}}
+            </mat-option>
+        </mat-autocomplete>
     </div>
 
     <div class="input-group form-group">
@@ -56,6 +55,6 @@
 <mat-divider></mat-divider>
 <br>
 <div mat-dialog-actions style="justify-content: center;">
-    <button mat-raised-button mat-dialog-close color="primary">Cancel</button>
+    <button mat-raised-button color="primary" (click)="onClose()">Cancel</button>
     <button mat-raised-button cdkFocusInitial color="primary" (click)="sendData(action)">Add Action Item</button>
 </div>
