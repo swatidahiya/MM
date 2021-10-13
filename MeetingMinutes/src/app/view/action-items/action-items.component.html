@@ -17,7 +17,7 @@
             <!-- <form #filterActionForm="ngForm" (ngSubmit)="onSubmit(filterActionForm)"> -->
             <div style="padding: 20px">
                 <div style="padding: 10px 0px;">
-                    <label style="font-size: 16px; color: cornsilk; margin-bottom: 10px;">Action Item
+                    <label style="font-size: 16px; color: cornsilk; margin-bottom: 10px;">Agenda
                         Status</label><br>
                     <!-- <mat-radio-group aria-label="Select an option" class="form-group" style="margin-bottom: 10px;"> -->
                     <!-- <mat-radio-button value="1" style="color: white; font-size: 16px; margin-left: 10px;" name="status" [(ngModel)]="statusText"
@@ -118,7 +118,7 @@
 
             </div>
             <button mat-raised-button color="primary" class="form-control" style="margin-left: 7px;"
-                (click)="filterAction()">Filter Action Item</button>
+                (click)="filterAction()">Filter Agenda Item</button>
             <!-- </form> -->
             <br>
             <br>
@@ -129,7 +129,7 @@
             <div style="border-bottom: 1px solid rgb(179, 179, 179);">
                 <h1 style="padding: 20px">
                     <a style="font-size: 40px; color: cornsilk;">
-                        Action Items
+                        Agenda Items
                     </a>
                     <button mat-raised-button color="warn" class="float-right" [matMenuTriggerFor]="menu"
                         style="width: 100px;">Sort By</button>
@@ -176,14 +176,14 @@
                                         <table class="meetingMain">
                                             <tr>
                                                 <td class="meetingLabel" style="font-size: 24px;width: 100%;">
-                                                    {{actionItem.Action_Description}}</td>
+                                                    {{actionItem.ActionItem_Title}}</td>
                                             </tr>
                                         </table>
                                         <table class="meetingMain">
                                             <tr>
                                                 <td class="meetingLabel"> Meeting :</td>
                                                 <td class="meetingContent" style="color: rgb(47, 68, 45);">
-                                                    {{actionItem.ActionItem_Title}}</td>
+                                                    {{actionItem.meetingName}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="meetingLabel"> Project :</td>

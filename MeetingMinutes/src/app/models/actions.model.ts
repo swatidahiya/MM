@@ -11,5 +11,5 @@ export class MeetingActions {
     Priority: string;
     Action_Description: string;
     MeetingID: number;
-    Meeting: Meetings
+    meetingName: string;
 }

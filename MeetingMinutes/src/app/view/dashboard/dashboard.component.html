@@ -86,7 +86,7 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Project Name</th>
+                                            <th>Agenda Name</th>
                                             <th>Start Date</th>
                                             <th>Status</th>
                                             <th>Priority</th>
@@ -95,7 +95,7 @@
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let action of actions; let i = index"
-                                            (click)="actionListPage(action.ActionItemID)" class="recentMeetings">
+                                            (click)="actionListPage(action._id)" class="recentMeetings">
                                             <td>{{i+1}}</td>
                                             <td>{{action.ActionItem_Title}}</td>
                                             <td>{{action.ActionDate | date:'shortDate'}}</td>

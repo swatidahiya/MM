@@ -7,6 +7,8 @@ import { UserService } from 'src/app/controllers/user.service'; //file path may 
 import { HttpClient } from '@angular/common/http';
 import { async } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { ActionDialogComponent } from '../action-dialog/action-dialog.component';
 // declare let Email: any;
 
 @Component({
@@ -34,11 +36,16 @@ export class NewMeetingComponent implements OnInit {
   thirdFormSubmit = false;
   isLinear = true;
   minDate: Date;
+  otherUsers: any;
+  otherMails: Array<any> = [];
+  addMoreUser: boolean = false;
 
   constructor(private _formBuilder: FormBuilder, private meetingService: MeetingService,
     private userService: UserService,
     private http: HttpClient,
-    private route: Router) { }
+    private route: Router,
+    public dialog: MatDialog,
+    ) { }
 
   ngOnInit() {
     this.minDate = new Date();
@@ -159,6 +166,12 @@ export class NewMeetingComponent implements OnInit {
       partipatents.push(this.currentUser.Email)
     }
 
+    if (this.otherMails.length > 0) {
+      this.otherMails.forEach(mail => {
+        partipatents.push(mail);
+      });
+    }
+
     object['Partipatents'] = partipatents;
     object['MeetingAssignedTo'] = assignee;
 
@@ -172,6 +185,7 @@ export class NewMeetingComponent implements OnInit {
 
 
     await this.meetingService.postMeeting(object).then(result => {
+      console.log(result)
       this.displayName.push(this.currentUser)
       mailObject["toname"] = this.currentUser.FirstName + " " + this.currentUser.LastName;
 
@@ -184,9 +198,25 @@ export class NewMeetingComponent implements OnInit {
           console.log("Message sent");
         })
       }
-      alert("Meeting scheduled successfully!")
-      this.route.navigate(['/dashboard/'])
 
+      this.otherMails.forEach(mail => {
+        mailObject["toemail"] = mail;
+        mailObject["Meeting_Location"] = "https://meetingminutes.checkboxtechnology.com/videoRoom/" + object.RoomKey;
+        this.meetingService.sendMail(mailObject).then(result => {
+          console.log("other mail sent");
+        })
+      });
+
+      var c = confirm("Meeting scheduled successfully!\nDo you want add agenda?");
+      if (c == true) {
+        this.dialog.open(ActionDialogComponent, {
+          width: '400px',
+          data: { id: result.MeetingID, from: 1 }
+        });
+      }
+      else {
+        this.route.navigate(['/dashboard/'])
+      }
     })
   }
 
@@ -202,6 +232,51 @@ export class NewMeetingComponent implements OnInit {
     else {
       alert("The user is already added");
     }
+  }
+
+  addUsers() {
+    this.addMoreUser = !this.addMoreUser;
+
+    if (this.addMoreUser == false) {
+      this.otherMails = [];
+    }
+    console.log(this.addMoreUser)
+  }
+
+  addMail(val: any) {
+    if (this.otherMails.length > 0) {
+      var count = 0;
+      this.otherMails.forEach(mail => {
+        if (mail == val) {
+          count++;
+        }
+      });
+
+      if (count == 0) {
+        this.otherMails.push(val);
+        this.otherUsers = '';
+      }
+      else {
+        alert("This mail is already added!")
+        this.otherUsers = '';
+      }
+    }
+    else {
+      this.otherMails.push(val);
+      this.otherUsers = '';
+    }
+  }
+
+  onCancelMail(value: any) {
+
+    var index;
+    this.otherMails.forEach((mail, i) => {
+      if (mail == value) {
+        index = i;
+      }
+    });
+
+    this.otherMails.splice(index, 1);
   }
 
   onCancelUser(val: any, email: any) {

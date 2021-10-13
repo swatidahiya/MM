@@ -33,6 +33,8 @@ async function postMeeting(body){
 
     const meeting = new Meeting(meetingParams);
     await meeting.save();
+
+    return meeting;
 }
 
 async function getMeetings() {

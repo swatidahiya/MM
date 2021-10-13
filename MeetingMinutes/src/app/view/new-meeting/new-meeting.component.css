@@ -100,6 +100,24 @@ background-color: rgb(35, 90, 25);
     background: rgba(232, 255, 232, 0.856);
 }
 
+.mailbox {
+    min-height: 100px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.mail {
+    border: 1px inset rgb(113, 165, 113);
+    height: 40px;
+    padding: 10px;
+    min-width: 200px;
+    max-width: auto;
+    border-radius: 10px;
+    margin: 10px;
+    font-size: 11px;
+    background: rgba(232, 255, 232, 0.856);
+}
+
 .fa-times {
     font-size: 18px;
     float: right;

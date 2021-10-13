@@ -1,4 +1,4 @@
-.main{
+/* .main{
     background-color: rgb(235, 235, 235);
     align-content: center;
     height: auto;
@@ -6,7 +6,6 @@
 
 #container{
     background-image: url('src/assets/background.jpg');
-    /* height: 100%; */
     min-height: 1000px;
     background-size: cover;
     background-repeat: repeat-y;
@@ -14,24 +13,18 @@
 }
 
 .card{
-    /* height: 770px; */
     margin-top: 30px;
     margin-bottom: auto;
     width: 90%;
-    /* height: 100%; */
     margin: 0% 5%;
     background-color: rgb(253, 253, 253) !important;
     border-radius: 20px;
-    /* border-radius: 20px; */
     }
 
 .cardActionItem {
-        /* height: 770px; */
         margin-top: 30px;
         margin-bottom: 30px;
         width: 100%;
-        /* height: 100%; */
-        /* margin: 0% 5%; */
         background-color: rgb(253, 253, 253) !important;
         border-top: 1px solid rgb(179, 179, 179);
         border-bottom: 1px solid rgb(179, 179, 179);
@@ -44,7 +37,6 @@
 .card-header h1{
     color: rgb(59, 59, 59);
     justify-content: center;
-    /* text-align: center; */
 }
 
 .card-title {
@@ -135,5 +127,74 @@
 .alert1 {
     font-size: 18px;
     color: red;
-    /* margin-left: 25px; */
+} */
+
+#container{
+    background-image: url('src/assets/background.jpg');
+    min-height: 1000px;
+    background-size: cover;
+    background-repeat: repeat-y;
+    align-content: center;
+}
+.card{
+    margin-top: 50px;
+    margin-bottom: auto;
+    width: 90%;
+    margin: 0% 5%;
+    padding: 20px;
+    background-color: rgb(253, 253, 253) !important;
+    border-radius: 10px;
+}
+
+.heading span {
+    font-size: 30px;
+    font-weight: 500;
+    color: gray;
+}
+
+.contactList {
+    border: 1px inset rgb(113, 165, 113);
+    height: 40px;
+    padding: 10px;
+    width: 300px;
+    border-radius: 10px;
+    margin: 10px;
+    margin-left: 30px;
+    background: rgba(232, 255, 232, 0.856);
+}
+
+.mailbox {
+    min-height: 100px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.mail {
+    border: 1px inset rgb(113, 165, 113);
+    height: 40px;
+    padding: 10px;
+    min-width: 200px;
+    max-width: auto;
+    border-radius: 10px;
+    margin: 10px;
+    font-size: 11px;
+    background: rgba(232, 255, 232, 0.856);
+}
+
+.fa-times {
+    font-size: 18px;
+    float: right;
+    color: rgb(113, 165, 113);
+}
+
+.submit-btn {
+    background-color: none;
+    border: 1px solid chartreuse;
+    border-radius: 5px;
+    font-weight: 500;
+    color: rgb(0, 0, 0);
+    padding: 10px 20px;
+}
+.submit-btn:hover {
+    background-color: chartreuse;
 }

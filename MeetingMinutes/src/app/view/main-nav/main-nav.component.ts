@@ -142,9 +142,8 @@ export class MainNavComponent implements OnInit {
     const meetingID = this.activatedRoute.snapshot.params['id'];
     console.log(meetingID)
     this.actiondialog.open(ActionDialogComponent, {
-      height: '570px',
       width: '400px',
-      data: { meetingID: meetingID }
+      data: { id: meetingID, from: 0 }
     });
   }
 

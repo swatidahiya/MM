@@ -40,7 +40,7 @@
                                 <table class="meetingMain">
                                     <tr>
                                         <td class="meetingLabel" style="font-size: 24px;width: 100%;">
-                                            {{actionItem.Action_Description}}</td>
+                                            {{actionItem.ActionItem_Title}}</td>
                                     </tr>
                                 </table>
                                 <table class="meetingMain">
@@ -49,8 +49,8 @@
                                         <td class="meetingContent" style="color: rgb(47, 68, 45);">
                                             <ejs-inplaceeditor id="element" style="font-weight: 700; font-size: large;"
                                                 type="Text" data-underline="false"
-                                                value="{{actionItem.ActionItem_Title}}"
-                                                (actionSuccess)="updateAction($event.value, 'ActionItem_Title')">
+                                                value="{{actionItem.meetingName}}"
+                                                (actionSuccess)="updateAction($event.value, 'meetingName')">
                                             </ejs-inplaceeditor>
                                         </td>
                                     </tr>
