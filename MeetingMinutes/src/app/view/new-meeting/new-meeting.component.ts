@@ -166,11 +166,9 @@ export class NewMeetingComponent implements OnInit {
       partipatents.push(this.currentUser.Email)
     }
 
-    console.log("other", this.otherMails)
     if (this.otherMails.length > 0) {
       this.otherMails.forEach(mail => {
         partipatents.push(mail);
-        console.log("ho gya")
       });
     }
 

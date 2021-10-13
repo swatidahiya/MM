@@ -80,7 +80,7 @@ export class ActionDialogComponent implements OnInit {
       action.Status = 0;
       action.meetingName = this.meeting.Meeting_Subject;
       action.ActionAssignedTo = this.contacts.toString();
-      action.MeetingID = this.data.meetingID;
+      action.MeetingID = this.data['id'];
       action.ActionDate = action.ActionDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
       action.ActionTime = new Date().toUTCString()
       await this.actionService.postAction(action).then(data => {
