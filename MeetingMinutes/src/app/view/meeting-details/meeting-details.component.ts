@@ -337,7 +337,7 @@ export class MeetingDetailsComponent implements OnInit {
     object["MeetingAssignedTo"] = this.meeting.MeetingAssignedTo;
     object["MeetingID"] = this.meeting.MeetingID;
     object["Meeting_Location"] = this.meeting.Meeting_Location;
-    object["Partipatents"] = this.participants.toString();
+    object["Partipatents"] = this.participants;
     object["HostUser"] = this.meeting.HostUser;
     object["reoccrence"] = "Yes";
     object["Conclusion"] = this.meeting.Conclusion;
@@ -385,7 +385,7 @@ export class MeetingDetailsComponent implements OnInit {
     object["MeetingAssignedTo"] = this.meeting.MeetingAssignedTo;
     object["MeetingID"] = this.meeting.MeetingID;
     object["Meeting_Location"] = this.meeting.Meeting_Location;
-    object["Partipatents"] = this.participants.toString();
+    object["Partipatents"] = this.participants;
     object["HostUser"] = this.meeting.HostUser;
     object["Conclusion"] = this.meeting.Conclusion;
     object["reoccrence"] = "Yes";
@@ -416,7 +416,7 @@ export class MeetingDetailsComponent implements OnInit {
     object["MeetingAssignedTo"] = this.meeting.MeetingAssignedTo;
     object["MeetingID"] = this.meeting.MeetingID;
     object["Meeting_Location"] = this.meeting.Meeting_Location;
-    object["Partipatents"] = this.participants.toString();
+    object["Partipatents"] = this.participants;
     object["HostUser"] = this.meeting.HostUser;
     object["Conclusion"] = this.meeting.Conclusion;
     object["reoccrence"] = "Yes";
@@ -443,7 +443,7 @@ export class MeetingDetailsComponent implements OnInit {
     object["MeetingAssignedTo"] = this.meeting.MeetingAssignedTo;
     object["MeetingID"] = this.meeting.MeetingID;
     object["Meeting_Location"] = this.meeting.Meeting_Location;
-    object["Partipatents"] = this.participants.toString();
+    object["Partipatents"] = this.participants;
     object["HostUser"] = this.meeting.HostUser;
     object["Conclusion"] = this.meeting.Conclusion;
     object["reoccrence"] = "Yes";
@@ -470,7 +470,7 @@ export class MeetingDetailsComponent implements OnInit {
     object["MeetingAssignedTo"] = this.meeting.MeetingAssignedTo;
     object["MeetingID"] = this.meeting.MeetingID;
     object["Meeting_Location"] = this.meeting.Meeting_Location;
-    object["Partipatents"] = this.participants.toString();
+    object["Partipatents"] = this.participants;
     object["HostUser"] = this.meeting.HostUser;
     object["Conclusion"] = this.meeting.Conclusion;
     object["reoccrence"] = "Yes";
@@ -536,7 +536,7 @@ export class MeetingDetailsComponent implements OnInit {
     object["MeetingAssignedTo"] = this.meeting.MeetingAssignedTo;
     object["MeetingID"] = this.meeting.MeetingID;
     object["Meeting_Location"] = this.meeting.Meeting_Location;
-    object["Partipatents"] = this.participants.toString();
+    object["Partipatents"] = this.participants;
     object["HostUser"] = this.meeting.HostUser;
     object["Conclusion"] = this.meeting.Conclusion;
     object["reoccrence"] = "Yes";
@@ -587,7 +587,7 @@ export class MeetingDetailsComponent implements OnInit {
       object["Meeting_Location"] = this.meeting.Meeting_Location;
       // object["Partipatents"] = this.participants.toString();
       if(this.meeting.Partipatents.length != 0){
-        object["Partipatents"] = this.participants.toString();
+        object["Partipatents"] = this.participants;
       }
       else{
       object["Partipatents"] = val;
@@ -636,7 +636,7 @@ export class MeetingDetailsComponent implements OnInit {
     object["MeetingAssignedTo"] = this.meeting.MeetingAssignedTo;
     object["MeetingID"] = this.meeting.MeetingID;
     object["Meeting_Location"] = this.meeting.Meeting_Location;
-    object["Partipatents"] = this.participants.toString();
+    object["Partipatents"] = this.participants;
     object["HostUser"] = this.meeting.HostUser;
     object["Conclusion"] = this.meeting.Conclusion;
     object["reoccrence"] = "No";
@@ -675,7 +675,7 @@ export class MeetingDetailsComponent implements OnInit {
       object["MeetingAssignedTo"] = this.meeting.MeetingAssignedTo;
       object["MeetingID"] = this.meeting.MeetingID;
       object["Meeting_Location"] = this.meeting.Meeting_Location;
-      object["Partipatents"] = this.participants.toString();
+      object["Partipatents"] = this.participants
       object["HostUser"] = this.meeting.HostUser;
       object["Conclusion"] = this.meeting.Conclusion;
       object["reoccrence"] = "Yes";
@@ -698,11 +698,17 @@ export class MeetingDetailsComponent implements OnInit {
 
       const data = this.meetingService.updateMeeting(id, object).then(async () => {
         this.refresh();
+        console.log("---participants---")
+        console.log(this.participants)
         for (var i = 0; i < this.participants.length; i++) {
+          console.log("--------these are options")
+          console.log(this.options);
           var tempUser = this.options.find(({ Email }) => Email === this.participants[i]);
+          console.log("-----this is tempUser")
+          console.log(tempUser);
           mailObject["toname"] = tempUser.FirstName +" "+ tempUser.LastName;
           mailObject["toemail"] = tempUser.Email;
-          mailObject["Meeting_Location"] = "https://mmconferenceroom.checkboxtechnology.com/#MM"+this.meeting.RoomKey+"$"+tempUser.LoginName+"$"+this.meeting.MeetingID+"$1";
+          mailObject["Meeting_Location"] = "https://meetingminutes.checkboxtechnology.com/videoRoom/" + this.meeting.RoomKey;;
           await this.meetingService.sendMailReschedule(mailObject).then(result => {
             console.log("Message sent");
           })

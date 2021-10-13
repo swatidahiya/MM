@@ -43,7 +43,7 @@ export class ResetPasswordComponent implements OnInit {
   }
 
    async onSubmit(newEmailForm: NgForm) {
-    if (newEmailForm.valid) {
+    // if (newEmailForm.valid) {
     this.currentUser = this.users.find(({LoginName}) => LoginName === newEmailForm.value.LoginName);
     var object = this.currentUser;
     object["Password"] = this.passwordText;
@@ -59,10 +59,10 @@ export class ResetPasswordComponent implements OnInit {
     {
       alert("password mismatch");
     } 
-  }
-  else{
-    alert("Please enter Valid Username,Password & Conform Password");
-  }
+  // }
+  // else{
+  //   alert("Please enter Valid Username,Password & Conform Password");
+  // }
 }
   
 }

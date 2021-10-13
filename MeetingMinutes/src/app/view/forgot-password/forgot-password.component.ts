@@ -19,7 +19,7 @@ export class ForgotPasswordComponent implements OnInit {
   currentUser: User;
 
 
-  constructor(private _emailService: EmailService,
+  constructor(private emailService: EmailService,
     private userService: UserService,
     private route: Router,
   ) { }
@@ -39,23 +39,33 @@ export class ForgotPasswordComponent implements OnInit {
     var mailobject = {};
     this.currentUser = this.users.find(({LoginName}) => LoginName === forgotPassForm.value.LoginName);
     if(this.currentUser.Email == forgotPassForm.value.Email){
-    const data = await this.userService.checkUser(forgotPassForm.value.LoginName).then(async result => {
-      if (result) {
-        mailobject["subject"]="CheckBox - Reset Forgotten Password";
+      mailobject["subject"]="CheckBox - Reset Forgotten Password";
         mailobject["toname"] = this.currentUser.FirstName;
         mailobject["message"] = "test"
         mailobject["toemail"] = this.currentUser.Email;
-        await this._emailService.postEmail(mailobject).then(data => {
+        await this.emailService.ResetPasswordMail(mailobject).then(data => {
           alert("Reset password link sent to  your email Id please check it"); 
           this.usernameText ="";
           this.emailText=""; 
           this.route.navigateByUrl("/login");
         });
+    // const data = await this.userService.checkUser(forgotPassForm.value.LoginName).then(async result => {
+    //   if (result) {
+    //     mailobject["subject"]="CheckBox - Reset Forgotten Password";
+    //     mailobject["toname"] = this.currentUser.FirstName;
+    //     mailobject["message"] = "test"
+    //     mailobject["toemail"] = this.currentUser.Email;
+    //     await this._emailService.ResetPasswordMail(mailobject).then(data => {
+    //       alert("Reset password link sent to  your email Id please check it"); 
+    //       this.usernameText ="";
+    //       this.emailText=""; 
+    //       this.route.navigateByUrl("/login");
+    //     });
         
-      } else {
-        alert("User doesnot exists")
-      }     
-    })
+    //   } else {
+    //     alert("User doesnot exists")
+    //   }     
+    // })
   }
   else{
     alert("Email Id doesnot exists")

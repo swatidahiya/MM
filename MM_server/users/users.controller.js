@@ -10,6 +10,7 @@ router.get('/getAllUsers', getAllUsers);
 router.get('/:id',getById)
 router.put('/:id', updateUser);
 router.post('/UserAuthenticate',authenticateUser);
+router.post('/ForgetPassword', forgotPassword);
 router.delete('/:id',deleteUser);
 
 function getById(req, res, next) {
@@ -62,6 +63,13 @@ function deleteUser(req, res, next) {
         .then(users => res.json(users))
         .catch(err => next(err));
 }
+
+function forgotPassword(req, res, next){
+    userService.forgotPassword(req.body)
+        .then(user => res.json(user))
+        .catch(err => next(err))
+}
+
 
 
 

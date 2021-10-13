@@ -93,11 +93,7 @@ export class RespondPollComponent implements OnInit {
       
       if(this.finalAnswer != null || this.voteCount != null){
         this.showmsg = true;
-      }
-     
-     
-
-    
+      } 
   }
 
   submit() {

@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const db = require('../db');
 const User = db.User;
 var fs = require('fs');
+const emailService = require('../emails/emails.service');
 
 module.exports = {
     getById,
@@ -15,7 +16,8 @@ module.exports = {
     updateUser,
     deleteUser,
     updateProfile,
-    base64_encode
+    base64_encode,
+    forgotPassword
 }
 
 async function getById(idParam) {
@@ -109,6 +111,15 @@ async function deleteUser(id) {
     const user = await User.findOne({AppUserID: id})
     await User.findByIdAndDelete(user._id);
 }
+
+async function forgotPassword(mailParam){
+    console.log(mailParam);
+    fs.readFile('forgotPassword.html', 'utf8', function(err, data){
+        data = data.replace(/%UserName%/g, mailParam.toname);
+        emailService.sendEmail(mailParam.toemail, 'Meeting Minutes - Password Reset', data)
+    });
+}
+
 
 
 

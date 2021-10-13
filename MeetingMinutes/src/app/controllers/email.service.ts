@@ -25,7 +25,7 @@ export class EmailService {
         });
     }
 
-    postEmail(email: any){
+    ResetPasswordMail(email: any){
         console.log("post email");
         return this.request('post', this.baseUrl + '/User/ForgetPassword' ,email);
     }

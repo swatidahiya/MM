@@ -37,7 +37,7 @@ async function postMeeting(body){
 
 async function getMeetings() {
     const meetings = await Meeting.find().sort({ MeetingID: -1 });
-    console.log(meetings)
+    // console.log(meetings)
     return meetings;
 
 }
@@ -107,7 +107,7 @@ async function sendMail(mailParam){
 
 async function getMeetingById(id){
     const meeting = await Meeting.find({MeetingID : id})
-    console.log(meeting)
+    // console.log(meeting)
     return meeting;
 }
 
@@ -122,8 +122,18 @@ async function updateMeeting(id, object){
 }
 
 async function SendRescheduleMail(mailParam){
+    console.log("-----------------------mailParam-------------------------")
     console.log(mailParam)
-    // fs.readFile('meetingReschedule.html', 'utf8', function(err, data){
-    //     data = data.replace()
-    // });
+    fs.readFile('meetingReschedule.html', 'utf8', function(err, data){
+        data = data.replace(/%MeetingSubject%/g, mailParam.MeetingSubject);
+        data = data.replace(/%Meeting_Location%/g, mailParam.Meeting_Location);
+        data = data.replace(/%MeetingDate%/g, mailParam.MeetingDate);
+        data = data.replace(/%NewMeetingDate%/g, mailParam.NewMeetingDate);
+        data = data.replace(/%HostUser%/g, mailParam.HostUser);
+        data = data.replace(/%meetingdescription%/g, mailParam.meetingdescription);
+
+        emailService.sendEmail(mailParam.toemail, 'Meeting Rescheduled', data)
+    });
 }
+
+
