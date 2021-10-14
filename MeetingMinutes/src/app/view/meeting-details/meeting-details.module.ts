@@ -23,6 +23,7 @@ import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTableModule} from '@angular/material/table';
 
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { SwiperModule } from 'ngx-swiper-wrapper';
@@ -61,7 +62,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     MatSnackBarModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    SwiperModule
+    SwiperModule,
+    MatTableModule
   ],
   exports: [
     MeetingDetailsComponent,

@@ -28,9 +28,6 @@ import { SwiperConfigInterface } from 'ngx-swiper-wrapper'
 export class MeetingDetailsComponent implements OnInit {
 
   comment: any;
-
-  // allComments: Comments;
-
   public urlID: any;
 
   dataPage: any;
@@ -40,7 +37,7 @@ export class MeetingDetailsComponent implements OnInit {
   time = new Date();
   meeting: Meetings;
   options: User[];
-  actionItems: MeetingActions;
+  agendaItems: Array<any> = [];
   decisions: Decisions;
   tempActionPage = false;
   tempDecisionPage = false;
@@ -51,7 +48,7 @@ export class MeetingDetailsComponent implements OnInit {
   allComments: Comments[];
   tempAgenda: any;
   imageToShow: any;
-  image : any;
+  image: any;
   isImageLoading = true;
 
   downloadFile: any;
@@ -81,7 +78,19 @@ export class MeetingDetailsComponent implements OnInit {
   isAction = false;
   deviceDetectorInfo = null;
   minDate: Date;
-
+  columns: string[] = ['Project Name', 'Agenda Name', 'Status', 'Decision'];
+  dataSource = [
+    // { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
+    // { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
+    // { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
+    // { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
+    // { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
+    // { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
+    // { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
+    // { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
+    // { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
+    // { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
+  ]
 
   @ViewChild('commentArea', { read: ElementRef, static: false }) commentArea: ElementRef;
   @ViewChild('meetingNotes', { read: ElementRef, static: false }) meetingNote: ElementRef;
@@ -106,7 +115,7 @@ export class MeetingDetailsComponent implements OnInit {
     { id: 2 },
     { id: 3 },
   ];
-  
+
   constructor(private meetingService: MeetingService,
     private _route: ActivatedRoute,
     private route: Router,
@@ -114,8 +123,8 @@ export class MeetingDetailsComponent implements OnInit {
     private modalService: NgbModal,
     private commentService: CommentService,
     private meetingNoteService: MeetingNoteService,
-    private actionService : ActionService,
-    private decisionService : DecisionService,
+    private actionService: ActionService,
+    private decisionService: DecisionService,
     private deviceDetectorService: DeviceDetectorService,
     private _snackBar: MatSnackBar) { }
 
@@ -126,31 +135,15 @@ export class MeetingDetailsComponent implements OnInit {
     this.minDate = new Date();
     this.dataPage = 'A';
     this.activePage = 'A';
-    // document.getElementById('nav-home-tab').style.background = '#e74c3c';
 
     this.currentUser = this.userService.currentUserValue;
     this.refresh();
-    // var data = this.userService.checkUser(this.currentUser.LoginName).then(result => {
-    //   // console.log(result)
-    //   if (result) {
-    //     if (this.currentUser.IsActive === true) {
-    //       // console.log(this.userCheck())
-    //       this.refresh();
-    //     } else {
-    //       alert("Your account has been blocked. Please contact admin!");
-    //       this.route.navigateByUrl('/login')
-    //     }
-    //   } else {
-    //     alert("Your account has been deleted. Please contact admin!");
-    //     this.route.navigateByUrl('/login')
-    //   }
-    // });
+
   }
 
   async refresh() {
     this.urlID = this._route.snapshot.params['id'];
 
-    // this.currentUser = this.userService.currentUserValue;
     const id = this._route.snapshot.params['id'];
 
     const tempComment = await this.commentService.getAllComments(id).then(result => {
@@ -159,30 +152,21 @@ export class MeetingDetailsComponent implements OnInit {
     })
 
     const data = await this.meetingService.getMeetingById(id).then(data => {
-      console.log("meeting data-----------------------------------------------")
-      console.log(data)
       this.meeting = data[0];
-      // this.tempAgenda = this.meeting.Agenda;
 
-      // this.mNotes = this.meeting.Meeting_Notes;
 
       this.tempMeetingDate = this.meeting.MeetingDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
       this.tempMeetingTime = this.meeting.MeetingTime;
 
       this.timeToDisplay = new Date(this.meeting.MeetingTime);
-      console.log(this.timeToDisplay)
 
       if (this.meeting.Partipatents.length !== 0) {
         this.participants = this.meeting.Partipatents;
-        console.log(this.meeting)
       }
-      else{
+      else {
         this.participants = []
-        console.log(this.participants.length);
       }
 
-      console.log(this.currentUser.LoginName)
-      console.log(this.meeting.HostUser)
       if (this.currentUser.LoginName == this.meeting.HostUser) {
         this.userVerified = true;
       }
@@ -191,7 +175,6 @@ export class MeetingDetailsComponent implements OnInit {
         if (this.meeting.Status === 2) {
           this.isCompleted = true;
           this.isShow = true;
-          console.log("isCompleted")
         } else {
           this.isCompleted = false;
           this.isShow = false;
@@ -201,7 +184,6 @@ export class MeetingDetailsComponent implements OnInit {
       if (this.currentUser.Initials === 'sAdmin' || this.currentUser.LoginName == this.meeting.HostUser) {
         if (this.meeting.Status === 0) {
           this.isHost = true;
-          // console.log("isCompleted")
         } else {
           this.isHost = false;
         }
@@ -213,68 +195,67 @@ export class MeetingDetailsComponent implements OnInit {
 
       if (this.meeting.Status === 2) {
         this.isConclude = true;
-        console.log("isCompleted")
       } else {
         this.isConclude = false;
       }
 
-      const actionData = this.actionService.getActionByMeetingId(this.meeting.MeetingID).then(result =>{
-         console.log("actions#############################")
-         console.log(result)
-         if(result == null){
-           this.tempActionPage = false;
-         }
-         else{
-          // result.sort((a: any, b: any) => {
-          //       return b.ActionItemID - a.ActionItemID;
-          //     });
-              this.actionItems = result;
-              this.tempActionPage = true;
-         }
+      this.dataSource = [];
+
+      const actionData = this.actionService.getActionByMeetingId(this.meeting.MeetingID).then(result => {
+        this.agendaItems = result;
+
+        var sortCount = 0
+        var sameCount = 0;
+        this.agendaItems.forEach(agenda => {
+          var obj = {};
+          obj['project_name'] = agenda.project_Name;
+          obj['agenda_name'] = agenda.ActionItem_Title;
+          obj['status'] = agenda.Status;
+          obj['decision'] = agenda.decision;
+
+          if (this.dataSource.length > 0) {
+            var count = 0;
+            this.dataSource.forEach(element => {
+              if (agenda.project_Name.toLowerCase() == element['project_name'].toLowerCase()) {
+                count++;
+                sameCount = element.sort;
+              }
+            });
+
+            if (count > 0) {
+              obj['project_name'] = '';
+              obj['sort'] = sameCount;
+              this.dataSource.push(obj);
+
+            }
+            else {
+              sortCount += 1;
+              obj['project_name'] = agenda.project_Name;
+              obj['sort'] = sortCount;
+              this.dataSource.push(obj);
+            }
+          }
+          else {
+            obj['sort'] = sortCount;
+            this.dataSource.push(obj);
+          }
+
+
+        });
+        this.dataSource = this.dataSource.sort((a, b) => a.sort - b.sort);
+        this.dataLoaded = true;
       })
 
-      const decisionData = this.decisionService.getDecisionByMeetingId(this.meeting.MeetingID).then(result =>{
-        // console.log("actions#############################")
-        console.log(result)
-        if(result == null){
-          this.tempDecisionPage = false;
-        }
-        else{
-         // result.sort((a: any, b: any) => {
-         //       return b.ActionItemID - a.ActionItemID;
-         //     });
-             this.decisions = result;
-             this.tempDecisionPage = true;
-        }
-     })
 
-      // if (data.Action_Item.length == 0) {
-      //   console.log("ACtion items are null");
-      //   this.tempActionPage = false;
-      // } else {
-      //   data.Action_Item.sort((a: any, b: any) => {
-      //     return b.ActionItemID - a.ActionItemID;
-      //   });
-      //   this.actionItems = this.meeting.Action_Item;
-      //   this.tempActionPage = true;
-      // }
+      // const decisionData = this.decisionService.getDecisionByMeetingId(this.meeting.MeetingID).then(result => {
+      //   this.decisions = result;
+      //   console.log("decisions", this.decisions)
+      // })
 
-      // if (data.Decision_Item.length == 0) {
-      //   this.tempDecisionPage = false;
-      // } else {
-      //   data.Decision_Item.sort((a: any, b: any) => {
-      //     return b.DecisionItemID - a.DecisionItemID;
-      //   })
-      //   this.decisions = this.meeting.Decision_Item;
-      //   console.log(this.decisions)
-      //   this.tempDecisionPage = true;
-      // }
-      this.dataLoaded = true;
     })
     const data1 = this.userService.getAllUsers().then(result => {
       this.options = result;
     })
-    // this.getProfilePic();
   }
 
   invitees(val: any) {
@@ -292,10 +273,9 @@ export class MeetingDetailsComponent implements OnInit {
   deviceDetector() {
     this.deviceDetectorInfo = this.deviceDetectorService.getDeviceInfo();
     const isDesktop = this.deviceDetectorService.isDesktop();
-    // console.log("Device Info" + isDesktop)
     return isDesktop;
   }
-  
+
   public onIndexChange(index: number): void {
     console.log('Swiper index: ', index);
   }
@@ -324,85 +304,81 @@ export class MeetingDetailsComponent implements OnInit {
 
 
   updateMeeting(val: any, field: any) {
-    if(this.currentUser.LoginName == this.meeting.HostUser || this.currentUser.Initials === 'sAdmin'){
-    const id = this._route.snapshot.params['id'];
-    var object = {};
+    if (this.currentUser.LoginName == this.meeting.HostUser || this.currentUser.Initials === 'sAdmin') {
+      const id = this._route.snapshot.params['id'];
+      var object = {};
 
-    object["MeetingID"] = this.meeting.MeetingID;
-    object["Meeting_Subject"] = this.meeting.Meeting_Subject;
-    object["Meeting_objective"] = this.meeting.Meeting_objective;
-    object["MeetingDate"] = this.meeting.MeetingDate;
-    object["MeetingTime"] = this.meeting.MeetingTime;
-    object["Status"] = this.meeting.Status;
-    object["MeetingAssignedTo"] = this.meeting.MeetingAssignedTo;
-    object["MeetingID"] = this.meeting.MeetingID;
-    object["Meeting_Location"] = this.meeting.Meeting_Location;
-    object["Partipatents"] = this.participants;
-    object["HostUser"] = this.meeting.HostUser;
-    object["reoccrence"] = "Yes";
-    object["Conclusion"] = this.meeting.Conclusion;
-    object["RoomKey"] = this.meeting.RoomKey;
+      object["MeetingID"] = this.meeting.MeetingID;
+      object["Meeting_Subject"] = this.meeting.Meeting_Subject;
+      object["Meeting_objective"] = this.meeting.Meeting_objective;
+      object["MeetingDate"] = this.meeting.MeetingDate;
+      object["MeetingTime"] = this.meeting.MeetingTime;
+      object["Status"] = this.meeting.Status;
+      object["MeetingAssignedTo"] = this.meeting.MeetingAssignedTo;
+      object["MeetingID"] = this.meeting.MeetingID;
+      object["Meeting_Location"] = this.meeting.Meeting_Location;
+      object["Partipatents"] = this.participants;
+      object["HostUser"] = this.meeting.HostUser;
+      object["reoccrence"] = "Yes";
+      object["Conclusion"] = this.meeting.Conclusion;
+      object["RoomKey"] = this.meeting.RoomKey;
 
-    switch (field) {
-      case 'Meeting_Subject': object["Meeting_Subject"] = val;
-        break;
-      case 'project_Name': object["project_Name"] = val;
-        break;
-      case 'Status': if (val === 0) {
-        object["Status"] = 1;
-      } else if (val === 1) {
-        object["Status"] = 2;
-      } else {
-        object["Status"] = 0;
+      switch (field) {
+        case 'Meeting_Subject': object["Meeting_Subject"] = val;
+          break;
+        case 'project_Name': object["project_Name"] = val;
+          break;
+        case 'Status': if (val === 0) {
+          object["Status"] = 1;
+        } else if (val === 1) {
+          object["Status"] = 2;
+        } else {
+          object["Status"] = 0;
+        }
+          break;
       }
-        break;
+
+      const data = this.meetingService.updateMeeting(id, object).then(data => {
+        this.refresh();
+      })
     }
-    console.log("updating meeting")
-    console.log(id);
-    console.log(object);
-    const data = this.meetingService.updateMeeting(id, object).then(data => {
-      this.refresh();
-    })
-  }
-    else{
+    else {
       location.reload();
     }
   }
 
   onFocusOut() {
     this.focusOut.emit(this.meeting.Meeting_objective);
-    console.log(this.meeting.Meeting_objective)
-   if(this.currentUser.LoginName == this.meeting.HostUser || this.currentUser.Initials === 'sAdmin'){
-    var id = this._route.snapshot.params['id'];
+    if (this.currentUser.LoginName == this.meeting.HostUser || this.currentUser.Initials === 'sAdmin') {
+      var id = this._route.snapshot.params['id'];
 
-    var object = {};
-    object["MeetingID"] = this.meeting.MeetingID;
-    object["Meeting_Subject"] = this.meeting.Meeting_Subject;
-    object["Meeting_objective"] = this.meeting.Meeting_objective;
-    object["MeetingDate"] = this.meeting.MeetingDate;
-    object["MeetingTime"] = this.meeting.MeetingTime;
-    object["Status"] = this.meeting.Status;
-    object["MeetingAssignedTo"] = this.meeting.MeetingAssignedTo;
-    object["MeetingID"] = this.meeting.MeetingID;
-    object["Meeting_Location"] = this.meeting.Meeting_Location;
-    object["Partipatents"] = this.participants;
-    object["HostUser"] = this.meeting.HostUser;
-    object["Conclusion"] = this.meeting.Conclusion;
-    object["reoccrence"] = "Yes";
-    object["RoomKey"] = this.meeting.RoomKey;
+      var object = {};
+      object["MeetingID"] = this.meeting.MeetingID;
+      object["Meeting_Subject"] = this.meeting.Meeting_Subject;
+      object["Meeting_objective"] = this.meeting.Meeting_objective;
+      object["MeetingDate"] = this.meeting.MeetingDate;
+      object["MeetingTime"] = this.meeting.MeetingTime;
+      object["Status"] = this.meeting.Status;
+      object["MeetingAssignedTo"] = this.meeting.MeetingAssignedTo;
+      object["MeetingID"] = this.meeting.MeetingID;
+      object["Meeting_Location"] = this.meeting.Meeting_Location;
+      object["Partipatents"] = this.participants;
+      object["HostUser"] = this.meeting.HostUser;
+      object["Conclusion"] = this.meeting.Conclusion;
+      object["reoccrence"] = "Yes";
+      object["RoomKey"] = this.meeting.RoomKey;
 
-    const data = this.meetingService.updateMeeting(id, object).then(data => {
-      this.refresh();
-    })
-  }
-  else{
-    location.reload();
-  }
+      const data = this.meetingService.updateMeeting(id, object).then(data => {
+        this.refresh();
+      })
+    }
+    else {
+      location.reload();
+    }
   }
 
   onHeaderFocused() {
     this.focusOut.emit(this.meeting.Meeting_Subject);
-    console.log(this.meeting.Meeting_Subject)
 
     var id = this._route.snapshot.params['id'];
 
@@ -429,7 +405,6 @@ export class MeetingDetailsComponent implements OnInit {
 
   submitConclusion() {
     this.focusOut.emit(this.meeting.Conclusion);
-    console.log(this.meeting.Conclusion)
 
     var id = this._route.snapshot.params['id'];
 
@@ -455,56 +430,52 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
   submitAgenda() {
-    // this.focusOut.emit(this.meeting.Agenda);
-    // console.log(this.meeting.Agenda)
-    if(this.currentUser.LoginName == this.meeting.HostUser || this.currentUser.Initials === 'sAdmin'){
-    var id = this._route.snapshot.params['id'];
 
-    var object = {};
-    object["MeetingID"] = this.meeting.MeetingID;
-    object["Meeting_Subject"] = this.meeting.Meeting_Subject;
-    object["Meeting_objective"] = this.meeting.Meeting_objective;
-    object["MeetingDate"] = this.meeting.MeetingDate;
-    object["MeetingTime"] = this.meeting.MeetingTime;
-    object["Status"] = this.meeting.Status;
-    object["MeetingAssignedTo"] = this.meeting.MeetingAssignedTo;
-    object["MeetingID"] = this.meeting.MeetingID;
-    object["Meeting_Location"] = this.meeting.Meeting_Location;
-    object["Partipatents"] = this.participants;
-    object["HostUser"] = this.meeting.HostUser;
-    object["Conclusion"] = this.meeting.Conclusion;
-    object["reoccrence"] = "Yes";
-    object["RoomKey"] = this.meeting.RoomKey;
+    if (this.currentUser.LoginName == this.meeting.HostUser || this.currentUser.Initials === 'sAdmin') {
+      var id = this._route.snapshot.params['id'];
 
-    var mailobject = {};
-    mailobject["subject"] = "Meeting Agenda Updated",
-      // mailobject["message"] = "This is to inform you that, agenda has been change for meeting name '" + this.meeting.project_Name + "'" + ".<br/> <br/>" + "The new agenda is : " + this.meeting.Agenda;
-    mailobject["MeetingSubject"] = this.meeting.Meeting_Subject;
-    mailobject["MeetingDate"] = this.meeting.MeetingTime;
-    mailobject["NewMeetingDate"] = this.meeting.MeetingTime;
-    mailobject["HostUser"] = this.meeting.HostUser;
-    
-    mailobject["MeetingDescription"] = this.tempAgenda;
-    // mailobject["NewMeetingDescription"] = this.meeting.Agenda;
+      var object = {};
+      object["MeetingID"] = this.meeting.MeetingID;
+      object["Meeting_Subject"] = this.meeting.Meeting_Subject;
+      object["Meeting_objective"] = this.meeting.Meeting_objective;
+      object["MeetingDate"] = this.meeting.MeetingDate;
+      object["MeetingTime"] = this.meeting.MeetingTime;
+      object["Status"] = this.meeting.Status;
+      object["MeetingAssignedTo"] = this.meeting.MeetingAssignedTo;
+      object["MeetingID"] = this.meeting.MeetingID;
+      object["Meeting_Location"] = this.meeting.Meeting_Location;
+      object["Partipatents"] = this.participants;
+      object["HostUser"] = this.meeting.HostUser;
+      object["Conclusion"] = this.meeting.Conclusion;
+      object["reoccrence"] = "Yes";
+      object["RoomKey"] = this.meeting.RoomKey;
 
-    const data = this.meetingService.updateMeeting(id, object).then(async () => {
-      for (var i = 0; i < this.participants.length; i++) {
-        var temp = this.options.find(({ Email }) => Email === this.participants[i]);
-        mailobject["toname"] = temp.FirstName +" "+ temp.LastName;
+      var mailobject = {};
+      mailobject["subject"] = "Meeting Agenda Updated",
+        mailobject["MeetingSubject"] = this.meeting.Meeting_Subject;
+      mailobject["MeetingDate"] = this.meeting.MeetingTime;
+      mailobject["NewMeetingDate"] = this.meeting.MeetingTime;
+      mailobject["HostUser"] = this.meeting.HostUser;
 
-        // object["toemail"] = this.participants.toString();
-        mailobject["toemail"] = temp.Email;
-        mailobject["Meeting_Location"] = "https://mmconferenceroom.checkboxtechnology.com:9002/#MM"+this.meeting.RoomKey+"$"+temp.LoginName+"$"+this.meeting.MeetingID+"$1";
-        this.meetingService.sendMailAgenda(mailobject).then(result => {
-          console.log("Message sent to  the participant");
-        })
-      }
-      this.refresh();
-    })
-  }
-  else{
-    location.reload();
-  }
+      mailobject["MeetingDescription"] = this.tempAgenda;
+
+      const data = this.meetingService.updateMeeting(id, object).then(async () => {
+        for (var i = 0; i < this.participants.length; i++) {
+          var temp = this.options.find(({ Email }) => Email === this.participants[i]);
+          mailobject["toname"] = temp.FirstName + " " + temp.LastName;
+
+          mailobject["toemail"] = temp.Email;
+          mailobject["Meeting_Location"] = "https://mmconferenceroom.checkboxtechnology.com:9002/#MM" + this.meeting.RoomKey + "$" + temp.LoginName + "$" + this.meeting.MeetingID + "$1";
+          this.meetingService.sendMailAgenda(mailobject).then(result => {
+            console.log("Message sent to  the participant");
+          })
+        }
+        this.refresh();
+      })
+    }
+    else {
+      location.reload();
+    }
   }
 
   detailedAction(actionID: any) {
@@ -521,8 +492,6 @@ export class MeetingDetailsComponent implements OnInit {
     if (index !== -1) {
       this.participants.splice(index, 1);
     }
-
-    console.log(this.participants)
 
     var id = this._route.snapshot.params['id'];
 
@@ -544,18 +513,15 @@ export class MeetingDetailsComponent implements OnInit {
 
     var mailobject = {};
     mailobject["subject"] = "Meeting Cancellation",
-      // mailobject["message"] = "We are kindly to inform you that the meeting name " + this.meeting.project_Name + " has been cancelled.";
-    mailobject["MeetingSubject"] = this.meeting.Meeting_Subject;
+      mailobject["MeetingSubject"] = this.meeting.Meeting_Subject;
     mailobject["MeetingDate"] = this.meeting.MeetingTime;
     mailobject["HostUser"] = this.meeting.HostUser;
-    // mailobject["ShareLink"] = "www.checkboxtechnology.com";
     var tempUser = this.options.find(({ Email }) => Email === val);
-    mailobject["Meeting_Location"]="https://mmconferenceroom.checkboxtechnology.com:9002/#MM"+this.meeting.RoomKey+"$"+tempUser.LoginName+"$"+this.meeting.MeetingID+"$1";
-    // mailobject["MeetingDescription"] = this.meeting.Agenda;
+    mailobject["Meeting_Location"] = "https://mmconferenceroom.checkboxtechnology.com:9002/#MM" + this.meeting.RoomKey + "$" + tempUser.LoginName + "$" + this.meeting.MeetingID + "$1";
 
     const data = this.meetingService.updateMeeting(id, object).then(async () => {
-     
-      mailobject["toname"] = tempUser.FirstName +" "+tempUser.LastName;
+
+      mailobject["toname"] = tempUser.FirstName + " " + tempUser.LastName;
       mailobject["toemail"] = val;
       await this.meetingService.sendMailCancellation(mailobject).then(result => {
         console.log("Message sent");
@@ -569,10 +535,8 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
   getPosts(val: any) {
-    console.log(val)
     if (!this.participants.includes(val)) {
       this.participants.push(val);
-      console.log(this.participants);
       var id = this._route.snapshot.params['id'];
 
       var object = {};
@@ -585,12 +549,11 @@ export class MeetingDetailsComponent implements OnInit {
       object["MeetingAssignedTo"] = this.meeting.MeetingAssignedTo;
       object["MeetingID"] = this.meeting.MeetingID;
       object["Meeting_Location"] = this.meeting.Meeting_Location;
-      // object["Partipatents"] = this.participants.toString();
-      if(this.meeting.Partipatents.length != 0){
+      if (this.meeting.Partipatents.length != 0) {
         object["Partipatents"] = this.participants;
       }
-      else{
-      object["Partipatents"] = val;
+      else {
+        object["Partipatents"] = val;
       }
       object["HostUser"] = this.meeting.HostUser;
       object["Conclusion"] = this.meeting.Conclusion;
@@ -599,19 +562,15 @@ export class MeetingDetailsComponent implements OnInit {
 
       var mailobject = {};
       mailobject["subject"] = "Meeting Invitation",
-      // mailobject["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + this.meeting.project_Name;
-      mailobject["MeetingSubject"] = this.meeting.Meeting_Subject;
+        mailobject["MeetingSubject"] = this.meeting.Meeting_Subject;
       mailobject["MeetingDate"] = this.meeting.MeetingTime;
       mailobject["HostUser"] = this.meeting.HostUser;
-      // mailobject["ShareLink"] = "www.checkboxtechnology.com";
       var tempUser = this.options.find(({ Email }) => Email === val);
-      mailobject["Meeting_Location"]= "https://mmconferenceroom.checkboxtechnology.com:9002/#MM"+this.meeting.RoomKey+"$"+tempUser.LoginName+"$"+this.meeting.MeetingID+"$1";
-      // this.meeting.Meeting_Location
-      // mailobject["MeetingDescription"] = this.meeting.Agenda;
+      mailobject["Meeting_Location"] = "https://mmconferenceroom.checkboxtechnology.com:9002/#MM" + this.meeting.RoomKey + "$" + tempUser.LoginName + "$" + this.meeting.MeetingID + "$1";
       const data = this.meetingService.updateMeeting(id, object).then(async () => {
         this.newParticipant = false;
-        
-        mailobject["toname"] = this.currentUser.FirstName +" "+this.currentUser.LastName;
+
+        mailobject["toname"] = this.currentUser.FirstName + " " + this.currentUser.LastName;
         mailobject["toemail"] = val;
         await this.meetingService.sendMail(mailobject).then(result => {
           console.log("Message sent");
@@ -643,7 +602,6 @@ export class MeetingDetailsComponent implements OnInit {
     object["RoomKey"] = this.meeting.RoomKey;
 
     const data = this.meetingService.updateMeeting(id, object).then(data => {
-      console.log(data)
       if (data == null) {
         alert('The meeting has deleted successfully')
         this.route.navigateByUrl('/dashboard');
@@ -654,9 +612,7 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
   rescheduleMeeting(scheduleForm: NgForm) {
-    console.log(scheduleForm.value.MeetingDate)
     if (this.tempMeetingDate !== scheduleForm.value.MeetingDate || this.tempMeetingTime !== scheduleForm.value.MeetingTime) {
-      console.log("Success")
       document.getElementById('id01').style.display = 'none';
 
       var id = this._route.snapshot.params['id'];
@@ -667,7 +623,6 @@ export class MeetingDetailsComponent implements OnInit {
       object["Meeting_objective"] = this.meeting.Meeting_objective;
 
       var temp = new Date(scheduleForm.value.MeetingDate);
-      // temp.setDate(temp.getDate() + 1);
       object["MeetingDate"] = temp;
       object["MeetingTime"] = temp.toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
       console.log(temp.toLocaleString())
@@ -683,30 +638,21 @@ export class MeetingDetailsComponent implements OnInit {
       object["RoomKey"] = this.meeting.RoomKey;
       console.log(object)
 
-      // var newDate = new Date(this.meeting.MeetingDate.getDate()) + "/" + new Date(this.meeting.MeetingDate.getMonth()) + "/" + new Date(this.meeting.MeetingDate.getFullYear());
-
       var mailObject = {};
       mailObject["subject"] = "Re-Schedule Meeting",
-      // mailObject["message"] = "The meeting name " + "'" + this.meeting.project_Name + "'" + " is Re-scheduled on '" + this.meeting.MeetingDate + "' at " + this.meeting.MeetingTime;
-      mailObject["MeetingSubject"] = this.meeting.Meeting_Subject;
+        mailObject["MeetingSubject"] = this.meeting.Meeting_Subject;
       mailObject["MeetingDate"] = this.meeting.MeetingTime;
       mailObject["NewMeetingDate"] = temp.toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
       mailObject["HostUser"] = this.meeting.HostUser;
-      // mailObject["ShareLink"] = "www.checkboxdev.com";
-      
-      // mailObject["MeetingDescription"] = this.meeting.Agenda;
 
       const data = this.meetingService.updateMeeting(id, object).then(async () => {
         this.refresh();
-        console.log("---participants---")
-        console.log(this.participants)
+
         for (var i = 0; i < this.participants.length; i++) {
-          console.log("--------these are options")
-          console.log(this.options);
+
           var tempUser = this.options.find(({ Email }) => Email === this.participants[i]);
-          console.log("-----this is tempUser")
-          console.log(tempUser);
-          mailObject["toname"] = tempUser.FirstName +" "+ tempUser.LastName;
+
+          mailObject["toname"] = tempUser.FirstName + " " + tempUser.LastName;
           mailObject["toemail"] = tempUser.Email;
           mailObject["Meeting_Location"] = "https://meetingminutes.checkboxtechnology.com/videoRoom/" + this.meeting.RoomKey;;
           await this.meetingService.sendMailReschedule(mailObject).then(result => {
@@ -714,7 +660,6 @@ export class MeetingDetailsComponent implements OnInit {
           })
         }
       })
-      // }
     }
   }
 
@@ -727,7 +672,6 @@ export class MeetingDetailsComponent implements OnInit {
   onFileInput(val: any) {
 
     const id = this._route.snapshot.params['id'];
-    console.log(val)
     const fileList = val.target.files;
     if (fileList.length > 0) {
       const file: File = fileList[0];
@@ -737,31 +681,24 @@ export class MeetingDetailsComponent implements OnInit {
       console.log(formData)
       this.meetingService.uploadFile(formData, id).then(result => {
         this.openSnackBar("Attachment is Uploaded", "OK");
-        console.log("success")
         this.refresh();
       })
     }
   }
 
   async getServerFiles() {
-    // if(this.currentUser.LoginName == this.meeting.HostUser || this.currentUser.Initials === 'sAdmin'){
 
-   
-      if(this.deviceDetector()){
-        console.log("Values inside if")
-        document.getElementById('id02').style.display = 'block'
-      } else {
-        document.getElementById('id03').style.display = 'block'
-      }
+    if (this.deviceDetector()) {
+      document.getElementById('id02').style.display = 'block'
+    } else {
+      document.getElementById('id03').style.display = 'block'
+    }
     const id = this._route.snapshot.params['id'];
 
     const images = await this.meetingService.getAllFiles(id).then(result => {
-      // this.allFiles = result;
-      console.log(result)
       this.allFiles = [];
       for (var i = 0; i < result.length; i++) {
         var filename = result[i].replace(/^.*[\\\/]/, '')
-        console.log(filename)
         this.allFiles.push(filename);
         this.filesLoaded = true
       }
@@ -826,16 +763,14 @@ export class MeetingDetailsComponent implements OnInit {
     }
     this.meetingService.downloadAttachment(filename, id)
       .subscribe(res => {
-        // console.log("downloadAttachment res " + res);
         document.getElementById('id02').style.display = 'none';
         let options = { type: fileType };
-        // let filename = this.attachGroup[index].originalName;
         this.createAndDownloadBlobFile(res, options, filename);
       });
   }
 
   createAndDownloadBlobFile(blob, options, filename) {
-    var link = document.createElement("a");        // Browsers that support HTML5 download attribute
+    var link = document.createElement("a");
     if (link.download !== undefined) {
       var url = URL.createObjectURL(blob);
       link.setAttribute("href", url);
@@ -847,41 +782,22 @@ export class MeetingDetailsComponent implements OnInit {
     }
   }
 
-
-  // async getProfilePic() {
-  //   this.isImageLoading = true;
-  //   var id = this.currentUser.AppUserID;
-  //   this.userService.getUploadProfile(id, this.currentUser.MiddleName)
-  //     .subscribe(res => {
-
-  //         console.log(res)
-  //       this.createImageFromBlob(res);
-  //       this.isImageLoading = false;
-
-  //     }, error => {
-  //       this.isImageLoading = true;
-  //       console.log(error);
-  //     });
-  // }
-
   createImageFromBlob(image: Blob) {
-         let reader = new FileReader();
-         reader.addEventListener("load", () => {
-            this.imageToShow = reader.result;
-         }, false);
-  
-         if (image) {
-            reader.readAsDataURL(image);
-         }
+    let reader = new FileReader();
+    reader.addEventListener("load", () => {
+      this.imageToShow = reader.result;
+    }, false);
+
+    if (image) {
+      reader.readAsDataURL(image);
+    }
   }
 
   async postComment() {
 
     if (this.commentArea.nativeElement.value !== '') {
       var id = this._route.snapshot.params['id'];
-      // console.log(this.commentArea.nativeElement.value);
       var object = {};
-      // object["project_Name"] = this.meeting.project_Name;
       object["Comment1"] = this.commentArea.nativeElement.value;
       var temp = new Date();
       temp.setDate(temp.getDate() + 1);
@@ -901,43 +817,6 @@ export class MeetingDetailsComponent implements OnInit {
     }
   }
 
-  // async sendNotes() {
-
-  //   if (this.meetingText.nativeElement.value !== '') {
-
-  //     const id = this._route.snapshot.params['id'];
-  //     const data = this.meetingService.getMeetingById(id).then(data => {
-  //       this.meeting = data;
-  //     });
-  //     this.meetingNotes.MeetingID = this.meeting.MeetingID;
-  //     this.meetingNotes.project_Name = this.meeting.project_Name;
-  //     this.meetingNotes.LoginName = this.currentUser.LoginName;
-  //     this.meetingNotes.Status = this.meeting.Status;
-  //     this.meetingNotes.meetingNotes = this.meetingText.nativeElement.value
-
-  //     await this.meetingNoteService.postMeetingNotes(this.meetingNotes).then(data => {
-  //       console.log("postMeetingNotes API");
-  //       this.meetingText.nativeElement.value = '';
-  //       this.refresh();
-  //       //   document.getElementById('id02').style.display = 'none';
-  //       // this.meetingNotes.nativeElement.value = null;
-  //     });
-  //   }
-  // }
-
-  // editMeetingNotes(meetingNotes: any, meetingNoteId: any) {
-  //   this.meetingNoteService.getMeetingNotesById(meetingNoteId).then(result => {
-  //     this.mNote = result;
-  //     var object = this.mNote;
-  //     object["meetingNotes"] = meetingNotes;
-
-  //     this.meetingNoteService.updateMeetingNotes(meetingNoteId, object).then(data => {
-  //       this.refresh();
-  //     });
-  //   });
-
-  // }
-
 
   deleteMeetingNotes(meetingId: any) {
     this.meetingNoteService.deleteMeetingNotesById(meetingId).then(data => {
@@ -949,13 +828,10 @@ export class MeetingDetailsComponent implements OnInit {
 
     var object = {};
     object["subject"] = " Thanks for taking the time to meet with me today";
-    // object["message"] = " Thanks for meeting with me today. I enjoyed our meeting very much and look forward to meeting you again.<br/>" + "<br/> With the meeting '" + this.meeting.project_Name + "', we conclude to this : <br/> <br/>" + this.meeting.Conclusion;
     object["MeetingSubject"] = this.meeting.Meeting_Subject;
     object["MeetingDate"] = this.meeting.MeetingTime;
     object["HostUser"] = this.meeting.HostUser;
-    // object["ShareLink"] = "www.checkboxtechnology.com";
-   
-    // object["MeetingDescription"] = this.meeting.Agenda;
+
     object["Conclusion"] = this.meeting.Conclusion;
 
     if (this.meeting.Partipatents !== null) {
@@ -963,10 +839,9 @@ export class MeetingDetailsComponent implements OnInit {
     }
     for (var i = 0; i < this.participants.length; i++) {
       var temp = this.options.find(({ Email }) => Email === this.participants[i]);
-      object["toname"] = temp.FirstName +" "+ temp.LastName;
-      // object["toemail"] = this.participants.toString();
+      object["toname"] = temp.FirstName + " " + temp.LastName;
       object["toemail"] = temp.Email;
-      object["Meeting_Location"]="https://meetingminutes.checkboxtechnology.com/videoRoom/" + this.meeting.RoomKey + '$' + this.currentUser.FirstName;
+      object["Meeting_Location"] = "https://meetingminutes.checkboxtechnology.com/videoRoom/" + this.meeting.RoomKey + '$' + this.currentUser.FirstName;
       this.meetingService.sendMailConclusion(object).then(result => {
         console.log("Message sent to  the participant");
       })
@@ -978,7 +853,7 @@ export class MeetingDetailsComponent implements OnInit {
     this.fabIcon = !this.fabIcon
   }
 
-  openChat(meetingID : any) {
+  openChat(meetingID: any) {
     this.route.navigate(['/videoRoom/' + meetingID + '$' + this.currentUser.LoginName])
   }
 }
