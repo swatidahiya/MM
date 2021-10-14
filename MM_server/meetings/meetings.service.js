@@ -115,9 +115,6 @@ async function getMeetingById(id){
 
 async function updateMeeting(id, object){
     const meeting = await Meeting.findOne({MeetingID: id})
-    // console.log(meeting);
-    // console.log("-------------------------")
-    // console.log(object);
     Object.assign(meeting, object);
     await meeting.save();
     return meeting;

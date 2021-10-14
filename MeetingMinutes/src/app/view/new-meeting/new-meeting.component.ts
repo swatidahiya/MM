@@ -208,6 +208,8 @@ export class NewMeetingComponent implements OnInit {
       });
 
       var c = confirm("Meeting scheduled successfully!\nDo you want add agenda?");
+      console.log("this is result")
+      console.log(result);
       if (c == true) {
         this.dialog.open(ActionDialogComponent, {
           width: '400px',
