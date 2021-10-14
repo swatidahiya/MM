@@ -224,7 +224,7 @@ export class QuickMeetingComponent implements OnInit {
     mailObject["toname"] = this.currentUser.FirstName + " " + this.currentUser.LastName;
 
 
-    await this.meetingService.postMeeting(this.meeting).then(async () => {
+    await this.meetingService.postMeeting(object).then(async () => {
       alert("The meeting has been created successfully");
 
       for (var i = 0; i < partipatents.length; i++) {
