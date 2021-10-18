@@ -391,15 +391,56 @@
                                                     <tr *ngFor="let item of dataSource">
                                                         <th scope="row" class="col-3"><b>{{item.project_name |
                                                                 uppercase}}</b></th>
-                                                        <td class="col-3">{{item.agenda_name}}</td>
+                                                        <td class="col-3">
+                                                            <ejs-inplaceeditor id="agenda_name" type="Text"
+                                                                (actionSuccess)="onChangeAgendaName($event.value, item.id, 'ActionItem_Title')"
+                                                                [(ngModel)]="item.agenda_name" [model]="modelObj">
+                                                            </ejs-inplaceeditor>
+                                                        </td>
                                                         <td class="col-2">
                                                             <span [ngSwitch]="item.status">
-                                                                <span *ngSwitchCase='0'>Due</span>
-                                                                <span *ngSwitchCase='1'>In Progress</span>
-                                                                <span *ngSwitchCase='2'>Completed</span>
+                                                                <span *ngSwitchCase='0' mat-button
+                                                                    [matMenuTriggerFor]="due"
+                                                                    title="Click to Change agenda status"
+                                                                    style="padding: 3px 10px; border-radius: 10px; cursor: pointer; background-color: crimson; color: white;">
+                                                                    Due <i class="fas fa-caret-down"></i>
+                                                                </span>
+                                                                <mat-menu #due="matMenu">
+                                                                    <button (click)="onChangeAgendaName(1, item.id, 'Status')" mat-menu-item>In Progress</button>
+                                                                    <button (click)="onChangeAgendaName(2, item.id, 'Status')" mat-menu-item>Completed</button>
+                                                                </mat-menu>
+
+                                                                <span *ngSwitchCase='1' mat-button
+                                                                    [matMenuTriggerFor]="inProgress"
+                                                                    title="Click to Change agenda status"
+                                                                    style="padding: 3px 10px; border-radius: 10px; cursor: pointer; background-color: cornflowerblue; color: white;">
+                                                                    In Progress <i class="fas fa-caret-down"></i>
+
+                                                                </span>
+                                                                <mat-menu #inProgress="matMenu">
+                                                                    <button (click)="onChangeAgendaName(0, item.id, 'Status')" mat-menu-item>Due</button>
+                                                                    <button (click)="onChangeAgendaName(2, item.id, 'Status')" mat-menu-item>Completed</button>
+                                                                </mat-menu>
+                                                                <span *ngSwitchCase='2' mat-button
+                                                                    [matMenuTriggerFor]="Completed"
+                                                                    title="Click to Change agenda status"
+                                                                    style="padding: 3px 10px; border-radius: 10px; cursor: pointer; background-color: green; color: white;">
+                                                                    Completed <i class="fas fa-caret-down"></i>
+
+                                                                </span>
+                                                                <mat-menu #Completed="matMenu">
+                                                                    <button (click)="onChangeAgendaName(0, item.id, 'Status')" mat-menu-item>Due</button>
+                                                                    <button (click)="onChangeAgendaName(1, item.id, 'Status')" mat-menu-item>In Progress</button>
+                                                                </mat-menu>
                                                             </span>
                                                         </td>
-                                                        <td class="col-4">{{item.decision}}</td>
+                                                        <td class="col-4">
+                                                            <ejs-inplaceeditor id="decision" type="Text"
+                                                                (actionSuccess)="onChangeAgendaName($event.value, item.id, 'decision')"
+                                                                [(ngModel)]="item.decision" [model]="modelObj">
+                                                            </ejs-inplaceeditor>
+
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -571,7 +612,8 @@
                                 <div class="tab-pane fade show active" *ngIf="activePage === 'C'">
                                     <div *ngIf="agendaItems.length > 0; else default">
                                         <div *ngFor="let decision of agendaItems">
-                                            <div class="card mb-2 py-2 px-2 container-fluid" *ngIf="decision.decision.length > 0 || decision.Status == 2"
+                                            <div class="card mb-2 py-2 px-2 container-fluid"
+                                                *ngIf="decision.decision.length > 0 || decision.Status == 2"
                                                 (click)="detailedDecision(decision._id)" style="cursor: pointer;">
                                                 <div class="row">
                                                     <div class="col-8">
@@ -699,7 +741,7 @@
         </mat-card>
 
         <div style="text-align: center; margin-bottom: 15px; margin-top: 15px;">
-        
+
             <button mat-fab color="primary" style="margin-right: 10px;" (click)="openChat(meeting.RoomKey)"
                 aria-label="Example icon-button with a heart icon" title="Video Room">
                 <mat-icon>airplay</mat-icon>
@@ -711,7 +753,7 @@
             <button mat-fab color="accent" style="margin-right: 10px;" (click)="getServerFiles()" title="Download File">
                 <mat-icon>get_app</mat-icon>
             </button>
-          
+
         </div>
 
         <swiper [config]="config" (indexChange)="onIndexChange($event)" style="max-height: 300px; overflow-x: scroll;">
@@ -728,7 +770,7 @@
                                         <div id="textboxes" *ngFor="let mNote  of mNotes;let i = index">
                                             <ul>
                                                 <li>
-                                                   
+
 
                                                 </li>
                                             </ul>
@@ -738,7 +780,7 @@
                                                 aria-label="Recipient's username" aria-describedby="basic-addon2"
                                                 #meetingText>
                                             <div class="input-group-append">
-                                               
+
                                             </div>
                                         </div>
                                     </mat-card-content>
@@ -831,7 +873,7 @@
                                 <mat-card-title>{{actionItem.project_Name}}</mat-card-title>
                                 <mat-card-subtitle>{{actionItem.ActionItem_Title}}</mat-card-subtitle>
                             </mat-card-header>
-                          
+
                             <mat-card-content>
                                 <p class="text-oneline">
                                     <b> Date : </b> {{actionItem.ActionDate | date : 'mediumDate'}}
@@ -874,7 +916,7 @@
                                 <mat-card-title>{{decision.project_Name}}</mat-card-title>
                                 <mat-card-subtitle>{{decision.DecisionItem_Title}}</mat-card-subtitle>
                             </mat-card-header>
-                           
+
                             <mat-card-content>
                                 <p class="text-oneline">
                                     <b>Date : </b> {{decision.DecisionDate | date : 'mediumDate'}}
@@ -927,7 +969,7 @@
                         class="alert1 float-left">
                         <div *ngIf="MeetingDate.errors.required" class="alert1">MeetingDate is required</div>
                     </div>
-                   
+
                 </div>
                 <div class="card-footer" style="text-align: center;">
                     <button mat-raised-button type="button" color="secondary"

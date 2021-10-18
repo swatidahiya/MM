@@ -91,6 +91,7 @@ export class MeetingDetailsComponent implements OnInit {
     // { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
     // { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
   ]
+  public modelObj: Object = { placeholder: '' };
 
   @ViewChild('commentArea', { read: ElementRef, static: false }) commentArea: ElementRef;
   @ViewChild('meetingNotes', { read: ElementRef, static: false }) meetingNote: ElementRef;
@@ -142,6 +143,7 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
   async refresh() {
+    this.dataLoaded = false;
     this.urlID = this._route.snapshot.params['id'];
 
     const id = this._route.snapshot.params['id'];
@@ -212,6 +214,7 @@ export class MeetingDetailsComponent implements OnInit {
           obj['agenda_name'] = agenda.ActionItem_Title;
           obj['status'] = agenda.Status;
           obj['decision'] = agenda.decision;
+          obj['id'] = agenda.id;
 
           if (this.dataSource.length > 0) {
             var count = 0;
@@ -856,4 +859,22 @@ export class MeetingDetailsComponent implements OnInit {
   openChat(meetingID: any) {
     this.route.navigate(['/videoRoom/' + meetingID + '$' + this.currentUser.LoginName])
   }
+
+  onChangeAgendaName(val: any, id: any, field: any) {
+
+    var obj = {};
+    obj[field] = val
+
+    this.actionService.updateAction(id, obj).then(data => {
+      this.refresh();
+    })
+  }
+
+  onChangeStatus(val: any, id: any, field: any) {
+    console.log(val);
+    console.log(id);
+    console.log(field);
+  }
+
+
 }
