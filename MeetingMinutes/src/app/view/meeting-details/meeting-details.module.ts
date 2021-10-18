@@ -23,12 +23,14 @@ import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTableModule} from '@angular/material/table';
 
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { SwiperModule } from 'ngx-swiper-wrapper';
 import { SWIPER_CONFIG } from 'ngx-swiper-wrapper';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
- 
+import { InPlaceEditorAllModule } from '@syncfusion/ej2-angular-inplace-editor';
+
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
   slidesPerView: 'auto'
@@ -61,7 +63,9 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     MatSnackBarModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    SwiperModule
+    SwiperModule,
+    MatTableModule,
+    InPlaceEditorAllModule
   ],
   exports: [
     MeetingDetailsComponent,

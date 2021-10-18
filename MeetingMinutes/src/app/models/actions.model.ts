@@ -12,4 +12,5 @@ export class MeetingActions {
     Action_Description: string;
     MeetingID: number;
     meetingName: string;
+    decision: string;
 }

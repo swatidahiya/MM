@@ -28,7 +28,7 @@
     "@babel/plugin-proposal-numeric-separator": "^7.10.4",
     "@ng-bootstrap/ng-bootstrap": "^5.3.1",
     "@syncfusion/ej2": "^17.3.30",
-    "@syncfusion/ej2-angular-inplace-editor": "^17.3.29",
+    "@syncfusion/ej2-angular-inplace-editor": "^17.4.51",
     "@syncfusion/ej2-angular-schedule": "^18.1.48",
     "@types/hammerjs": "^2.0.36",
     "amazing-time-picker": "^1.8.0",

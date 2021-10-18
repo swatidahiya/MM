@@ -65,6 +65,9 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 import { VideoConferenceComponent } from './view/video-conference/video-conference.component';
 import { VideoConferenceModule } from './view/video-conference/video-conference.module';
 // import { CallEndDialogComponent } from './view/call-end-dialog/call-end-dialog.component';
+import {MatTableModule} from '@angular/material/table';
+import { InPlaceEditorAllModule } from '@syncfusion/ej2-angular-inplace-editor';
+
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -198,6 +201,7 @@ const routes: Routes = [
     AnalysisModule,
     ChartsModule,
     ValidatorsModule,
+    MatTableModule,
     NgCircleProgressModule.forRoot({
       // set defaults here
       radius: 100,
@@ -207,7 +211,8 @@ const routes: Routes = [
       innerStrokeColor: "#C7E596",
       animationDuration: 300,
       responsive: true
-    })
+    }),
+    InPlaceEditorAllModule
   ],
   providers: [
     {

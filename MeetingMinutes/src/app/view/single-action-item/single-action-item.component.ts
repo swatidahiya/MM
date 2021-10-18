@@ -135,6 +135,7 @@ export class SingleActionItemComponent implements OnInit {
   }
 
   async onPriority(actionID: any, val: any) {
+    const id = this._route.snapshot.params['id'];
     if(this.currentUser.DisplayName == this.actionItem.ActionAssignedTo || this.currentUser.Initials === 'sAdmin'){
     var object = {};
     // console.log(actionID)
@@ -156,7 +157,7 @@ export class SingleActionItemComponent implements OnInit {
       case 'Low': object["Priority"] = 'High';
         break;
     }
-    const data = this.actionService.updateAction(actionID, object).then(data => {
+    const data = this.actionService.updateAction(id, object).then(data => {
       this.refresh();
     })
   }

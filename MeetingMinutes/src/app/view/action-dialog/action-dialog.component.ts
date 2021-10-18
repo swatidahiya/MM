@@ -83,6 +83,7 @@ export class ActionDialogComponent implements OnInit {
       action.MeetingID = this.data['id'];
       action.ActionDate = action.ActionDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })
       action.ActionTime = new Date().toUTCString()
+      action.decision = '';
       await this.actionService.postAction(action).then(data => {
 
         if (this.data['from'] == 1) {
@@ -101,6 +102,7 @@ export class ActionDialogComponent implements OnInit {
         }
         else {
           alert("Agenda created successfully!")
+          this.reloadComponent(this.data['id'])
           this.dialogRef.close();
         }
       })
@@ -116,6 +118,12 @@ export class ActionDialogComponent implements OnInit {
     else {
       this.dialogRef.close();
     }
+  }
+
+  reloadComponent(id: any) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['/browse/' + id]);
   }
 
 }

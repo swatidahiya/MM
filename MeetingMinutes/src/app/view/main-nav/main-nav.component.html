@@ -64,26 +64,9 @@
     <mat-divider></mat-divider>
     <div class="secondToolbar example-button-row" *ngIf="deviceDetector()">
       <!-- <img class="userImg" src="../../../assets/facebook.png"> -->
-      <div *ngIf="pageDetector()" class="float-left" routerLink="/dashboard"
-        style="color: white; font-size: 18px; margin-left: 10px; padding: 30px 20px; cursor: pointer;">
-        <i class="fas fa-angle-left"></i> <a style="margin-left: 5px;">Dashboard</a>
+      <div class="float-left">
+        <img style="height: 50px; width: auto;" src="../../../assets/reserved_logo.png">
       </div>
-
-      <!-- <div class="float-left" style="padding: 20px 40px; margin-left: 10px;">
-        <div class="row">
-          <div class="col-2">
-            <img [src]="imageToShow" style="height: 40px; width: 40px; border-radius: 50%; border: 1px solid whitesmoke;" alt="Place image title" *ngIf="!isImageLoading; else noImageFound">
-              <ng-template #noImageFound>
-                <img src="../../../assets/avatar1.png" style="height: 40px; width: 40px; border-radius: 50%; border: 1px solid whitesmoke;" title="dummy" alt="Fallbackimage">
-            </ng-template>
-          </div>
-          <div class="col-9">
-            <a style="font-size: 16px; color: whitesmoke; margin-left: 10px;">{{currentUser.FirstName}}
-              {{currentUser.LastName}}</a><br>
-            <a style="font-size: 16px; color: whitesmoke; margin-left: 10px;">{{currentUser.Email}}</a>
-          </div>
-        </div>
-      </div> -->
 
       <div style="text-align: end">
         <button mat-raised-button color="primary" (click)="openScheduler()">Scheduler
