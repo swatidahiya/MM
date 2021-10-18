@@ -25,7 +25,7 @@ export class MeetingSummaryComponent implements OnInit {
   isToday: boolean[] = [false];
 
   viewTime: string[] = [""];
-  projectNameText: any;
+  meetingNameText: any;
   fullNameText: any;
   status0Text: boolean = false;
   status1Text: boolean = false;
@@ -176,9 +176,9 @@ export class MeetingSummaryComponent implements OnInit {
   async filterMeetings() {
     var object = {}
 
-    if (this.projectNameText !== undefined) {
-      if(this.projectNameText.length > 0) {
-        object['projectName'] = this.projectNameText.toLowerCase();
+    if (this.meetingNameText !== undefined) {
+      if(this.meetingNameText.length > 0) {
+        object['meetingName'] = this.meetingNameText.toLowerCase();
       }
     }
     object['user'] = this.contacts[0];
@@ -228,7 +228,7 @@ export class MeetingSummaryComponent implements OnInit {
 
     this.meetings = [];
     this.contacts = [];
-    this.projectNameText = "";
+    this.meetingNameText = "";
     this.fullNameText = "";
     this.mainValue = "";
     this.selectedStatus = undefined;

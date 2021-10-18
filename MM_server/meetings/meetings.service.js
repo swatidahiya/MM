@@ -45,7 +45,7 @@ async function getMeetings() {
 }
 
 async function filterMeetings(object) {
-    var projectName = object.projectName;
+    var meetingName = object.meetingName;
     var status = object.status;
     var user = object.user;
     var meetings = [];
@@ -53,21 +53,26 @@ async function filterMeetings(object) {
     let data = await Meeting.find({ Status: object.status });
    
     if(data.length > 0) {
-        if(projectName === undefined && user === undefined) {
+        if(meetingName === undefined && user === undefined) {
             return data;
         }
 
-        else if(projectName !== undefined && user === undefined){
+        else if(meetingName !== undefined && user === undefined){
+            var meetName = meetingName.toLowerCase();
+            var re = new RegExp(meetName, "g");
             data.forEach(meeting => {
-                var name = meeting.project_Name;
-                if(name.toLowerCase() === projectName) {
-                    meetings.push(meeting)
+                var name = meeting.Meeting_Subject.toLowerCase();
+                if (name.search(re) == -1) {
+                    console.log("Not Found");
+                } else {
+                    meetings.push(meeting);
+                    console.log("Found");
                 }
             })
             return meetings;
         }
 
-        else if(user !== undefined && projectName === undefined ) {
+        else if(user !== undefined && meetingName === undefined ) {
             data.forEach(meeting => {
                 if(meeting.HostUser === user) {
                     meetings.push(meeting)
@@ -75,11 +80,19 @@ async function filterMeetings(object) {
             });
             return meetings;
         }
-        else if(projectName !== undefined && projectName !== null) {
+        else if(meetingName !== undefined && meetingName !== null) {
+            var meetName = meetingName.toLowerCase();
+            var re = new RegExp(meetName, "g");
             data.forEach(meeting => {
-                var name = meeting.project_Name.toLowerCase();
-                if(name === projectName && meeting.HostUser === user) {
-                    meetings.push(meeting)
+                var name = meeting.Meeting_Subject.toLowerCase();
+                if (name.search(re) == -1 ) {
+                    console.log("Not Found");
+                } else {
+                    if(meeting.HostUser === user){
+                        meetings.push(meeting);
+                        console.log("Found");
+                    }
+                    
                 }
             })
             return meetings;
