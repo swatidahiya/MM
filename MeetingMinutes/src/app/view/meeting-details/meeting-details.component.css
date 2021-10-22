@@ -10,6 +10,16 @@
     background-size: cover;
     background-repeat: repeat-y;
     align-content: center;
+    padding-bottom: 50px;
+}
+
+#containerr{
+    background-image: url('src/assets/background.jpg');
+
+    background-size: cover;
+    background-repeat: repeat-y;
+    align-content: center;
+    padding-bottom: 50px;
 }
 
 .card-head{
@@ -349,32 +359,6 @@ nav > .nav.nav-tabs{
       padding: 4px;
   }
 
-  .commentSection {
-      position: relative;
-      width: 96%;
-      padding: 10px;
-      margin-left: 2%;
-      margin-right: 2%;
-  }
-
-  .commentImage {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 1px solid grey;
-  }
-
-  .comment {
-    position: relative;
-    border: 1px inset rgb(87, 121, 87);
-    border-radius: 10px;
-    background-color: rgba(211, 226, 189, 0.788);
-    margin-left: 4%;
-    margin-right: 2%;
-    color: rgb(33, 58, 33);
-    width: 50%;
-    padding: 10px;
-}
 
 .actionItemTab {
     height: 100px;
@@ -502,4 +486,88 @@ textarea:focus, input:focus, .uneditable-input:focus {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 500;
+}
+.comment {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.submit {
+    border: 2px solid green;
+}
+
+.cancel {
+    border: 2px solid red;
+}
+.commentavatar {
+    height: 35px;
+    border-radius: 50%;
+}
+
+
+
+/* .ql-mention-list-container {
+    width: 270px;
+    border: 1px solid #F0F0F0;
+    border-radius: 4px;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 12px 0 rgba(30, 30, 30, 0.08);
+  }
+  
+  .ql-mention-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  .ql-mention-list-item {
+    cursor: pointer;
+    line-height: 44px;
+    font-size: 16px;
+    padding: 0 20px;
+    vertical-align: middle;
+    z-index: 20000;
+  }
+  
+  .ql-mention-list-item.selected {
+    background-color: #D3E1EB;
+    text-decoration: none;
+  }
+  
+  .mention {
+    width: 65px;
+    border-radius: 6px;
+    background-color: #D3E1EB;
+    padding: 3px 0;
+  }
+  
+  .mention>span {
+    margin: 0 3px;
+  } */
+
+.btnRow {
+    margin-top: 60px;
+}
+
+.agendaSmall {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+@media screen and (max-width: 700px) {
+    .btnRow {
+        margin-top: 80px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .btnRow {
+        margin-top: 120px;
+    }
 }

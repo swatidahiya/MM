@@ -8,16 +8,13 @@
     align-content: center;
 }
 
-.card{
-    /* height: 770px; */
+.card-head{
     margin-top: 30px;
     margin-bottom: auto;
     width: 90%;
-    /* height: 100%; */
     margin: 0% 5%;
     background-color: rgb(253, 253, 253) !important;
     border-radius: 20px;
-    /* border-radius: 20px; */
     }
 
     
@@ -296,42 +293,51 @@
           padding: 4px;
       }
     
-      .commentSection {
-          position: relative;
-          width: 96%;
-          padding: 10px;
-          margin-left: 2%;
-          margin-right: 2%;
-      }
-    
-      .commentImage {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          border: 1px solid grey;
-      }
-    
-      .comment {
-        position: relative;
-        border: 1px inset rgb(87, 121, 87);
-        border-radius: 10px;
-        background-color: rgba(211, 226, 189, 0.788);
-        margin-left: 4%;
-        margin-right: 2%;
-        color: rgb(33, 58, 33);
-        width: 50%;
-        padding: 10px;
-    }
-    
+     
     .actionItemTab {
         height: 100px;
         background-color: rgb(233, 233, 233);
-        /* text-align: end; */
-        /* justify-content: center; */
     }
 
     .fa-pencil-alt:hover {
         color: black;
     }
+
+    .title {
+        font-size: 24px;
+        font-weight: 500;
+    }
+
+    .comment {
+        max-height: 600px;
+        overflow-y: auto;
+    }
     
+    .submit {
+        border: 2px solid green;
+    }
+    
+    .cancel {
+        border: 2px solid red;
+    }
+    .commentavatar {
+        height: 35px;
+        border-radius: 50%;
+    }
+
+    .btnRow {
+        margin-top: 60px;
+    }
+    
+    @media screen and (max-width: 700px) {
+        .btnRow {
+            margin-top: 80px;
+        }
+    }
+    
+    @media screen and (max-width: 360px) {
+        .btnRow {
+            margin-top: 120px;
+        }
+    }
       

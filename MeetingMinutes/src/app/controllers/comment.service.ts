@@ -28,12 +28,16 @@ export class CommentService {
         });
     }
 
-    postComment(data: any) : any {
+    postComment(data: any) {
         return this.request('post', this.baseUrl + '/Comment/postComment', data)
     }
 
-    getAllComments(id: any) {
-        return this.request('get', this.baseUrl + '/Comment/getAllComments/' + id);
+    postAgendaComment(data: any) {
+      return this.request('post', this.baseUrl + '/Comment/postAgendaComment', data)
+  }
+
+    getAllComments() {
+        return this.request('get', this.baseUrl + '/Comment/getAllComments/');
     }
 
     updateComment(data: any, id: any) {
@@ -42,5 +46,13 @@ export class CommentService {
 
     deleteComment(id: any) {
       return this.request('delete', this.baseUrl + '/Comment/' + id);
+    }
+
+    getCommentsByActionId(id: any) {
+      return this.request('get', this.baseUrl + '/Comment/getCommentsByActionId/' + id);    
+    }
+
+    getCommentsByMeetingId(id: any) {
+      return this.request('get', this.baseUrl + '/Comment/getCommentsByMeetingId/' + id);
     }
 }
