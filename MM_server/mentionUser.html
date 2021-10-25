@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>MM : Notification</title>
+</head>
+<style type="text/css">
+    .body {
+        background-color: rgb(236, 236, 236);
+        height: max-content;
+        padding: 40px 20px;
+        width: 40%;
+        margin: auto;
+        margin-top: 10%;
+    }
+
+    .header>div {
+        float: left;
+    }
+
+    img {
+        width: 30px;
+        height: 30px;
+        border-radius: 30px;
+        margin-right: 10px;
+    }
+
+    span {
+        font-size: 14px;
+        color: rgb(43, 145, 163);
+    }
+
+    .content {
+        clear: both;
+        margin: auto;
+        margin-top: 10px;
+        border: 1px solid rgb(158, 158, 158);
+        border-radius: 5px;
+        padding: 5px 10px;
+        background-color: white;
+    }
+
+    @media only screen and (max-width : 768px) {
+        .body {
+            width: 90%;
+        }
+    }
+</style>
+
+<body>
+    <div class="body">
+        <span style="font-size: 40px; color: black;">Hi,</span><br><br>
+        <span style="font-size: 20px; color: black;">You have been mentioned in a comment.</span><br><br>
+        <div class="header">
+            <!-- <div>
+                <img src="cid:imagename">
+            </div> -->
+            <div style="width: auto; font-size: 13px; margin-top: 6px;">
+
+                <span>%username% </span>
+                <span style="color: black"> mentioned you in comment of</span>
+                <!-- <a href="https://checkx.checkboxtechnology.com/homePage">
+                    <span> '%ticketName%'</span>
+                </a> -->
+                <span>%MeetingName%</span>
+            </div>
+        </div>
+        <br><br>
+
+        <div class="content">
+            <p>%comment%</p>
+        </div>
+        <br>
+        <span style="color: black;">Click here for more information <a href="https://meetingminutes.checkboxtechnology.com/"
+                style="color:cornflowerblue">meetingminutes.checkboxtechnology.com</a></span>
+
+
+        <div class="footer" style="margin-top: 10px;">
+            <span style="color: grey; font-size: 12px;">This message was sent by Checkbox Technology</span>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

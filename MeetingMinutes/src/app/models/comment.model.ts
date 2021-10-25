@@ -4,16 +4,12 @@ import { Meetings } from './meetings.model';
 
 export class Comments {
     CommentID: number;
-    project_Name: string;
-    Comment1: string;
+    meetingName: string;
+    comment: string;
     CommentDate: Date;
     CommentTime: string;
-    Status: number;
-    HostUser:   string;
+    // Status: number;
+    HostUser: string;
     MeetingID: number;
-    ActionID: number;
-    DecisionID: number;
-    Action_Item: MeetingActions;
-    Decision_Item: Decisions;
-    Meetings: Meetings
+    ActionItemID: number;
 }

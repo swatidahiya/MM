@@ -17,6 +17,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { InPlaceEditorModule } from '@syncfusion/ej2-angular-inplace-editor';
+import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
+import { QuillModule } from 'ngx-quill'
 
 @NgModule({
   imports: [
@@ -36,7 +38,9 @@ import { InPlaceEditorModule } from '@syncfusion/ej2-angular-inplace-editor';
     MatButtonModule,
     MatExpansionModule,
     MatToolbarModule,
-    InPlaceEditorModule
+    InPlaceEditorModule,
+    ButtonModule,
+    QuillModule.forRoot(),
   ],
   exports: [
     SingleActionItemComponent

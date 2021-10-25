@@ -204,47 +204,46 @@ export class SingleDecisionComponent implements OnInit {
   }
   }
 
-  async postComment() {
+  // async postComment() {
 
-    if (this.commentArea.nativeElement.value !== '') {
-      var id = this._route.snapshot.params['id'];
-      // console.log(this.commentArea.nativeElement.value);
-      var object = {};
-      object["project_Name"] = this.actionItem.project_Name;
-      object["Comment1"] = this.commentArea.nativeElement.value;
-      var temp = new Date();
-      temp.setDate(temp.getDate() + 1);
-      object["CommentDate"] = temp;
-      object["CommentTime"] = temp.getHours() + ":" + temp.getMinutes() + ":" + temp.getSeconds();
-      object["Status"] = 0;
-      object["HostUser"] = this.currentUser.LoginName;
-      object["MeetingID"] = null;
-      object["ActionID"] = null;
-      object["DecisionID"] = id;
+  //   if (this.commentArea.nativeElement.value !== '') {
+  //     var id = this._route.snapshot.params['id'];
+  //     var object = {};
+  //     object["project_Name"] = this.actionItem.project_Name;
+  //     object["Comment1"] = this.commentArea.nativeElement.value;
+  //     var temp = new Date();
+  //     temp.setDate(temp.getDate() + 1);
+  //     object["CommentDate"] = temp;
+  //     object["CommentTime"] = temp.getHours() + ":" + temp.getMinutes() + ":" + temp.getSeconds();
+  //     object["Status"] = 0;
+  //     object["HostUser"] = this.currentUser.LoginName;
+  //     object["MeetingID"] = null;
+  //     object["ActionID"] = null;
+  //     object["DecisionID"] = id;
 
-      const data = await this.commentService.postComment(object).then(result => {
-        console.log(result)
-        this.commentArea.nativeElement.value = '';
-        this.refresh();
-      })
-    }
-  }
+  //     const data = await this.commentService.postComment(object).then(result => {
+  //       console.log(result)
+  //       this.commentArea.nativeElement.value = '';
+  //       this.refresh();
+  //     })
+  //   }
+  // }
 
-  async editComment(val: any, id: any) {
-    var tempComment = this.allComments.find(({ CommentID }) => CommentID === id);
-    tempComment["Comment1"] = val;
-    const data = await this.commentService.updateComment(tempComment, id).then(data => {
-      console.log("Success");
-      this.refresh();
-    })
-  }
+  // async editComment(val: any, id: any) {
+  //   var tempComment = this.allComments.find(({ CommentID }) => CommentID === id);
+  //   tempComment["Comment1"] = val;
+  //   const data = await this.commentService.updateComment(tempComment, id).then(data => {
+  //     console.log("Success");
+  //     this.refresh();
+  //   })
+  // }
 
-  async deleteComment(id: any) {
-    const data = await this.commentService.deleteComment(id).then(result => {
-      console.log("Success");
-      this.refresh();
-    })
-  }
+  // async deleteComment(id: any) {
+  //   const data = await this.commentService.deleteComment(id).then(result => {
+  //     console.log("Success");
+  //     this.refresh();
+  //   })
+  // }
 
 
   async getProfilePic() {

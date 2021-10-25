@@ -1,5 +1,4 @@
 import { Component, OnInit, EventEmitter, Output, ElementRef, ViewChild } from '@angular/core';
-// import { ActionSequence } from 'protractor';
 import { ActionService } from 'src/app/controllers/action.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MeetingActions } from 'src/app/models/actions.model';
@@ -8,6 +7,14 @@ import { Comments } from 'src/app/models/comment.model';
 import { UserService } from 'src/app/controllers/user.service';
 import { User } from 'src/app/models/user.model';
 import { DeviceDetectorModule, DeviceDetectorService } from 'ngx-device-detector';
+import { DomSanitizer } from '@angular/platform-browser';
+import * as QuillNamespace from 'quill';
+import QuillMention from 'quill-mention';
+import { QuillEditorComponent } from "ngx-quill";
+import Quill from 'quill'
+
+const Quill: any = QuillNamespace;
+Quill.register({ 'modules/mention': QuillMention }, true);
 
 @Component({
   selector: 'app-single-action-item',
@@ -19,7 +26,7 @@ export class SingleActionItemComponent implements OnInit {
 
   public urlID: any;
   imageToShow: any;
-  image : any;
+  image: any;
   isImageLoading = true;
 
   actionItem: MeetingActions;
@@ -27,39 +34,82 @@ export class SingleActionItemComponent implements OnInit {
   redLoad = false;
   orangeLoad = false;
   yellowLoad = false;
-  allComments: Comments[];
+  allComments: Array<any> = [];
+  comments: Array<any> = [];
   currentUser: User;
   deviceDetectorInfo = null;
+  mentionData: Array<any> = [];
+  mentionUsers = [];
+  commentLoad: boolean = false;
+  options: Array<any> = [];
+  commentText: any = null;
+
 
   @Output() focusOut: EventEmitter<string> = new EventEmitter<string>();
   editMode = false;
 
+  @ViewChild(QuillEditorComponent, { static: true })
+  editor: QuillEditorComponent;
+
   @ViewChild('commentArea', { read: ElementRef, static: false }) commentArea: ElementRef;
+
+  atValues = [];
+
+  quillConfig = {
+    toolbar: {
+      container: [
+        ['bold', 'italic', 'underline'],
+        ['code-block'],
+        [{ 'size': ['small', false, 'large', 'huge'] }],
+        [{ 'font': [] }],
+        [{ 'header': 1 }, { 'header': 2 }],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      ],
+
+    },
+
+    mention: {
+      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+      mentionDenotationChars: ["@", "#"],
+      source: (searchTerm, renderList, mentionChar) => {
+        let values;
+
+        if (mentionChar === "@") {
+          values = this.atValues;
+        }
+
+        if (searchTerm.length === 0) {
+          renderList(values, searchTerm);
+        } else {
+          const matches = [];
+          for (var i = 0; i < values.length; i++)
+            if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) matches.push(values[i]);
+          renderList(matches, searchTerm);
+        }
+      },
+    },
+
+    keyboard: {
+      bindings: {
+        enter: {
+          key: 13,
+          handler: (range, context) => {
+            return true;
+          }
+        }
+      }
+    }
+  }
 
   constructor(private actionService: ActionService,
     private _route: ActivatedRoute,
     private route: Router,
     private commentService: CommentService,
     private deviceDetectorService: DeviceDetectorService,
-    private userService: UserService) { }
+    private userService: UserService,
+    private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
-    this.currentUser = this.userService.currentUserValue;
-    // var data = this.userService.checkUser(this.currentUser.LoginName).then(result => {
-    //   // console.log(result)
-    //   if (result) {
-    //     if (this.currentUser.IsActive === true) {
-    //       // console.log(this.userCheck())
-         
-    //     } else {
-    //       alert("Your account has been blocked. Please contact admin!");
-    //       this.route.navigateByUrl('/login')
-    //     }
-    //   } else {
-    //     alert("Your account has been deleted. Please contact admin!");
-    //     this.route.navigateByUrl('/login')
-    //   }
-    // });
     this.refresh();
   }
 
@@ -70,10 +120,6 @@ export class SingleActionItemComponent implements OnInit {
 
     this.currentUser = this.userService.currentUserValue;
 
-    // const tempComment = await this.commentService.getAllComments().then(result => {
-    //   this.allComments = result;
-    //   console.log(this.allComments)
-    // })
 
     const data = await this.actionService.getActionById(id).then(data => {
       this.actionItem = data;
@@ -94,185 +140,211 @@ export class SingleActionItemComponent implements OnInit {
       }
 
 
+      const allComments = this.commentService.getCommentsByActionId(this.actionItem.ActionItemID).then(result => {
+        this.comments = result;
+        console.log(this.comments)
+      })
+
       this.dataLoaded = true;
+
+
+      this.atValues = [];
+      const data1 = this.userService.getAllUsers().then(result => {
+        this.options = result;
+
+        var object = {}
+        this.options.forEach(user => {
+          object['username'] = user.LoginName;
+          object['value'] = user.FirstName + '(' + user.LoginName + ')';
+          object['id'] = user.id;
+
+          this.atValues.push(object);
+          object = {}
+        });
+
+        this.commentLoad = true;
+
+      })
+
     })
-    // this.getProfilePic();
   }
 
   deviceDetector() {
     this.deviceDetectorInfo = this.deviceDetectorService.getDeviceInfo();
     const isDesktop = this.deviceDetectorService.isDesktop();
-    // console.log("Device Info" + isDesktop)
     return isDesktop;
   }
 
   onFocusOut() {
-    if(this.currentUser.DisplayName == this.actionItem.ActionAssignedTo || this.currentUser.Initials === 'sAdmin'){
-    this.focusOut.emit(this.actionItem.Action_Description);
-    console.log(this.actionItem.Action_Description)
+    if (this.currentUser.DisplayName == this.actionItem.ActionAssignedTo || this.currentUser.Initials === 'sAdmin') {
+      this.focusOut.emit(this.actionItem.Action_Description);
+      console.log(this.actionItem.Action_Description)
 
-    var id = this._route.snapshot.params['id'];
+      var id = this._route.snapshot.params['id'];
 
-    var object = {};
-    object["ActionItemID"] = this.actionItem.ActionItemID;
-    object["ActionItem_Title"] = this.actionItem.ActionItem_Title;
-    object["project_Name"] = this.actionItem.project_Name;
-    object["ActionDate"] = this.actionItem.ActionDate;
-    object["ActionTime"] = this.actionItem.ActionTime;
-    object["ActionAssignedTo"] = this.actionItem.ActionAssignedTo;
-    object["Status"] = this.actionItem.Status;
-    object["Action_Description"] = this.actionItem.Action_Description;
-    object["MeetingID"] = this.actionItem.MeetingID;
-    object["Priority"] = this.actionItem.Priority;
+      var object = {};
+      object["ActionItemID"] = this.actionItem.ActionItemID;
+      object["ActionItem_Title"] = this.actionItem.ActionItem_Title;
+      object["project_Name"] = this.actionItem.project_Name;
+      object["ActionDate"] = this.actionItem.ActionDate;
+      object["ActionTime"] = this.actionItem.ActionTime;
+      object["ActionAssignedTo"] = this.actionItem.ActionAssignedTo;
+      object["Status"] = this.actionItem.Status;
+      object["Action_Description"] = this.actionItem.Action_Description;
+      object["MeetingID"] = this.actionItem.MeetingID;
+      object["Priority"] = this.actionItem.Priority;
 
-    const data = this.actionService.updateAction(id, object).then(data => {
-      this.refresh();
-    })
-  }
-  else{
-    location.reload();
-  }
+      const data = this.actionService.updateAction(id, object).then(data => {
+        this.refresh();
+      })
+    }
+    else {
+      location.reload();
+    }
   }
 
   async onPriority(actionID: any, val: any) {
     const id = this._route.snapshot.params['id'];
-    if(this.currentUser.DisplayName == this.actionItem.ActionAssignedTo || this.currentUser.Initials === 'sAdmin'){
-    var object = {};
-    // console.log(actionID)
-    object["ActionItemID"] = this.actionItem.ActionItemID;
-    object["ActionItem_Title"] = this.actionItem.ActionItem_Title;
-    object["project_Name"] = this.actionItem.project_Name;
-    object["ActionDate"] = this.actionItem.ActionDate;
-    object["ActionTime"] = this.actionItem.ActionTime;
-    object["ActionAssignedTo"] = this.actionItem.ActionAssignedTo;
-    object["Status"] = this.actionItem.Status;
-    object["Action_Description"] = this.actionItem.Action_Description;
-    object["MeetingID"] = this.actionItem.MeetingID;
-
-    switch (val) {
-      case 'High': object["Priority"] = 'Medium';
-        break;
-      case 'Medium': object["Priority"] = 'Low';
-        break;
-      case 'Low': object["Priority"] = 'High';
-        break;
-    }
-    const data = this.actionService.updateAction(id, object).then(data => {
-      this.refresh();
-    })
-  }
-  else{
-    location.reload();
-  }
-  }
-
-  updateAction(val: any, field: any) {
-    if(this.currentUser.DisplayName == this.actionItem.ActionAssignedTo || this.currentUser.Initials === 'sAdmin'){
-    const id = this._route.snapshot.params['id'];
-    var object = {};
-
-    object["ActionItemID"] = this.actionItem.ActionItemID;
-    object["ActionItem_Title"] = this.actionItem.ActionItem_Title;
-    object["project_Name"] = this.actionItem.project_Name;
-    object["ActionDate"] = this.actionItem.ActionDate;
-    object["ActionTime"] = this.actionItem.ActionTime;
-    object["ActionAssignedTo"] = this.actionItem.ActionAssignedTo;
-    object["Status"] = this.actionItem.Status;
-    object["Action_Description"] = this.actionItem.Action_Description;
-    object["MeetingID"] = this.actionItem.MeetingID;
-    object["Priority"] = this.actionItem.Priority;
-
-    switch (field) {
-      case 'ActionItem_Title': object["ActionItem_Title"] = val;
-        break;
-      case 'project_Name': object["project_Name"] = val;
-        break;
-      case 'Status': if (val === 0) {
-        object["Status"] = 1;
-      } else if (val === 1) {
-        object["Status"] = 2;
-      } else {
-        object["Status"] = 0;
-      }
-        break;
-    }
-    const data = this.actionService.updateAction(id, object).then(data => {
-      this.refresh();
-    })
-  }
-  else{
-    location.reload();
-  }
-  }
-
-  async postComment() {
-
-    if (this.commentArea.nativeElement.value !== '') {
-      var id = this._route.snapshot.params['id'];
-      // console.log(this.commentArea.nativeElement.value);
+    if (this.currentUser.DisplayName == this.actionItem.ActionAssignedTo || this.currentUser.Initials === 'sAdmin') {
       var object = {};
+      object["ActionItemID"] = this.actionItem.ActionItemID;
+      object["ActionItem_Title"] = this.actionItem.ActionItem_Title;
       object["project_Name"] = this.actionItem.project_Name;
-      object["Comment1"] = this.commentArea.nativeElement.value;
-      var temp = new Date();
-      temp.setDate(temp.getDate() + 1);
-      object["CommentDate"] = temp;
-      object["CommentTime"] = temp.getHours() + ":" + temp.getMinutes() + ":" + temp.getSeconds();
-      object["Status"] = 0;
-      object["HostUser"] = this.currentUser.LoginName;
-      object["MeetingID"] = null;
-      object["ActionID"] = id;
-      object["DecisionID"] = null;
+      object["ActionDate"] = this.actionItem.ActionDate;
+      object["ActionTime"] = this.actionItem.ActionTime;
+      object["ActionAssignedTo"] = this.actionItem.ActionAssignedTo;
+      object["Status"] = this.actionItem.Status;
+      object["Action_Description"] = this.actionItem.Action_Description;
+      object["MeetingID"] = this.actionItem.MeetingID;
 
-      const data = await this.commentService.postComment(object).then(result => {
-        console.log(result)
-        this.commentArea.nativeElement.value = '';
+      switch (val) {
+        case 'High': object["Priority"] = 'Medium';
+          break;
+        case 'Medium': object["Priority"] = 'Low';
+          break;
+        case 'Low': object["Priority"] = 'High';
+          break;
+      }
+      const data = this.actionService.updateAction(id, object).then(data => {
         this.refresh();
       })
     }
+    else {
+      location.reload();
+    }
   }
 
-  async editComment(val: any, id: any) {
-    var tempComment = this.allComments.find(({ CommentID }) => CommentID === id);
-    tempComment["Comment1"] = val;
-    const data = await this.commentService.updateComment(tempComment, id).then(data => {
-      console.log("Success");
-      this.refresh();
+  updateAction(val: any, field: any) {
+    if (this.currentUser.DisplayName == this.actionItem.ActionAssignedTo || this.currentUser.Initials === 'sAdmin') {
+      const id = this._route.snapshot.params['id'];
+      var object = {};
+
+      object["ActionItemID"] = this.actionItem.ActionItemID;
+      object["ActionItem_Title"] = this.actionItem.ActionItem_Title;
+      object["project_Name"] = this.actionItem.project_Name;
+      object["ActionDate"] = this.actionItem.ActionDate;
+      object["ActionTime"] = this.actionItem.ActionTime;
+      object["ActionAssignedTo"] = this.actionItem.ActionAssignedTo;
+      object["Status"] = this.actionItem.Status;
+      object["Action_Description"] = this.actionItem.Action_Description;
+      object["MeetingID"] = this.actionItem.MeetingID;
+      object["Priority"] = this.actionItem.Priority;
+
+      switch (field) {
+        case 'ActionItem_Title': object["ActionItem_Title"] = val;
+          break;
+        case 'project_Name': object["project_Name"] = val;
+          break;
+        case 'Status': if (val === 0) {
+          object["Status"] = 1;
+        } else if (val === 1) {
+          object["Status"] = 2;
+        } else {
+          object["Status"] = 0;
+        }
+          break;
+      }
+      const data = this.actionService.updateAction(id, object).then(data => {
+        this.refresh();
+      })
+    }
+    else {
+      location.reload();
+    }
+  }
+
+  transform(name: any) {
+    for (var i = 0; i < this.options.length; i++) {
+      if (name == this.options[i].LoginName) {
+        return this.domSanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + this.options[i].imageSrc);
+      }
+    }
+  }
+
+  commentTransform(data: any) {
+    return this.domSanitizer.bypassSecurityTrustHtml(data.toString());
+  }
+
+  test = (event) => {
+  }
+
+  onSelectionChanged = (event) => {
+    if (event.oldRange == null) {
+      this.onFocus();
+    }
+    if (event.range == null) {
+      this.onBlur();
+    }
+  }
+
+  onContentChanged = (event) => {
+    this.mentionData = event.content.ops;
+  }
+
+  onFocus = () => {
+  }
+  onBlur = () => {
+  }
+
+  async onPostComment() {
+    console.log(this.mentionData)
+    this.mentionUsers = [];
+    this.mentionData.forEach(async data => {
+      if (typeof data.insert !== "string") {
+        this.mentionUsers.push(data.insert.mention.id)
+      }
+    });
+
+    console.log(this.mentionUsers)
+    var object = {};
+
+    object["meetingName"] = this.actionItem.meetingName;
+    object["comment"] = this.commentText;
+
+    var temp = new Date();
+    temp.setDate(temp.getDate() + 1);
+    object["CommentDate"] = temp;
+    object["CommentTime"] = temp.getHours() + ":" + temp.getMinutes() + ":" + temp.getSeconds();
+    object["HostUser"] = this.currentUser.LoginName;
+    object["ActionItemID"] = this.actionItem.ActionItemID;
+    object["mentionData"] = this.mentionUsers;
+    object["MeetingID"] = this.actionItem.MeetingID;
+
+    this.commentService.postAgendaComment(object).then(data => {
+      console.log(data);
+      this.commentText = null;
+      alert("Commented Successfully!")
+      this.refresh()
+    }).catch(err => {
+      console.log(err);
+      this.commentText = null;
     })
+
   }
 
-  async deleteComment(id: any) {
-    const data = await this.commentService.deleteComment(id).then(result => {
-      console.log("Success");
-      this.refresh();
-    })
+  onCanelComment() {
+    this.commentText = null;
   }
 
-  async getProfilePic() {
-    this.isImageLoading = true;
-    var id = this.currentUser.AppUserID;
-    this.userService.getUploadProfile(id, this.currentUser.MiddleName)
-      .subscribe(res => {
 
-          console.log(res)
-        this.createImageFromBlob(res);
-        this.isImageLoading = false;
-
-      }, error => {
-        this.isImageLoading = true;
-        console.log(error);
-      });
-  }
-
-  createImageFromBlob(image: Blob) {
-         let reader = new FileReader();
-         reader.addEventListener("load", () => {
-            this.imageToShow = reader.result;
-         }, false);
-  
-         if (image) {
-            reader.readAsDataURL(image);
-         }
-  }
-
-  
 }

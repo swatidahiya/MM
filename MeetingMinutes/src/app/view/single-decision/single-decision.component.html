@@ -39,7 +39,8 @@
                                 </ng-template>
                                 <table class="meetingMain">
                                     <tr>
-                                        <td class="meetingLabel" style="font-size: 24px;width: 100%; color: rgb(26, 26, 26);">
+                                        <td class="meetingLabel"
+                                            style="font-size: 24px;width: 100%; color: rgb(26, 26, 26);">
                                             {{actionItem.Description}}</td>
                                     </tr>
                                 </table>
@@ -66,11 +67,15 @@
                                     <tr>
                                         <td class="meetingLabel"> Objective :</td>
                                         <td class="meetingContent">
-                                            <div *ngIf='!editMode' (click)='editMode=true' style="margin-left: 6px;">{{actionItem.Description}} <i class="fas fa-pencil-alt" style="color: rgb(221, 221, 221); margin-left: 10px;"></i></div>
-                                            <textarea *ngIf='editMode' (focusout)="onFocusOut()" style="width: 600px; height: 60px;"
-                                                (keydown.enter)='$event.target.blur()' [(ngModel)]='actionItem.Description'
-                                                class='cellInput' appAutofocus type='text'
-                                                (keydown.enter)='$event.target.blur()' (focusout)="editMode=false"></textarea>
+                                            <div *ngIf='!editMode' (click)='editMode=true' style="margin-left: 6px;">
+                                                {{actionItem.Description}} <i class="fas fa-pencil-alt"
+                                                    style="color: rgb(221, 221, 221); margin-left: 10px;"></i></div>
+                                            <textarea *ngIf='editMode' (focusout)="onFocusOut()"
+                                                style="width: 600px; height: 60px;"
+                                                (keydown.enter)='$event.target.blur()'
+                                                [(ngModel)]='actionItem.Description' class='cellInput' appAutofocus
+                                                type='text' (keydown.enter)='$event.target.blur()'
+                                                (focusout)="editMode=false"></textarea>
                                         </td>
                                     </tr>
                                 </table>
@@ -106,19 +111,17 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body">
+            <!-- <div class="card-body">
                 <div class="commentSection" *ngIf="dataLoaded">
                     <div style="margin-top: 20px;" *ngFor="let comment of allComments">
                         <div *ngIf="comment.DecisionID == urlID">
-                            <!-- <img class="commentImage" style="float: left;" src="../../../assets/avatar1.png"> -->
                             <img class="commentImage" [src]="imageToShow"
-                                                style="float: left; width: 45px; height: 45px;" alt="Place image title"
-                                                *ngIf="!isImageLoading; else noImageFound">
-                                            <ng-template #noImageFound>
-                                                <img class="commentImage" src="../../../assets/avatar1.png"
-                                                    style="float: left; width: 45px; height: 45px;" title="dummy"
-                                                    alt="Fallbackimage">
-                                            </ng-template>
+                                style="float: left; width: 45px; height: 45px;" alt="Place image title"
+                                *ngIf="!isImageLoading; else noImageFound">
+                            <ng-template #noImageFound>
+                                <img class="commentImage" src="../../../assets/avatar1.png"
+                                    style="float: left; width: 45px; height: 45px;" title="dummy" alt="Fallbackimage">
+                            </ng-template>
                             <div class="comment">
                                 <ejs-inplaceeditor id="element" style="font-weight: 700; font-size: large;" width="auto"
                                     type="Text" mode="Inline" data-underline="false" value="{{comment.Comment1}}"
@@ -134,54 +137,50 @@
                 </div>
                 <mat-divider></mat-divider>
                 <div style="margin-top:30px; margin-left: 2%;">
-                    <!-- <img class="commentImage" style="float: left; width: 45px; height: 45px;"
-                        src="../../../assets/avatar1.png"> -->
-                        <img class="commentImage" [src]="imageToShow"
-                                                style="float: left; width: 45px; height: 45px;" alt="Place image title"
-                                                *ngIf="!isImageLoading; else noImageFound">
-                                            <ng-template #noImageFound>
-                                                <img class="commentImage" src="../../../assets/avatar1.png"
-                                                    style="float: left; width: 45px; height: 45px;" title="dummy"
-                                                    alt="Fallbackimage">
-                                            </ng-template>
+                    <img class="commentImage" [src]="imageToShow" style="float: left; width: 45px; height: 45px;"
+                        alt="Place image title" *ngIf="!isImageLoading; else noImageFound">
+                    <ng-template #noImageFound>
+                        <img class="commentImage" src="../../../assets/avatar1.png"
+                            style="float: left; width: 45px; height: 45px;" title="dummy" alt="Fallbackimage">
+                    </ng-template>
                     <div class="form-group green-border-focus" style="margin-left: 4%;margin-right: 2%;">
                         <textarea class="form-control" id="exampleFormControlTextarea5" rows="1"
                             placeholder="Add your comment Here" #commentArea></textarea>
                     </div>
 
-                    <button mat-raised-button (click)="postComment()" style="margin-left: 4%; margin-right: 2%;height: 50px;" color="warn">Post
+                    <button mat-raised-button (click)="postComment()"
+                        style="margin-left: 4%; margin-right: 2%;height: 50px;" color="warn">Post
                         Your comment</button>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
     <ng-template #loading>
         <img src="../../../assets/giphy.gif" style="padding: 10% 30%;">
-        <!-- <a href="https://media.giphy.com/media/W2K6R2Ec4Hy4o/giphy.gif" style="width: 100px; height: 100px; padding: 30%;"></a> -->
     </ng-template>
 </div>
 
 <ng-template #mobileView>
     <div id="container" *ngIf="dataLoaded">
         <br>
-        <!-- <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around center" fxLayoutGap="25px"> -->
         <mat-card style="margin: 0px 10px 10px 10px;">
             <mat-card-header>
-                <div mat-card-avatar class="example-header-image" *ngIf="actionItem.Status === 1; else Overdue" (click)="updateDecision(actionItem.Status, 'Status')"><img
-                        style="width: 40px;" src="../../../assets/in_prgress.jpg"></div>
+                <div mat-card-avatar class="example-header-image" *ngIf="actionItem.Status === 1; else Overdue"
+                    (click)="updateDecision(actionItem.Status, 'Status')"><img style="width: 40px;"
+                        src="../../../assets/in_prgress.jpg"></div>
                 <ng-template #Overdue>
-                    <div mat-card-avatar class="example-header-image" *ngIf="actionItem.Status === 0; else Completed" (click)="updateDecision(actionItem.Status, 'Status')"><img
-                            style="width: 40px;" src="../../../assets/overdue.jpg"></div>
+                    <div mat-card-avatar class="example-header-image" *ngIf="actionItem.Status === 0; else Completed"
+                        (click)="updateDecision(actionItem.Status, 'Status')"><img style="width: 40px;"
+                            src="../../../assets/overdue.jpg"></div>
                 </ng-template>
                 <ng-template #Completed>
-                    <div mat-card-avatar class="example-header-image" *ngIf="actionItem.Status === 2" (click)="updateDecision(actionItem.Status, 'Status')"><img
-                            style="width: 40px;" src="../../../assets/Completed.jpg"></div>
+                    <div mat-card-avatar class="example-header-image" *ngIf="actionItem.Status === 2"
+                        (click)="updateDecision(actionItem.Status, 'Status')"><img style="width: 40px;"
+                            src="../../../assets/Completed.jpg"></div>
                 </ng-template>
                 <mat-card-title>{{actionItem.DecisionItem_Title}}</mat-card-title>
                 <mat-card-subtitle>{{actionItem.project_Name}}</mat-card-subtitle>
             </mat-card-header>
-            <!-- <img mat-card-image [src]="member.url" alt="Photo of {{member.title}}"> -->
-            <!-- {{meeting.Meeting_objective}} -->
             <mat-card-content>
                 <p class="text-oneline">
                     <b>Decision ID : </b> VS-{{actionItem.MeetingID}}
@@ -192,14 +191,12 @@
                 <p>
                     <b>Objective : </b>{{actionItem.Description}}
                 </p>
-                <!-- <p>
-                    <b>Topic/Chapter : </b>{{meeting.Agenda}}
-                </p> -->
+           
 
             </mat-card-content>
         </mat-card>
 
-        <mat-card style="margin: 0px 10px 10px 10px;">
+        <!-- <mat-card style="margin: 0px 10px 10px 10px;">
             <mat-card-content>
                 <div class="tab-pane fade show active">
                     <mat-expansion-panel style="margin-left: 2%; margin-right: 2%; margin-top: 20px;">
@@ -241,8 +238,6 @@
 
                 </div>
             </mat-card-content>
-        </mat-card>
-        <!-- </div> -->
-
+        </mat-card> -->
     </div>
 </ng-template>

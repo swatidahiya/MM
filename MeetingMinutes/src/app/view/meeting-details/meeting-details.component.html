@@ -406,8 +406,12 @@
                                                                     Due <i class="fas fa-caret-down"></i>
                                                                 </span>
                                                                 <mat-menu #due="matMenu">
-                                                                    <button (click)="onChangeAgendaName(1, item.id, 'Status')" mat-menu-item>In Progress</button>
-                                                                    <button (click)="onChangeAgendaName(2, item.id, 'Status')" mat-menu-item>Completed</button>
+                                                                    <button
+                                                                        (click)="onChangeAgendaName(1, item.id, 'Status')"
+                                                                        mat-menu-item>In Progress</button>
+                                                                    <button
+                                                                        (click)="onChangeAgendaName(2, item.id, 'Status')"
+                                                                        mat-menu-item>Completed</button>
                                                                 </mat-menu>
 
                                                                 <span *ngSwitchCase='1' mat-button
@@ -418,8 +422,12 @@
 
                                                                 </span>
                                                                 <mat-menu #inProgress="matMenu">
-                                                                    <button (click)="onChangeAgendaName(0, item.id, 'Status')" mat-menu-item>Due</button>
-                                                                    <button (click)="onChangeAgendaName(2, item.id, 'Status')" mat-menu-item>Completed</button>
+                                                                    <button
+                                                                        (click)="onChangeAgendaName(0, item.id, 'Status')"
+                                                                        mat-menu-item>Due</button>
+                                                                    <button
+                                                                        (click)="onChangeAgendaName(2, item.id, 'Status')"
+                                                                        mat-menu-item>Completed</button>
                                                                 </mat-menu>
                                                                 <span *ngSwitchCase='2' mat-button
                                                                     [matMenuTriggerFor]="Completed"
@@ -429,8 +437,12 @@
 
                                                                 </span>
                                                                 <mat-menu #Completed="matMenu">
-                                                                    <button (click)="onChangeAgendaName(0, item.id, 'Status')" mat-menu-item>Due</button>
-                                                                    <button (click)="onChangeAgendaName(1, item.id, 'Status')" mat-menu-item>In Progress</button>
+                                                                    <button
+                                                                        (click)="onChangeAgendaName(0, item.id, 'Status')"
+                                                                        mat-menu-item>Due</button>
+                                                                    <button
+                                                                        (click)="onChangeAgendaName(1, item.id, 'Status')"
+                                                                        mat-menu-item>In Progress</button>
                                                                 </mat-menu>
                                                             </span>
                                                         </td>
@@ -556,7 +568,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="card-body" *ngIf="collapsedA">
+                                            <!-- <div class="card-body" *ngIf="collapsedA">
                                                 <div class="commentSection">
                                                     <div style="margin-top: 20px;">
                                                         <img class="commentImage" style="float: left;"
@@ -595,7 +607,7 @@
                                                         style="margin-left: 4%; margin-right: 2%;height: 50px;"
                                                         color="warn">Post Your comment</button>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                     <ng-template #default>
@@ -701,14 +713,69 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="card card-head mt-5" *ngIf="commentLoad">
+        <div class="card-header">
+            <span class="card-title title">Comments</span>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <!-- <ejs-richtexteditor id="commentText" name="commentText" [(value)]="commentText"
+                        placeholder="Enter comment here" [(ngModel)]="commentText" [toolbarSettings]="tools">
+                    </ejs-richtexteditor> -->
+                    <quill-editor id="commentText" name="commentText" [(ngModel)]="commentText" [modules]="quillConfig"
+                        (onSelectionChanged)="onSelectionChanged($event)" (onContentChanged)="onContentChanged($event)">
+                    </quill-editor>
+                </div>
+            </div>
+            <div class="row btnRow mb-3">
+                <div class="col" style="text-align: right; font-size: 12px;">
+                    <button ejs-button cssClass="e-primary" (click)="onCanelComment()">Cancel</button>
+                    <button ejs-button cssClass="e-success" class="ml-sm-3 ml-2" (click)="onPostComment()">Post</button>
+                </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="row mt-sm-4 mt-2 comment">
+                <div class="col-12 mb-2" *ngFor="let comment of comments">
+                    <div class="card">
+                        <div class="card-header" style="font-size: 13px; display: flex;">
+                            <div>
+                                <img class="commentavatar" [src]="transform(comment.HostUser)">
+
+                            </div>
+                            <div class="ml-2">
+                                <span><span style="font-weight: 500;">{{comment.HostUser | titlecase}}</span> added a
+                                    comment</span><br>
+                                <span style="font-size: 10px; font-weight: 500; color: gray;">{{comment.CommentDate |
+                                    date : "MMM d, y h:mm a"}}</span>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div [innerHTML]="commentTransform(comment.comment)"></div>
+                            <!-- <ejs-richtexteditor id="commentText" name="commentText" [(value)]="comment.comment"
+                                placeholder="Enter comment here" [(ngModel)]="commentText" [toolbarSettings]="tools">
+                            </ejs-richtexteditor> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </div>
 </div>
 
 <ng-template #mobileView>
-    <div id="container" *ngIf="dataLoaded">
+    <div id="containerr" *ngIf="dataLoaded">
         <mat-card style="margin: 0px 10px 10px 10px; min-width: 150px;">
             <mat-card-header>
                 <div mat-card-avatar class="example-header-image" *ngIf="meeting.Status === 1; else Overdue"><img
@@ -756,7 +823,111 @@
 
         </div>
 
-        <swiper [config]="config" (indexChange)="onIndexChange($event)" style="max-height: 300px; overflow-x: scroll;">
+        <div class="card card-head" style="margin-top: 30px;" *ngIf="dataLoaded">
+            <div class="card-body">
+                <mat-tab-group mat-align-tabs="start">
+                    <mat-tab label="Agenda">
+                        <div class="mt-2 agendaSmall">
+                            <div class="card mb-2" style="cursor: pointer;" *ngFor="let actionItem of agendaItems"
+                                (click)="detailedAction(actionItem._id)">
+                                <div class="card-header">
+                                    <span style="font-weight: 500;">{{actionItem.ActionItem_Title}}</span>
+                                </div>
+                                <div class="card-body" style="font-size: 12px;">
+                                    <span><span style="font-weight: 500;">Priority :</span>
+                                        {{actionItem.Priority}}</span><br>
+                                    <span><span style="font-weight: 500;">Project Name :</span>
+                                        {{actionItem.project_Name}}</span><br>
+                                    <span><span style="font-weight: 500;">Description :</span>
+                                        {{actionItem.Action_Description}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </mat-tab>
+                    <mat-tab label="Decision">
+                        <div class="mt-2 agendaSmall">
+                            <div class="card mb-2" style="cursor: pointer;" *ngFor="let actionItem of agendaItems"
+                                (click)="detailedDecision(actionItem._id)">
+                                <div class="card-header">
+                                    <span style="font-weight: 500;">{{actionItem.ActionItem_Title}}</span>
+                                </div>
+
+                                <div class="card-body" style="font-size: 12px;">
+                                    <span><span style="font-weight: 500;">Priority :</span>
+                                        {{actionItem.Priority}}</span><br>
+                                    <span><span style="font-weight: 500;">Description :</span>
+                                        {{actionItem.Action_Description}}</span>
+                                </div>
+                                <div class="card-footer" style="font-size: 12px;">
+                                    <span><span style="font-weight: 500;">Decision :</span>
+                                        {{actionItem.decision}}</span><br>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+
+    <div class="card card-head mt-5" *ngIf="commentLoad">
+        <div class="card-header">
+            <span class="card-title title">Comments</span>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+
+                    <quill-editor id="commentText" name="commentText" [(ngModel)]="commentText" [modules]="quillConfig"
+                        (onSelectionChanged)="onSelectionChanged($event)" (onContentChanged)="onContentChanged($event)">
+                    </quill-editor>
+                </div>
+            </div>
+            <div class="row btnRow mb-3">
+                <div class="col" style="text-align: right; font-size: 12px;">
+                    <button ejs-button cssClass="e-primary" (click)="onCanelComment()">Cancel</button>
+                    <button ejs-button cssClass="e-success" class="ml-sm-3 ml-2" (click)="onPostComment()">Post</button>
+                </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="row mt-sm-4 mt-2 comment">
+                <div class="col-12 mb-2" *ngFor="let comment of comments">
+                    <div class="card">
+                        <div class="card-header" style="font-size: 13px; display: flex;">
+                            <div>
+                                <img class="commentavatar" [src]="transform(comment.HostUser)">
+
+                            </div>
+                            <div class="ml-2">
+                                <span><span style="font-weight: 500;">{{comment.HostUser | titlecase}}</span> added
+                                    a
+                                    comment</span><br>
+                                <span style="font-size: 10px; font-weight: 500; color: gray;">{{comment.CommentDate
+                                    |
+                                    date : "MMM d, y h:mm a"}}</span>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div [innerHTML]="commentTransform(comment.comment)"></div>
+                            <!-- <ejs-richtexteditor id="commentText" name="commentText" [(value)]="comment.comment"
+                                    placeholder="Enter comment here" [(ngModel)]="commentText" [toolbarSettings]="tools">
+                                </ejs-richtexteditor> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- <swiper [config]="config" (indexChange)="onIndexChange($event)" style="max-height: 300px; overflow-x: scroll;">
             <div *ngFor="let slide of slides" class="swiper-slide">
                 <ng-container *ngIf="slide.id === 1">
                     <mat-card style="margin: 0px 10px 10px 10px;">
@@ -808,44 +979,6 @@
                                     <button mat-raised-button color="primary" style="height: 50px;"
                                         (click)="sendConclusion()">
                                         Send Conclusion By Mail </button>
-                                </div>
-                                <mat-expansion-panel style="margin-left: 2%; margin-right: 2%; margin-top: 20px;">
-                                    <mat-expansion-panel-header>
-                                        <mat-panel-title>
-                                            <h3 class="header" style="margin-left: 1px;">Comment(if Any)</h3>
-                                        </mat-panel-title>
-                                    </mat-expansion-panel-header>
-                                    <div *ngFor="let comment of allComments">
-                                        <mat-card *ngIf="comment.MeetingID == urlID">
-                                            <div>
-                                                <mat-card-header>
-                                                    <div mat-card-avatar class="example-header-image"><img
-                                                            style="width: 40px;" src="../../../assets/avatar1.png">
-                                                    </div>
-                                                    <mat-card-title>
-                                                        <ejs-inplaceeditor id="element"
-                                                            style="font-weight: 700; font-size: large;" width="auto"
-                                                            type="Text" mode="Inline" data-underline="false"
-                                                            value="{{comment.Comment1}}"
-                                                            (actionSuccess)="editComment($event.value, comment.CommentID)">
-                                                        </ejs-inplaceeditor>
-                                                    </mat-card-title>
-                                                </mat-card-header>
-                                            </div>
-                                        </mat-card>
-                                    </div>
-
-                                </mat-expansion-panel>
-
-                                <div style="margin-top:30px; margin-left: 2%;">
-                                    <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Add Your Comment Here"
-                                            aria-describedby="basic-addon2" #commentArea>
-                                        <div class="input-group-append">
-                                            <span class="input-group-text" id="basic-addon2"
-                                                (click)="postComment()">Send</span>
-                                        </div>
-                                    </div>
                                 </div>
 
                             </div>
@@ -940,9 +1073,9 @@
                     </ng-template>
                 </ng-container>
             </div>
-        </swiper>
+        </swiper> -->
 
-    </div>
+    <!-- </div> -->
 </ng-template>
 
 

@@ -30,6 +30,10 @@ import { SwiperModule } from 'ngx-swiper-wrapper';
 import { SWIPER_CONFIG } from 'ngx-swiper-wrapper';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { InPlaceEditorAllModule } from '@syncfusion/ej2-angular-inplace-editor';
+import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
+import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
+import { QuillModule } from 'ngx-quill'
+import {MatTabsModule} from '@angular/material/tabs';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -65,7 +69,12 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     OwlNativeDateTimeModule,
     SwiperModule,
     MatTableModule,
-    InPlaceEditorAllModule
+    InPlaceEditorAllModule,
+    RichTextEditorModule,
+    ButtonModule,
+    QuillModule.forRoot(),
+    MatTabsModule
+
   ],
   exports: [
     MeetingDetailsComponent,

@@ -18,12 +18,22 @@ import { MeetingNoteService } from 'src/app/controllers/meetingNote.service';
 import { MatSnackBar } from '@angular/material';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper'
+import { ToolbarService, LinkService, ImageService, HtmlEditorService } from '@syncfusion/ej2-angular-richtexteditor';
+import { DomSanitizer } from '@angular/platform-browser';
+import * as QuillNamespace from 'quill';
+import QuillMention from 'quill-mention';
+import { QuillEditorComponent } from "ngx-quill";
+import Quill from 'quill'
+
+
+const Quill: any = QuillNamespace;
+Quill.register({ 'modules/mention': QuillMention }, true);
 
 @Component({
   selector: 'app-meeting-details',
   templateUrl: './meeting-details.component.html',
   styleUrls: ['./meeting-details.component.css'],
-  providers: [MeetingService, UserService, CommentService, MeetingNoteService, ActionService, DecisionService]
+  providers: [MeetingService, UserService, CommentService, MeetingNoteService, ActionService, DecisionService, ToolbarService, LinkService, ImageService, HtmlEditorService]
 })
 export class MeetingDetailsComponent implements OnInit {
 
@@ -36,7 +46,7 @@ export class MeetingDetailsComponent implements OnInit {
   collapsedB = false;
   time = new Date();
   meeting: Meetings;
-  options: User[];
+  options: Array<any> = [];
   agendaItems: Array<any> = [];
   decisions: Decisions;
   tempActionPage = false;
@@ -45,7 +55,7 @@ export class MeetingDetailsComponent implements OnInit {
   newParticipant = false;
   filesLoaded = false;
   allFiles = [];
-  allComments: Comments[];
+  comments: Array<any> = [];
   tempAgenda: any;
   imageToShow: any;
   image: any;
@@ -70,7 +80,7 @@ export class MeetingDetailsComponent implements OnInit {
 
   dataLoaded = false;
   userVerified = false;
-
+  commentLoad: boolean = false;
   isCompleted = false;
   isConclude = false;
   isHost = false;
@@ -78,6 +88,8 @@ export class MeetingDetailsComponent implements OnInit {
   isAction = false;
   deviceDetectorInfo = null;
   minDate: Date;
+  mentionData: Array<any> = [];
+  mentionUsers = [];
   columns: string[] = ['Project Name', 'Agenda Name', 'Status', 'Decision'];
   dataSource = [
     // { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
@@ -97,6 +109,9 @@ export class MeetingDetailsComponent implements OnInit {
   @ViewChild('meetingNotes', { read: ElementRef, static: false }) meetingNote: ElementRef;
   @ViewChild('meetingText', { read: ElementRef, static: false }) meetingText: ElementRef;
 
+  @ViewChild(QuillEditorComponent, { static: true })
+  editor: QuillEditorComponent;
+
 
   @Output() focusOut: EventEmitter<string> = new EventEmitter<string>();
   @Output() ConclusionOut: EventEmitter<string> = new EventEmitter<string>();
@@ -111,11 +126,68 @@ export class MeetingDetailsComponent implements OnInit {
     pagination: true
   };
 
+  public commentText: string = null;
+  public tools: object = {
+    items: ['Undo', 'Redo', '|',
+      'Bold', 'Italic', 'Underline', 'StrikeThrough', '|',
+      'FontName', 'FontSize', 'FontColor', 'BackgroundColor', '|',
+      'Formats', 'Alignments', '|', 'OrderedList', 'UnorderedList', '|',
+      'Indent', 'Outdent', '|', 'FullScreen']
+  };
+
   public slides = [
     { id: 1 },
     { id: 2 },
     { id: 3 },
   ];
+
+  atValues = [];
+
+  quillConfig = {
+    toolbar: {
+      container: [
+        ['bold', 'italic', 'underline'],
+        ['code-block'],
+        [{ 'size': ['small', false, 'large', 'huge'] }],
+        [{ 'font': [] }],
+        [{ 'header': 1 }, { 'header': 2 }],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      ],
+
+    },
+
+    mention: {
+      allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+      mentionDenotationChars: ["@", "#"],
+      source: (searchTerm, renderList, mentionChar) => {
+        let values;
+
+        if (mentionChar === "@") {
+          values = this.atValues;
+        }
+
+        if (searchTerm.length === 0) {
+          renderList(values, searchTerm);
+        } else {
+          const matches = [];
+          for (var i = 0; i < values.length; i++)
+            if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase())) matches.push(values[i]);
+          renderList(matches, searchTerm);
+        }
+      },
+    },
+
+    keyboard: {
+      bindings: {
+        enter: {
+          key: 13,
+          handler: (range, context) => {
+            return true;
+          }
+        }
+      }
+    }
+  }
 
   constructor(private meetingService: MeetingService,
     private _route: ActivatedRoute,
@@ -127,7 +199,8 @@ export class MeetingDetailsComponent implements OnInit {
     private actionService: ActionService,
     private decisionService: DecisionService,
     private deviceDetectorService: DeviceDetectorService,
-    private _snackBar: MatSnackBar) { }
+    private _snackBar: MatSnackBar,
+    private domSanitizer: DomSanitizer,) { }
 
   ngOnInit() {
     setInterval(() => {
@@ -147,11 +220,6 @@ export class MeetingDetailsComponent implements OnInit {
     this.urlID = this._route.snapshot.params['id'];
 
     const id = this._route.snapshot.params['id'];
-
-    const tempComment = await this.commentService.getAllComments(id).then(result => {
-      this.allComments = result;
-      console.log(this.allComments)
-    })
 
     const data = await this.meetingService.getMeetingById(id).then(data => {
       this.meeting = data[0];
@@ -200,6 +268,12 @@ export class MeetingDetailsComponent implements OnInit {
       } else {
         this.isConclude = false;
       }
+
+
+      const allComments = this.commentService.getCommentsByMeetingId(this.meeting.MeetingID).then(result => {
+        this.comments = result;
+        console.log(this.comments)
+      })
 
       this.dataSource = [];
 
@@ -256,8 +330,24 @@ export class MeetingDetailsComponent implements OnInit {
       // })
 
     })
+
+    this.atValues = [];
     const data1 = this.userService.getAllUsers().then(result => {
       this.options = result;
+
+      var object = {}
+      this.options.forEach(user => {
+        object['username'] = user.LoginName;
+        object['value'] = user.FirstName + '(' + user.LoginName + ')';
+        object['id'] = user.id;
+
+        this.atValues.push(object);
+        object = {}
+      });
+
+      this.commentLoad = true;
+
+      
     })
   }
 
@@ -709,21 +799,21 @@ export class MeetingDetailsComponent implements OnInit {
 
   }
 
-  async editComment(val: any, id: any) {
-    var tempComment = this.allComments.find(({ CommentID }) => CommentID === id);
-    tempComment["Comment1"] = val;
-    const data = await this.commentService.updateComment(tempComment, id).then(data => {
-      console.log("Success");
-      this.refresh();
-    })
-  }
+  // async editComment(val: any, id: any) {
+  //   var tempComment = this.allComments.find(({ CommentID }) => CommentID === id);
+  //   tempComment["Comment1"] = val;
+  //   const data = await this.commentService.updateComment(tempComment, id).then(data => {
+  //     console.log("Success");
+  //     this.refresh();
+  //   })
+  // }
 
-  async deleteComment(id: any) {
-    const data = await this.commentService.deleteComment(id).then(result => {
-      console.log("Success");
-      this.refresh();
-    })
-  }
+  // async deleteComment(id: any) {
+  //   const data = await this.commentService.deleteComment(id).then(result => {
+  //     console.log("Success");
+  //     this.refresh();
+  //   })
+  // }
 
   getFile(filename: any) {
 
@@ -796,28 +886,76 @@ export class MeetingDetailsComponent implements OnInit {
     }
   }
 
-  async postComment() {
-
-    if (this.commentArea.nativeElement.value !== '') {
-      var id = this._route.snapshot.params['id'];
-      var object = {};
-      object["Comment1"] = this.commentArea.nativeElement.value;
-      var temp = new Date();
-      temp.setDate(temp.getDate() + 1);
-      object["CommentDate"] = temp;
-      object["CommentTime"] = temp.getHours() + ":" + temp.getMinutes() + ":" + temp.getSeconds();
-      object["Status"] = 0;
-      object["HostUser"] = this.currentUser.LoginName;
-      object["MeetingID"] = id;
-      object["ActionID"] = null;
-      object["DecisionID"] = null;
-
-      const data = await this.commentService.postComment(object).then(result => {
-        console.log(result)
-        this.commentArea.nativeElement.value = '';
-        this.refresh();
-      })
+  transform(name: any) {
+    for (var i = 0; i < this.options.length; i++) {
+      if (name == this.options[i].LoginName) {
+        return this.domSanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + this.options[i].imageSrc);
+      }
     }
+  }
+
+  commentTransform(data: any) {
+    return this.domSanitizer.bypassSecurityTrustHtml(data.toString());
+  }
+
+  test = (event) => {
+  }
+
+  onSelectionChanged = (event) => {
+    if (event.oldRange == null) {
+      this.onFocus();
+    }
+    if (event.range == null) {
+      this.onBlur();
+    }
+  }
+
+  onContentChanged = (event) => {
+    this.mentionData = event.content.ops;
+  }
+
+  onFocus = () => {
+  }
+  onBlur = () => {
+  }
+
+  async onPostComment() {
+    console.log(this.mentionData)
+    this.mentionUsers = [];
+    this.mentionData.forEach(async data => {
+      if (typeof data.insert !== "string") {
+        this.mentionUsers.push(data.insert.mention.id)
+      }
+    });
+
+    console.log(this.mentionUsers)
+    var object = {};
+
+    object["meetingName"] = this.meeting.Meeting_Subject;
+    object["comment"] = this.commentText;
+
+    var temp = new Date();
+    temp.setDate(temp.getDate() + 1);
+    object["CommentDate"] = temp;
+    object["CommentTime"] = temp.getHours() + ":" + temp.getMinutes() + ":" + temp.getSeconds();
+    object["HostUser"] = this.currentUser.LoginName;
+    object["MeetingID"] = this.meeting.MeetingID;
+    object["mentionData"] = this.mentionUsers;
+
+    this.commentService.postComment(object).then(data => {
+      console.log(data);
+      this.commentText = null;
+      alert("Commented Successfully!")
+      this.refresh()
+    }).catch(err => {
+      console.log(err);
+      this.commentText = null;
+    })
+
+  }
+
+  onCanelComment() {
+    this.commentText = null;
   }
 
 

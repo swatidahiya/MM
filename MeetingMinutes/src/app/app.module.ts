@@ -67,7 +67,11 @@ import { VideoConferenceModule } from './view/video-conference/video-conference.
 // import { CallEndDialogComponent } from './view/call-end-dialog/call-end-dialog.component';
 import {MatTableModule} from '@angular/material/table';
 import { InPlaceEditorAllModule } from '@syncfusion/ej2-angular-inplace-editor';
-
+import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
+import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
+import { QuillModule } from 'ngx-quill'
+import {Mention} from 'quill-mention';
+import {MatTabsModule} from '@angular/material/tabs';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -212,7 +216,16 @@ const routes: Routes = [
       animationDuration: 300,
       responsive: true
     }),
-    InPlaceEditorAllModule
+    InPlaceEditorAllModule,
+    RichTextEditorModule,
+    ButtonModule,
+    QuillModule.forRoot({
+      modules: {
+        syntax: true,
+        mention: true,
+      }
+    }),
+    MatTabsModule
   ],
   providers: [
     {

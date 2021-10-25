@@ -12,31 +12,35 @@ module.exports = {
 
 async function postAction(actionParam){
     const action = new Action(actionParam)
-    console.log(action)
+
+    const actions = await getActions();
+
+    if(actions.length > 0) {
+        action.ActionItemID = actions[0].ActionItemID + 1;
+    }
+    else {
+        action.ActionItemID = 1
+    }
     await action.save();
 }
 
 async function getActions(){
-    const actions = await Action.find();
-    console.log(actions)
+    const actions = await Action.find().sort({ ActionItemID: -1 });
     return actions;
 }
 
 async function getActionByMeetingId(id){
     const action = await Action.find({MeetingID : id})
-    console.log(action)
     return action;
 }
 
 async function getActionById(id){
     const action = await Action.findById(id)
-    console.log(action)
     return action;
 }
 
 async function filterActions(object){
-    console.log(object)
-    console.log("inside filterActions")
+
     var projectName = object.project_Name;
     var status = object.status;
     var user = object.user;
@@ -71,16 +75,10 @@ async function filterActions(object){
         }
         else if(projectName !== undefined && projectName !== null) {
             
-            console.log(actions)
             console.log('4')
             data.forEach(action => {
                 var name = action.project_Name.toLowerCase();
-                console.log(name)
-                console.log(user)
-                console.log("projectName : " , projectName )
-                console.log("assignee : " , action.ActionAssignedTo)
                 if(name === projectName && action.ActionAssignedTo === user) {
-                    console.log("inside if")
                     actions.push(action)
                 }
             })
