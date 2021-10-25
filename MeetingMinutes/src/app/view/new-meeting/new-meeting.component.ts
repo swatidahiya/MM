@@ -146,6 +146,7 @@ export class NewMeetingComponent implements OnInit {
 
     object['Status'] = 0;
     object['HostUser'] = this.currentUser.LoginName;
+    object['HostUserMail'] = this.currentUser.Email;
     object['RoomKey'] = Math.floor(Math.random() * 0xFFFFFF);
     object['Conclusion'] = "Add Your Conclusion Here!";
     object['reoccrence'] = 'Yes';
@@ -182,6 +183,7 @@ export class NewMeetingComponent implements OnInit {
     mailObject["MeetingDate"] = object.MeetingTime;
     mailObject["HostUser"] = object.HostUser;
     mailObject["MeetingDescription"] = object.Meeting_objective;
+    mailObject["HostUserMail"] = object.HostUserMail;
 
 
     await this.meetingService.postMeeting(object).then(result => {

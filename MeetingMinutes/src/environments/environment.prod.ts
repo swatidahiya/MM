@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://mm-server.checkboxtechnology.com:/api'
+  apiBaseUrl: 'https://mmv1-server.checkboxtechnology.com'
 };

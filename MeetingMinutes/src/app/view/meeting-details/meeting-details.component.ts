@@ -486,8 +486,8 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
 
-  detailedDecision(decisionID: any) {
-    this.route.navigate(['/singleDecision/' + decisionID])
+  detailedDecision(actionID: any) {
+    this.route.navigate(['/singleDecision/' + actionID])
   }
 
   blockParticipant(val: any) {
