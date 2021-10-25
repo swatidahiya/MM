@@ -115,24 +115,25 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Project Name</th>
+                                            <th>Agenda Name</th>
                                             <!-- <th>Start Date</th> -->
+                                            <th>Agenda Decision</th>
                                             <th>Status</th>
                                             <th>Priority</th>
                                             <th>Assignee</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let decision of decisions; let i = index"
-                                            (click)="decisionListPage(decision.DecisionItemID)" class="recentMeetings">
+                                        <tr *ngFor="let action of decisions; let i = index"
+                                            (click)="decisionListPage(action._id)" class="recentMeetings">
                                             <td>{{i+1}}</td>
-                                            <td>{{decision.DecisionItem_Title}}</td>
-                                            <!-- <td>{{decision.DecisionDate}}</td> -->
-                                            <td *ngIf="decision.Status === 1">In Progress</td>
-                                            <td *ngIf="decision.Status === 0">Overdue</td>
-                                            <td *ngIf="decision.Status === 2">Complete</td>
-                                            <td><span class="label label-info">{{decision.Priority}}</span></td>
-                                            <td>{{decision.DecisionAssignedTo}}</td>
+                                            <td>{{action.ActionItem_Title}}</td>
+                                            <td>{{action.decision}}</td>
+                                            <td *ngIf="action.Status === 1">In Progress</td>
+                                            <td *ngIf="action.Status === 0">Overdue</td>
+                                            <td *ngIf="action.Status === 2">Complete</td>
+                                            <td><span class="label label-info">{{action.Priority}}</span></td>
+                                            <td>{{action.ActionAssignedTo}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -306,7 +307,7 @@
         <!-- end row -->
     </div>
     <ng-template #loading>
-        <div id="loader" ></div>
+        <div id="loader"></div>
     </ng-template>
     <!-- container -->
 </div>
