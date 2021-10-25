@@ -57,6 +57,15 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td class="meetingLabel">Decision :</td>
+                                        <td class="meetingContent" style="color: rgb(47, 68, 45);">
+                                            <ejs-inplaceeditor id="element" style="font-weight: 700; font-size: large;"
+                                                type="Text" data-underline="false" value="{{actionItem.decision}}"
+                                                (actionSuccess)="updateAction($event.value, 'decision')">
+                                            </ejs-inplaceeditor>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td class="meetingLabel">Objective :</td>
                                         <td class="meetingContent">
                                             <div *ngIf='!editMode' (click)='editMode=true' style="margin-left: 6px;">

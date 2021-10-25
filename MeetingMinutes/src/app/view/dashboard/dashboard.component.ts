@@ -23,7 +23,7 @@ export class DashboardComponent implements OnInit {
 
   allmeeting: Meetings[];
   actions: MeetingActions[];
-  decisions: Decisions[];
+  decisions: Array<any> = [];
   isActionTrue = true;
   newAllMeeting: Array<any> = [];
   participants: String[];
@@ -142,29 +142,36 @@ export class DashboardComponent implements OnInit {
 
 
     });
+    this.assignmentResultLength = 0;
     await this.actionService.getActions().then(actions => {
       actions.sort((a: any, b: any) => {
         return b.ActionItemID - a.ActionItemID;
       });
       this.assignmentLength = actions.length;
-      this.actions = actions.slice(0, 4)
+
+      actions.forEach(action => {
+        if(action.decision.length > 0 || action.Status == 2) {
+          this.assignmentResultLength += 1;
+          this.decisions.push(action);
+        }
+      });
+      this.actions = actions.slice(0, 8)
+      this.decisions = this.decisions.slice(0, 8)
     });
 
-    await this.decisionService.getDecision().then(decisions => {
-      this.assignmentResultLength = decisions.length;
-      decisions.sort((a: any, b: any) => {
-        return b.DecisionItemID - a.DecisionItemID;
-      });
-      this.decisions = decisions.slice(0, 4)
-    });
-    console.log(this.meetingLenght)
+    // await this.decisionService.getDecision().then(decisions => {
+    //   this.assignmentResultLength = decisions.length;
+    //   decisions.sort((a: any, b: any) => {
+    //     return b.DecisionItemID - a.DecisionItemID;
+    //   });
+    //   this.decisions = decisions.slice(0, 4)
+    // });
+   
     this.demodoughnutChartData.push(this.meetingLenght, this.assignmentLength, this.assignmentResultLength)
     this.dataLoaded = false;
     this.monthChart();
     this.pieChart();
-    // } else {
-    //   console.log("wait")
-    // }
+
   }
 
 
@@ -179,17 +186,17 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  onDecision(): void {
-    this.isActionTrue = false;
-    this.decisionService.getDecision().then(decisions => {
-      decisions.sort((a: any, b: any) => {
-        return b.DecisionItemID - a.DecisionItemID;
-      });
-      this.decisions = decisions.slice(0, 4)
-    });
+  // onDecision(): void {
+  //   this.isActionTrue = false;
+  //   this.decisionService.getDecision().then(decisions => {
+  //     decisions.sort((a: any, b: any) => {
+  //       return b.DecisionItemID - a.DecisionItemID;
+  //     });
+  //     this.decisions = decisions.slice(0, 4)
+  //   });
 
-    // this.route.navigate(['/decision-page']);
-  }
+  //   // this.route.navigate(['/decision-page']);
+  // }
 
   actionListPage(actionID: any) {
     this.route.navigate(['/singleActionItem/' + actionID])
