@@ -95,7 +95,7 @@ export class ProfileComponent implements OnInit {
             }
             else {
               if (data[i].Partipatents !== null) {
-                this.participants = data[i].Partipatents.split(',');
+                this.participants = data[i].Partipatents;
               }
               var c = 0;
               for (var j = 0; j < this.participants.length; j++) {
