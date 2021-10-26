@@ -115,24 +115,24 @@ export class DecisionListComponent implements OnInit {
   }
 
   dueDate() {
-    this.decisionItems.sort((a, b) => new Date(b.ActionDate).getTime() - new Date(a.ActionDate).getTime())
-    console.log(this.decisionItems);
-    this.refresh();
+    var temp = this.decisionItems.sort((a, b) => new Date(b.ActionDate).getTime() - new Date(a.ActionDate).getTime())
+    this.decisionItems = temp;
+    // this.refresh();
   }
 
   priority() {
-    this.decisionItems.sort((a: any, b: any) => {
-      return a.DecisionItemID - b.DecisionItemID;
+    var temp = this.decisionItems.sort((a: any, b: any) => {
+      return a.ActionItemID - b.ActionItemID;
     });
-    console.log(this.decisionItems);
-    this.refresh();
+    this.decisionItems = temp;
+    // this.refresh();
   }
   upcoming() {
-    this.decisionItems.sort((a: any, b: any) => {
+    var temp = this.decisionItems.sort((a: any, b: any) => {
       return a.Status - b.Status;
     });
-    console.log(this.decisionItems);
-    this.refresh();
+    this.decisionItems = temp;
+    // this.refresh();
   }
 
 
@@ -184,7 +184,6 @@ export class DecisionListComponent implements OnInit {
 
         this.decisionService.filterDecision(object).then(data => {
           this.decisionItems = data;
-          console.log(this.decisionItems);
           this.refresh();
 
         })

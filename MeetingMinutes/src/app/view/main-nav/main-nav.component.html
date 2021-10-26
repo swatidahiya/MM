@@ -1,106 +1,115 @@
 <div *ngIf="videoPageDetector(); else conferenceRoom">
-<mat-sidenav-container class="sidenav-container" *ngIf="dataLoad">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
-    <!-- <mat-toolbar><img style="height: 60px; width: 200px;" src="../../../assets/logo.png"></mat-toolbar> -->
-    <mat-toolbar>
-      <img [src]="transform()"  style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;" alt="Place image title">
-       
-      <a style="color: white; font-size: 18px;"  class="text-oneline" routerLink="/profile"> {{currentUser.FirstName}}
-        {{currentUser.LastName}}</a></mat-toolbar>
-    <mat-nav-list>
-      <div class="input-group mb-3" *ngIf="!deviceDetector()">
-        <input type="text" class="form-control" placeholder="Search Meeting" aria-label="Recipient's username"
-          aria-describedby="basic-addon2" #searchArea>
-        <div class="input-group-append">
-          <!-- <mat-icon style="font-size: 30px;">search</mat-icon> -->
-          <span class="input-group-text"
-            style="background-color: #3F51B5; border-radius: 50%; border: 1px solid #3F51B5;" id="basic-addon2"
-            (click)="searchFilter()"><i style="color: white;" class="fa fa-search"></i></span>
+  <mat-sidenav-container class="sidenav-container" *ngIf="dataLoad">
+    <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+      <!-- <mat-toolbar><img style="height: 60px; width: 200px;" src="../../../assets/logo.png"></mat-toolbar> -->
+      <mat-toolbar>
+        <img [src]="transform()" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;"
+          alt="Place image title">
+
+        <a style="color: white; font-size: 18px;" class="text-oneline" routerLink="/profile"> {{currentUser.FirstName}}
+          {{currentUser.LastName}}</a>
+      </mat-toolbar>
+      <mat-nav-list>
+        <div class="input-group mb-3" *ngIf="!deviceDetector()">
+          <input type="text" class="form-control" placeholder="Search Meeting" aria-label="Recipient's username"
+            aria-describedby="basic-addon2" #searchArea>
+          <div class="input-group-append">
+            <!-- <mat-icon style="font-size: 30px;">search</mat-icon> -->
+            <span class="input-group-text"
+              style="background-color: #3F51B5; border-radius: 50%; border: 1px solid #3F51B5;" id="basic-addon2"
+              (click)="searchFilter()"><i style="color: white;" class="fa fa-search"></i></span>
+          </div>
         </div>
-      </div>
-      <a mat-list-item routerLink="/dashboard" routerLinkActive="active-list-item"
-        style="color: rgb(157, 179, 139); font-size: 18px;font-weight: bold;"><i class="nav-icon fas fa-tachometer-alt"
-          style="margin-right: 5px;"></i> Dashboard</a>
-      <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;" routerLinkActive="active-list-item"
-        routerLink="/meetingSummary"><i class="nav-icon far fa-calendar-alt" style="margin-right: 5px;"></i> Meeting
-        Summary
-      </a>
-      <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;" routerLink="/actionItems" routerLinkActive="active-list-item"><i
-          class="nav-icon fas fa-bullseye" style="margin-right: 5px;" ></i> Agenda Items</a>
-      <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;" routerLinkActive="active-list-item"
-        routerLink="/decisionList"><i class="nav-icon fas fa-lightbulb" style="margin-right: 5px;"></i>
-        Decision List</a>
-      <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;"
-        *ngIf="currentUser.Initials === 'sAdmin'" routerLink="/manageUsers" routerLinkActive="active-list-item"><i class="nav-icon far fa-user-circle"
-          style="margin-right: 5px;"></i>
-        Manage Users</a>
-        <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;" routerLink="/analysis" routerLinkActive="active-list-item">
+        <a mat-list-item routerLink="/dashboard" routerLinkActive="active-list-item"
+          style="color: rgb(157, 179, 139); font-size: 18px;font-weight: bold;"><i
+            class="nav-icon fas fa-tachometer-alt" style="margin-right: 5px;"></i> Dashboard</a>
+        <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;"
+          routerLinkActive="active-list-item" routerLink="/meetingSummary"><i class="nav-icon far fa-calendar-alt"
+            style="margin-right: 5px;"></i> Meeting
+          Summary
+        </a>
+        <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;" routerLink="/actionItems"
+          routerLinkActive="active-list-item"><i class="nav-icon fas fa-bullseye" style="margin-right: 5px;"></i> Agenda
+          Items</a>
+        <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;"
+          routerLinkActive="active-list-item" routerLink="/decisionList"><i class="nav-icon fas fa-lightbulb"
+            style="margin-right: 5px;"></i>
+          Decision List</a>
+        <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;"
+          *ngIf="currentUser.Initials === 'sAdmin'" routerLink="/manageUsers" routerLinkActive="active-list-item"><i
+            class="nav-icon far fa-user-circle" style="margin-right: 5px;"></i>
+          Manage Users</a>
+        <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;" routerLink="/analysis"
+          routerLinkActive="active-list-item">
           <i class="fas fa-chart-pie" style="margin-right: 5px;"></i>Analysis</a>
-    </mat-nav-list>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-toolbar>
-      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
-      <a><img class="logo" src="../../../assets/newLogo.png" alt="My Ad Cubes"></a>
-      <span class="example-spacer"></span>
-      <!-- <div *ngIf="deviceDetector()"> -->
-        <input class="form-control search"  *ngIf="deviceDetector()" placeholder="Search Meetings" (keyup.enter)="searchFilter()" #searchArea>
-        <button mat-fab color="primary" *ngIf="deviceDetector()"  style="margin-right: 10px;margin-left: 10px;" (click)="searchFilter()" title="Search Meeting">
+
+        <div style="bottom: 0; left: 0; position: fixed; margin-bottom: 10px; margin-left: 5px;">
+          <span style="font-size: 12px; color: white; margin-left: 13px;">This website is developed by</span><br>
+          <img style="height: 50px; width: auto; margin-top: -15px;" src="../../../assets/reserved_logo.png">
+        </div>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <mat-toolbar>
+        <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <a><img class="logo" src="../../../assets/newLogo.png" alt="My Ad Cubes"></a>
+        <span class="example-spacer"></span>
+        <!-- <div *ngIf="deviceDetector()"> -->
+        <input class="form-control search" *ngIf="deviceDetector()" placeholder="Search Meetings"
+          (keyup.enter)="searchFilter()" #searchArea>
+        <button mat-fab color="primary" *ngIf="deviceDetector()" style="margin-right: 10px;margin-left: 10px;"
+          (click)="searchFilter()" title="Search Meeting">
           <mat-icon>search</mat-icon>
         </button>
         <!-- <button mat-icon-button>
           <mat-icon matBadge="15" *ngIf="deviceDetector()" matBadgeColor="warn">notification_important</mat-icon>
         </button> -->
-      <!-- </div> -->
-      
+        <!-- </div> -->
 
-      <button mat-icon-button (click)="logout()">
-        <mat-icon>exit_to_app</mat-icon>
-      </button>
-    </mat-toolbar>
-    <mat-divider></mat-divider>
-    <div class="secondToolbar example-button-row" *ngIf="deviceDetector()">
-      <!-- <img class="userImg" src="../../../assets/facebook.png"> -->
-      <div class="float-left">
-        <img style="height: 50px; width: auto;" src="../../../assets/reserved_logo.png">
-      </div>
 
-      <div style="text-align: end">
-        <button mat-raised-button color="primary" (click)="openScheduler()">Scheduler
+        <button mat-icon-button (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
         </button>
-        <button mat-raised-button color="primary" [matMenuTriggerFor]="pollMenu">Poll</button>
-        <mat-menu #pollMenu="matMenu">
-          <button mat-menu-item style="color: black;" (click)="openCreatePoll()"><b>Create Poll</b></button>
-          <button mat-menu-item style="color: black;" (click)="openRespondPoll()"><b>Response Poll</b></button>
-        </mat-menu>
-        <button mat-raised-button color="warn" [matMenuTriggerFor]="menu">Meeting</button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item style="color: black;" routerLink="/quickMeeting"><b>Create Quick Meeting</b></button>
-          <button mat-menu-item style="color: black;" routerLink="/meeting"><b>Create Meeting</b></button>
-        </mat-menu>
-        <button mat-raised-button color="primary" *ngIf="buttonDetector()" (click)="openActionDialog()">Action
-          Item</button>
-        <button mat-raised-button color="primary" *ngIf="buttonDetector()"
-          (click)="openDecisionDialog()">Decision</button>
+      </mat-toolbar>
+      <mat-divider></mat-divider>
+      <div class="secondToolbar example-button-row" *ngIf="deviceDetector()">
+        <!-- <img class="userImg" src="../../../assets/facebook.png"> -->
+        <div style="text-align: end">
+          <button mat-raised-button color="primary" (click)="openScheduler()">Scheduler
+          </button>
+          <button mat-raised-button color="primary" [matMenuTriggerFor]="pollMenu">Poll</button>
+          <mat-menu #pollMenu="matMenu">
+            <button mat-menu-item style="color: black;" (click)="openCreatePoll()"><b>Create Poll</b></button>
+            <button mat-menu-item style="color: black;" (click)="openRespondPoll()"><b>Response Poll</b></button>
+          </mat-menu>
+          <button mat-raised-button color="warn" [matMenuTriggerFor]="menu">Meeting</button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item style="color: black;" routerLink="/quickMeeting"><b>Create Quick Meeting</b></button>
+            <button mat-menu-item style="color: black;" routerLink="/meeting"><b>Create Meeting</b></button>
+          </mat-menu>
+          <button mat-raised-button color="primary" *ngIf="buttonDetector()" (click)="openActionDialog()">Action
+            Item</button>
+          <button mat-raised-button color="primary" *ngIf="buttonDetector()"
+            (click)="openDecisionDialog()">Decision</button>
+        </div>
       </div>
-    </div>
-    <!-- Add Content Here -->
-    <router-outlet></router-outlet>
-    <div *ngIf="!buttonDetector(); else default">
-      <mat-fab-menu color="warn" [fabButtons]="fabButtonsRandom" (onFabMenuItemSelected)="selectedAction($event)"
-        *ngIf="!deviceDetector()">
-      </mat-fab-menu>
-    </div>
-    <ng-template #default>
-      <mat-fab-menu color="warn" [fabButtons]="fabButtonsDetailed" (onFabMenuItemSelected)="selectedEvent($event)"
-        *ngIf="!deviceDetector()">
-      </mat-fab-menu>
-    </ng-template>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+      <!-- Add Content Here -->
+      <router-outlet></router-outlet>
+      <div *ngIf="!buttonDetector(); else default">
+        <mat-fab-menu color="warn" [fabButtons]="fabButtonsRandom" (onFabMenuItemSelected)="selectedAction($event)"
+          *ngIf="!deviceDetector()">
+        </mat-fab-menu>
+      </div>
+      <ng-template #default>
+        <mat-fab-menu color="warn" [fabButtons]="fabButtonsDetailed" (onFabMenuItemSelected)="selectedEvent($event)"
+          *ngIf="!deviceDetector()">
+        </mat-fab-menu>
+      </ng-template>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>
 <ng-template #conferenceRoom>
   <mat-sidenav-container class="sidenav-container" *ngIf="dataLoad">

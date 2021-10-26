@@ -74,7 +74,7 @@ export class DashboardComponent implements OnInit {
   public doughnutChartLabels: Label[] = ['Total Meetings', 'Total Actions', 'Total Decisions'];
   public demodoughnutChartData: MultiDataSet[] = [];
   public doughnutChartType: ChartType = 'doughnut';
-  public chartColors: Array<any> = [{ // all colors in order
+  public chartColors: Array<any> = [{
     backgroundColor: ['#FF0000', '#53a9ff', '#3D9945']
   }];
 
@@ -88,21 +88,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = this.userService.currentUserValue;
     this.refresh();
-    // var data = this.userService.checkUser(this.currentUser.LoginName).then(result => {
-    //   // console.log(result)
-    //   if (result) {
-    //     if (this.currentUser.IsActive === true) {
-    //       console.log(this.currentUser.IsActive)
-          
-    //     } else {
-    //       alert("Your account has been blocked. Please contact admin!");
-    //       this.route.navigateByUrl('/login')
-    //     }
-    //   } else {
-    //     alert("Your account has been deleted. Please contact admin!");
-    //     this.route.navigateByUrl('/login')
-    //   }
-    // });
   }
 
   deviceDetector() {
@@ -112,31 +97,29 @@ export class DashboardComponent implements OnInit {
   }
 
   async refresh() {
-    // if(this.userCheck()){
-    console.log("CurrentUser")
     await this.meetingService.getMeetings().then(data => {
-      console.log("data")
-      console.log(data)
+ 
       data.sort((a: any, b: any) => {
         return b.MeetingID - a.MeetingID;
       });
       this.meetingLenght = data.length;
-      for (var i = 0; i < data.length; i++) {
-        if (data[i].Partipatents !== null) {
-          this.participants = data[i].Partipatents;;
-        }
-        var c = 0;
-        for (var j = 0; j < this.participants.length; j++) {
-          if (this.currentUser.Email === this.participants[j]) {
-            //  var temp = this.participants[j];
-            c = j;
-          }
-        }
-        if (this.currentUser.LoginName === data[i].HostUser || this.currentUser.Email === this.participants[c]) {
-          this.newAllMeeting.push(data[i]);
-        }
+      this.newAllMeeting = data;
+      // for (var i = 0; i < data.length; i++) {
+      //   if (data[i].Partipatents !== null) {
+      //     this.participants = data[i].Partipatents;;
+      //   }
+      //   var c = 0;
+      //   for (var j = 0; j < this.participants.length; j++) {
+      //     if (this.currentUser.Email === this.participants[j]) {
+      //       //  var temp = this.participants[j];
+      //       c = j;
+      //     }
+      //   }
+      //   if (this.currentUser.LoginName === data[i].HostUser || this.currentUser.Email === this.participants[c]) {
+      //     this.newAllMeeting.push(data[i]);
+      //   }
 
-      }
+      // }
 
       this.allmeeting = this.newAllMeeting.slice(0, 3);
 
@@ -203,7 +186,7 @@ export class DashboardComponent implements OnInit {
   }
 
   decisionListPage(decisionID: any) {
-    this.route.navigate(['/singleDecision/' + decisionID])
+    this.route.navigate(['/singleActionItem/' + decisionID])
   }
 
   meetingPage(meetingID: any) {
@@ -228,29 +211,28 @@ export class DashboardComponent implements OnInit {
 
     this.currentUser = this.userService.currentUserValue;
     const data = this.meetingService.getMeetings().then(data => {
-      // console.log(data)
       data.sort((a: any, b: any) => {
         return b.MeetingID - a.MeetingID;
       });
 
       this.newAllMeeting = [];
-      for (var i = 0; i < data.length; i++) {
-        if (data[i].reoccrence === 'Yes' || data[i].reoccrence === null) {
-          if (data[i].Partipatents !== null) {
-            this.participants = data[i].Partipatents;
-          }
-          var c = 0;
-          for (var j = 0; j < this.participants.length; j++) {
-            if (this.currentUser.Email === this.participants[j]) {
-              c = j;
-            }
-          }
-          if (this.currentUser.LoginName === data[i].HostUser || this.currentUser.Email === this.participants[c]) {
-            this.newAllMeeting.push(data[i]);
-            // console.log(this.newAllMeeting)
-          }
-        }
-      }
+      this.newAllMeeting = data;
+      // for (var i = 0; i < data.length; i++) {
+      //   if (data[i].reoccrence === 'Yes' || data[i].reoccrence === null) {
+      //     if (data[i].Partipatents !== null) {
+      //       this.participants = data[i].Partipatents;
+      //     }
+      //     var c = 0;
+      //     for (var j = 0; j < this.participants.length; j++) {
+      //       if (this.currentUser.Email === this.participants[j]) {
+      //         c = j;
+      //       }
+      //     }
+      //     if (this.currentUser.LoginName === data[i].HostUser || this.currentUser.Email === this.participants[c]) {
+      //       this.newAllMeeting.push(data[i]);
+      //     }
+      //   }
+      // }
 
       for (var i = 0; i < this.newAllMeeting.length; i++) {
 
@@ -298,8 +280,6 @@ export class DashboardComponent implements OnInit {
   }
 
   async monthChart() {
-
-    this.currentUser = this.userService.currentUserValue;
     if (this.userSelectedMonth === 1) {
       for (var i = 0; i < 29; i++) {
         this.mCreated[i] = 0;
@@ -317,14 +297,13 @@ export class DashboardComponent implements OnInit {
     }
 
     const data = await this.meetingService.getMeetings().then(data => {
+      this.meeting = data;
 
-
-
-      for (var i = 0; i < data.length; i++) {
-        if (this.currentUser.LoginName === data[i].HostUser) {
-          this.meeting.push(data[i]);
-        }
-      }
+      // for (var i = 0; i < data.length; i++) {
+      //   if (this.currentUser.LoginName === data[i].HostUser) {
+      //     this.meeting.push(data[i]);
+      //   }
+      // }
 
     });
 

@@ -97,22 +97,23 @@ export class AnalysisComponent implements OnInit {
         return b.MeetingID - a.MeetingID;
       });
 
-      for (var i = 0; i < data.length; i++) {
-        if (data[i].Partipatents !== null) {
-          this.participants = data[i].Partipatents;
-        }
-        var c = 0;
-        for (var j = 0; j < this.participants.length; j++) {
-          if (this.currentUser.Email === this.participants[j]) {
-            c = j;
-          }
-        }
-        if (this.currentUser.LoginName === data[i].HostUser || this.currentUser.Email === this.participants[c]) {
-          this.newAllMeeting.push(data[i]);
-        }
+      // for (var i = 0; i < data.length; i++) {
+      //   if (data[i].Partipatents !== null) {
+      //     this.participants = data[i].Partipatents;
+      //   }
+      //   var c = 0;
+      //   for (var j = 0; j < this.participants.length; j++) {
+      //     if (this.currentUser.Email === this.participants[j]) {
+      //       c = j;
+      //     }
+      //   }
+      //   if (this.currentUser.LoginName === data[i].HostUser || this.currentUser.Email === this.participants[c]) {
+      //     this.newAllMeeting.push(data[i]);
+      //   }
 
-      }
+      // }
 
+      this.newAllMeeting = data;
       for (var i = 0; i < this.newAllMeeting.length; i++) {
 
 
@@ -179,14 +180,13 @@ export class AnalysisComponent implements OnInit {
     }
 
     const data = await this.meetingService.getMeetings().then(data => {
+      this.meeting = data;
 
-
-
-      for (var i = 0; i < data.length; i++) {
-        if (this.currentUser.LoginName === data[i].HostUser) {
-          this.meeting.push(data[i]);
-        }
-      }
+      // for (var i = 0; i < data.length; i++) {
+      //   if (this.currentUser.LoginName === data[i].HostUser) {
+      //     this.meeting.push(data[i]);
+      //   }
+      // }
 
     });
 

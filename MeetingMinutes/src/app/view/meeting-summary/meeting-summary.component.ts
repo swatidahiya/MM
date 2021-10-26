@@ -38,7 +38,6 @@ export class MeetingSummaryComponent implements OnInit {
   selectedStatus: Number;
 
   options: User[]
-  // string[] = ['Anuj Kumar', 'Danish Ahmad', 'Ankur Garg', 'Mohit Sharma', 'Anil Garg'];
   contacts = [];
   @ViewChild('statusArea', { read: ElementRef, static: false }) statusArea: ElementRef;
   constructor(private meetingService: MeetingService,
@@ -48,9 +47,7 @@ export class MeetingSummaryComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser = this.userService.currentUserValue;
-    console.log("cureeeeeee", this.currentUser)
-    // var data1 = this.userService.checkUser(this.currentUser.LoginName).then(result => {
-    //   console.log("check user result",result)
+
     if (this.currentUser) {
       if (this.currentUser.IsActive == true) {
 
@@ -61,29 +58,29 @@ export class MeetingSummaryComponent implements OnInit {
           data.sort((a: any, b: any) => {
             return b.MeetingID - a.MeetingID;
           });
-          // this.meetings = data;
-          for (var i = 0; i < data.length; i++) {
-            if (data[i].reoccrence === 'Yes' || data[i].reoccrence === null) {
+          this.meetings = data;
+          // for (var i = 0; i < data.length; i++) {
+          //   if (data[i].reoccrence === 'Yes' || data[i].reoccrence === null) {
 
-              if (this.currentUser.Initials === 'sAdmin') {
-                this.meetings.push(data[i]);
-              }
-              else {
-                if (data[i].Partipatents !== null) {
-                  this.participants = data[i].Partipatents;
-                }
-                var c = 0;
-                for (var j = 0; j < this.participants.length; j++) {
-                  if (this.currentUser.Email === this.participants[j]) {
-                    c = j;
-                  }
-                }
-                if (this.currentUser.LoginName === data[i].HostUser || this.currentUser.Email === this.participants[c]) {
-                  this.meetings.push(data[i]);
-                }
-              }
-            }
-          }
+          //     if (this.currentUser.Initials === 'sAdmin') {
+          //       this.meetings.push(data[i]);
+          //     }
+          //     else {
+          //       if (data[i].Partipatents !== null) {
+          //         this.participants = data[i].Partipatents;
+          //       }
+          //       var c = 0;
+          //       for (var j = 0; j < this.participants.length; j++) {
+          //         if (this.currentUser.Email === this.participants[j]) {
+          //           c = j;
+          //         }
+          //       }
+          //       if (this.currentUser.LoginName === data[i].HostUser || this.currentUser.Email === this.participants[c]) {
+          //         this.meetings.push(data[i]);
+          //       }
+          //     }
+          //   }
+          // }
           console.log(this.meetings);
 
           var date = new Date();
@@ -123,7 +120,6 @@ export class MeetingSummaryComponent implements OnInit {
   deviceDetector() {
     this.deviceDetectorInfo = this.deviceDetectorService.getDeviceInfo();
     const isDesktop = this.deviceDetectorService.isDesktop();
-    // console.log("Device Info" + isDesktop)
     return isDesktop;
   }
 
@@ -134,7 +130,6 @@ export class MeetingSummaryComponent implements OnInit {
 
 
   getTicket(meetingID: any) {
-    console.log(meetingID)
     this._route.navigate(['/browse/' + meetingID])
   }
 
@@ -169,8 +164,6 @@ export class MeetingSummaryComponent implements OnInit {
       case 'completed': this.status2Text = val;
         break;
     }
-
-    // this.selectedMainValue.push(this.mainValue)
   }
 
   async filterMeetings() {
@@ -188,29 +181,30 @@ export class MeetingSummaryComponent implements OnInit {
       this.meetingService.filterMeetings(object).then(data => {
         this.meetings = [];
         if(data.length > 0) {
-          for (var i = 0; i < data.length; i++) {
+          this.meetings = data;
+          // for (var i = 0; i < data.length; i++) {
 
-            if (data[i].reoccrence == 'Yes' || data[i].reoccrence == null) {
-              if (this.currentUser.Initials == 'sAdmin') {
-                this.meetings.push(data[i]);
-              }
-              else {
-                if (data[i].Partipatents != null) {
+          //   if (data[i].reoccrence == 'Yes' || data[i].reoccrence == null) {
+          //     if (this.currentUser.Initials == 'sAdmin') {
+          //       this.meetings.push(data[i]);
+          //     }
+          //     else {
+          //       if (data[i].Partipatents != null) {
   
-                  this.participants = data[i].Partipatents.split(',');
-                }
-                var c = 0;
-                for (var j = 0; j < this.participants.length; j++) {
-                  if (this.currentUser.Email == this.participants[j]) {
-                    c = j;
-                  }
-                }
-                if (this.currentUser.LoginName == data[i].HostUser || this.currentUser.Email === this.participants[c]) {
-                  this.meetings.push(data[i]);
-                }
-              }
-            }
-          }
+          //         this.participants = data[i].Partipatents.split(',');
+          //       }
+          //       var c = 0;
+          //       for (var j = 0; j < this.participants.length; j++) {
+          //         if (this.currentUser.Email == this.participants[j]) {
+          //           c = j;
+          //         }
+          //       }
+          //       if (this.currentUser.LoginName == data[i].HostUser || this.currentUser.Email === this.participants[c]) {
+          //         this.meetings.push(data[i]);
+          //       }
+          //     }
+          //   }
+          // }
         }
         else {
           console.log("no meeting found")
@@ -238,28 +232,29 @@ export class MeetingSummaryComponent implements OnInit {
       data.sort((a: any, b: any) => {
         return b.MeetingID - a.MeetingID;
       });
-      for (var i = 0; i < data.length; i++) {
-        if (data[i].reoccrence == 'Yes' || data[i].reoccrence == null) {
+      this.meetings = data;
+      // for (var i = 0; i < data.length; i++) {
+      //   if (data[i].reoccrence == 'Yes' || data[i].reoccrence == null) {
 
-          if (this.currentUser.Initials == 'sAdmin') {
-            this.meetings.push(data[i]);
-          }
-          else {
-            if (data[i].Partipatents !== null) {
-              this.participants = data[i].Partipatents.split(',');
-            }
-            var c = 0;
-            for (var j = 0; j < this.participants.length; j++) {
-              if (this.currentUser.Email == this.participants[j]) {
-                c = j;
-              }
-            }
-            if (this.currentUser.LoginName === data[i].HostUser || this.currentUser.Email === this.participants[c]) {
-              this.meetings.push(data[i]);
-            }
-          }
-        }
-      }
+      //     if (this.currentUser.Initials == 'sAdmin') {
+      //       this.meetings.push(data[i]);
+      //     }
+      //     else {
+      //       if (data[i].Partipatents !== null) {
+      //         this.participants = data[i].Partipatents.split(',');
+      //       }
+      //       var c = 0;
+      //       for (var j = 0; j < this.participants.length; j++) {
+      //         if (this.currentUser.Email == this.participants[j]) {
+      //           c = j;
+      //         }
+      //       }
+      //       if (this.currentUser.LoginName === data[i].HostUser || this.currentUser.Email === this.participants[c]) {
+      //         this.meetings.push(data[i]);
+      //       }
+      //     }
+      //   }
+      // }
 
       this.dataLoaded = true
     });
