@@ -3,7 +3,7 @@ import { MeetingActions } from '../../models/actions.model';
 import { ActionService } from '../../controllers/action.service'
 import { ActivatedRoute, Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material';
-import { MainNavComponent, ActionDailogData } from '../main-nav/main-nav.component';
+import { ActionDailogData } from '../main-nav/main-nav.component';
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/controllers/user.service';
 import { MeetingService } from 'src/app/controllers/meetings.service';

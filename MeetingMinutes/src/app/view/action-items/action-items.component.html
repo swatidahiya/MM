@@ -361,7 +361,7 @@
         <div id="container">
             <br>
             <!-- <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="space-around center" fxLayoutGap="25px"> -->
-            <mat-card *ngFor="let actionItem of actionItems" (click)="detailedAction(actionItem.ActionItemID)"
+            <mat-card *ngFor="let actionItem of actionItems" (click)="detailedAction(actionItem.id)"
                 style="margin: 0px 10px 10px 10px;">
                 <mat-card-header>
                     <div mat-card-avatar class="example-header-image" *ngIf="actionItem.Status === 1; else Overdue"><img

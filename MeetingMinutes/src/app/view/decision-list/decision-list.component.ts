@@ -53,6 +53,7 @@ export class DecisionListComponent implements OnInit {
 
   async refresh() {
     this.currentUser = this.userService.currentUserValue;
+    this.decisionItems = [];
 
     if (this.currentUser.IsActive === true) {
 
@@ -182,9 +183,15 @@ export class DecisionListComponent implements OnInit {
 
       if (this.selectedStatus != undefined || this.selectedStatus != null) {
 
-        this.decisionService.filterDecision(object).then(data => {
-          this.decisionItems = data;
-          this.refresh();
+        this.decisionItems = [];
+        this.actionService.filterActions(object).then(data => {
+          if(data !== null) {
+            data.forEach(action => {
+              if (action.decision.length > 0 || action.Status == 2) {
+                this.decisionItems.push(action)
+              }
+            });
+          }
 
         })
       }
@@ -211,13 +218,6 @@ export class DecisionListComponent implements OnInit {
     this.selectedStatus = undefined;
     this.contacts = [];
 
-    const data = this.decisionService.getDecision().then(data => {
-      data.sort((a: any, b: any) => {
-        return b.DecisionItemID - a.DecisionItemID;
-      });
-      this.decisionItems = data;
-      console.log(this.decisionItems)
-    })
     this.refresh();
   }
 
