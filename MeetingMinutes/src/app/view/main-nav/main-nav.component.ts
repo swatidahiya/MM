@@ -40,6 +40,7 @@ export class MainNavComponent implements OnInit {
   username: string;
   search: any;
   deviceDetectorInfo = null;
+  value: any;
 
   fabButtonsRandom: MatFabMenu[] = [
     {
@@ -194,18 +195,23 @@ export class MainNavComponent implements OnInit {
     this.router.navigateByUrl("/login")
   }
 
-  async searchFilter() {
-    if (this.searchString.nativeElement.value == '') {
-      console.log("String empty")
-      alert("Search String is empty");
-    } else {
-      var sendString = this.searchString.nativeElement.value
-      console.log(this.searchString.nativeElement.value)
-      this.searchDialog.open(SearchDialogComponent, {
-        data: { searchString: sendString }
-      });
-      this.searchString.nativeElement.value = '';
+  async onSearchChange(val: any) {
+    console.log("Searched string", val)
+
+    if (val == undefined || val.length == 0) {
+      alert("Please enter valid string!")
     }
+    else {
+      if (val.length > 0) {
+        this.searchDialog.open(SearchDialogComponent, {
+          data: {value: val}
+        });
+      }
+      else {
+        alert("Please enter valid string!")
+      }
+    }
+
   }
 
   // async getProfilePic() {

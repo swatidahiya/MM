@@ -1,35 +1,29 @@
-<div id="container" *ngIf="dataLoad; else loading">
-    <div class="card" style="border-radius: 20px;">
-        <div class="card-header">
-            <h1 class="card-title"><b>Total number of search items found :- {{searchedMeetings.length}}</b></h1>
+<div class="container-fluid" *ngIf="dataLoad; else loading">
+    <div class="row mb-2">
+        <div class="col" *ngIf="meetings.length > 0; else noMeeting">
+            <span class="head">Total number of meeting found :- {{meetings.length}}</span>
         </div>
-        <div class="card-body">
-            <label style="font-size: 14px; margin-top: 20px; border-radius: 10px; color: rgb(112, 110, 110);">
-                Searched String : {{searchString}}</label>
-            <div *ngFor="let meeting of searchedMeetings" (click)="getMeeting(meeting.MeetingID)" class="selectedFile">
-                <table style="width: 100%;">
-                    <tr>
-                        <td style="width: 45%;">
-                            Meeting ID :
-                        </td>
-                        <td>
-                            MM - {{meeting.MeetingID}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 45%;">
-                            Project Name :
-                        </td>
-                        <td>
-                            {{meeting.project_Name}}
-                        </td>
-                    </tr>
-                </table>
+        <ng-template #noMeeting>
+            <div class="col my-3" style="text-align: center;">
+                <span style="font-weight: 500; font-size: 24px;">No meeting found!</span>
             </div>
-        </div>
-        <div class="card-footer" style="text-align: center;">
-            <button mat-raised-button mat-dialog-close type="button" color="primary">
-                Cancel</button>
+        </ng-template>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="row my-2 body">
+        <div class="col-12 mb-2" *ngFor="let meeting of meetings" (click)="onMeeting(meeting.MeetingID)" style="cursor: pointer;">
+            <div class="card">
+                <div class="card-header">
+                    <span style="font-weight: 500; font-size: 14px;">{{meeting.Meeting_Subject}}(MM-{{meeting.MeetingID}})</span>
+                </div>
+                <div class="card-body" style="color: dimgray;">
+                    <div style="margin-top: -10px; margin-bottom: -10px;">
+                        <span><span style="font-weight: 500;">Objective :</span> {{meeting.Meeting_objective}}</span><br>
+                        <span><span style="font-weight: 500;">Host User :</span> {{meeting.HostUser}}</span>
+                    </div>
+                
+                </div>
+            </div>
         </div>
     </div>
 </div>
