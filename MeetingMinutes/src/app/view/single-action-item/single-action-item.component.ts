@@ -229,8 +229,7 @@ export class SingleActionItemComponent implements OnInit {
   }
 
   updateAction(val: any, field: any) {
-    console.log(val)
-    console.log(field)
+ 
     const id = this._route.snapshot.params['id'];
     var object = {};
 

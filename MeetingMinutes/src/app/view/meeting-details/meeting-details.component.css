@@ -252,8 +252,8 @@
 }
 
 .attendeesLogo {
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     margin-top: 15px; 
     margin-left: 30px;
 }
@@ -261,8 +261,6 @@
 .tabToolbar {
     width: 100%;
     margin-top: 30px;
-    height: 48px;
-    background-color: rgb(204, 204, 204);
 }
 
 .flatButton {
@@ -563,6 +561,16 @@ textarea:focus, input:focus, .uneditable-input:focus {
 .agendaSmall {
     max-height: 400px;
     overflow-y: auto;
+}
+
+.addSearch {
+    width: 300px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid gray;
+    border-radius: 5px;
+    padding: 6px 15px;
 }
 
 @media screen and (max-width: 700px) {
