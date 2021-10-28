@@ -17,11 +17,16 @@ module.exports = {
     deleteUser,
     updateProfile,
     base64_encode,
-    forgotPassword
+    forgotPassword,
+    getUser
 }
 
 async function getById(idParam) {
     return await User.findOne({AppUserID:idParam}).select('-hash');
+}
+
+async function getUser(id) {
+    return await User.findOne(id).select('-hash');
 }
 
 async function checkUser(loginNameParam) {

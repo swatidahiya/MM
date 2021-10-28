@@ -74,23 +74,34 @@ export class MeetingService {
       return this.request('delete', this.baseUrl + '/Meeting/' + id);
     }
 
-    uploadFile(fileName: any, meetingID: any) {
-      return this.request('post', this.baseUrl + '/FileUpload?meetingID=' + meetingID , fileName);
+    uploadFile(id: any, data: any) {
+      console.log('working',data)
+      return this.request('post', this.baseUrl + '/attachment/' + id, data);
     }
 
-    downloadAttachment(name: any, id: any) : any{
-      // console.log("download attachment " + id)
-      return this.http.get(this.baseUrl + '/GetFile?FileName=' + name + '&MeetingID=' + id, {
-        responseType: 'blob' as 'json',
+    downloadAttachment(id: any){
+
+      return this.http.get(this.baseUrl + '/download/' + id, {
+        responseType: 'blob',
       })
         .pipe(
           map((res: Blob) => res)
         );
-      // return this.request('get', this.baseUrl + '/Download?FileName='+name)
+      // return this.http.get(this.baseUrl + '/GetFile?FileName=' + name + '&MeetingID=' + id, {
+      //   responseType: 'blob' as 'json',
+      // })
+      //   .pipe(
+      //     map((res: Blob) => res)
+      //   );
     }
 
+    deleteAttachmentById(id: number) {
+      return this.request('delete', this.baseUrl + '/attachment/' + id);
+    }
+   
+
     getAllFiles(meetingID: any) {
-      return this.request('get', this.baseUrl + '/getfilelist?MeetingID=' + meetingID);
+      return this.request('get', this.baseUrl + '/Meeting/getAttachmentsByMeetingId/' + meetingID);
     }
 
     searchMeetings(searchString: any) {

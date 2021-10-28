@@ -1118,9 +1118,10 @@
 
 <div id="id02" class="modal">
     <form #fileList="ngForm" class="modal-content-assign animate" style="width: 30% ;justify-content: center">
-        <div class="imgcontainer">
+        <div class="imgcontainer m-2 p-2 container-fluid">
             <span onclick="document.getElementById('id02').style.display='none'" class="close"
-                style="margin-top: -20px; font-size: 25px;" title="Close Modal">&times;</span>
+                style="margin-top: -10px; font-size: 25px;" title="Close Modal">&times;</span>
+
             <div class="card" style="border-radius: 20px;">
                 <div class="card-header">
                     <h1 class="card-title"><b>Select a file to download</b></h1>
@@ -1128,8 +1129,15 @@
                 <div class="card-body">
                     <label style="font-size: 14px; margin-top: 20px; border-radius: 10px; color: rgb(112, 110, 110);">
                         All Files</label>
-                    <div *ngFor="let file of allFiles" class="selectedFile" (click)="getFile(file)">
-                        {{file}}
+                    <div *ngFor="let file of allFiles; let i = index" class="selectedFile row" >
+                        <div class="col-sm-10 col-8">
+                            <span>{{file.originalName}}</span>
+                        </div>
+                        <div class="col">
+                            <span class="mr-2" (click)="downloadAttachment(i)" title="Download File"><i class="fas fa-download"></i></span>
+                            <span title="Remove File" (click)="deleteAttachment(file._id)"><i class="fas fa-trash-alt"></i></span>
+                        </div>
+                        
                     </div>
                 </div>
                 <div class="card-footer" style="text-align: center;">
@@ -1144,7 +1152,7 @@
 
 <div id="id03" class="modal" style="width: 100%;">
     <form #fileList="ngForm" class="modal-content-assign animate" style="width: 100% ;justify-content: center">
-        <div class="imgcontainer">
+        <div class="imgcontainer container-fluid">
             <span onclick="document.getElementById('id03').style.display='none'" class="close"
                 style="margin-top: -20px; font-size: 25px;" title="Close Modal">&times;</span>
             <div class="card" style="border-radius: 20px;">
@@ -1154,9 +1162,16 @@
                 <div class="card-body">
                     <label style="font-size: 14px; margin-top: 20px; border-radius: 10px; color: rgb(112, 110, 110);">
                         All Files</label>
-                    <div *ngFor="let file of allFiles" class="selectedFile" (click)="getFile(file)">
-                        {{file}}
-                    </div>
+                        <div *ngFor="let file of allFiles; let i = index" class="selectedFile row" >
+                            <div class="col-sm-10 col-8">
+                                <span>{{file.originalName}}</span>
+                            </div>
+                            <div class="col">
+                                <span class="mr-2" (click)="downloadAttachment(i)" title="Download File"><i class="fas fa-download"></i></span>
+                                <span title="Remove File" (click)="deleteAttachment(file._id)"><i class="fas fa-trash-alt"></i></span>
+                            </div>
+                            
+                        </div>
                 </div>
                 <div class="card-footer" style="text-align: center;">
                     <button mat-raised-button type="button" color="primary"
