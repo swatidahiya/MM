@@ -4,6 +4,7 @@ const db = require('../db');
 const Meeting = db.Meeting;
 var fs = require("fs");
 const emailService = require('../emails/emails.service');
+const MeetingNote = db.MeetingNotes;
 
 
 
@@ -14,7 +15,8 @@ module.exports = {
     getMeetingById,
     filterMeetings,
     updateMeeting,
-    SendRescheduleMail
+    SendRescheduleMail,
+    getAttachmentsByMeetingId
 }
 
 
@@ -42,6 +44,11 @@ async function getMeetings() {
     // console.log(meetings)
     return meetings;
 
+}
+
+async function getAttachmentsByMeetingId(meetingID){
+    const meetingNotes = await MeetingNote.find({meetingID: meetingID}).sort({ createdDate: -1 });
+    return meetingNotes;
 }
 
 async function filterMeetings(object) {

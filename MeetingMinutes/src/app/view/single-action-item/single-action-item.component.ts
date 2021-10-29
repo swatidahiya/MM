@@ -176,101 +176,92 @@ export class SingleActionItemComponent implements OnInit {
   }
 
   onFocusOut() {
-    if (this.currentUser.DisplayName == this.actionItem.ActionAssignedTo || this.currentUser.Initials === 'sAdmin') {
-      this.focusOut.emit(this.actionItem.Action_Description);
-      console.log(this.actionItem.Action_Description)
+    this.focusOut.emit(this.actionItem.Action_Description);
+    console.log(this.actionItem.Action_Description)
 
-      var id = this._route.snapshot.params['id'];
+    var id = this._route.snapshot.params['id'];
 
-      var object = {};
-      object["ActionItemID"] = this.actionItem.ActionItemID;
-      object["ActionItem_Title"] = this.actionItem.ActionItem_Title;
-      object["project_Name"] = this.actionItem.project_Name;
-      object["ActionDate"] = this.actionItem.ActionDate;
-      object["ActionTime"] = this.actionItem.ActionTime;
-      object["ActionAssignedTo"] = this.actionItem.ActionAssignedTo;
-      object["Status"] = this.actionItem.Status;
-      object["Action_Description"] = this.actionItem.Action_Description;
-      object["MeetingID"] = this.actionItem.MeetingID;
-      object["Priority"] = this.actionItem.Priority;
+    var object = {};
+    object["ActionItemID"] = this.actionItem.ActionItemID;
+    object["ActionItem_Title"] = this.actionItem.ActionItem_Title;
+    object["project_Name"] = this.actionItem.project_Name;
+    object["ActionDate"] = this.actionItem.ActionDate;
+    object["ActionTime"] = this.actionItem.ActionTime;
+    object["ActionAssignedTo"] = this.actionItem.ActionAssignedTo;
+    object["Status"] = this.actionItem.Status;
+    object["Action_Description"] = this.actionItem.Action_Description;
+    object["MeetingID"] = this.actionItem.MeetingID;
+    object["Priority"] = this.actionItem.Priority;
+    object["meetingName"] = this.actionItem.meetingName;
 
-      const data = this.actionService.updateAction(id, object).then(data => {
-        this.refresh();
-      })
-    }
-    else {
-      location.reload();
-    }
+    const data = this.actionService.updateAction(id, object).then(data => {
+      this.refresh();
+    })
+
   }
 
   async onPriority(actionID: any, val: any) {
     const id = this._route.snapshot.params['id'];
-    if (this.currentUser.DisplayName == this.actionItem.ActionAssignedTo || this.currentUser.Initials === 'sAdmin') {
-      var object = {};
-      object["ActionItemID"] = this.actionItem.ActionItemID;
-      object["ActionItem_Title"] = this.actionItem.ActionItem_Title;
-      object["project_Name"] = this.actionItem.project_Name;
-      object["ActionDate"] = this.actionItem.ActionDate;
-      object["ActionTime"] = this.actionItem.ActionTime;
-      object["ActionAssignedTo"] = this.actionItem.ActionAssignedTo;
-      object["Status"] = this.actionItem.Status;
-      object["Action_Description"] = this.actionItem.Action_Description;
-      object["MeetingID"] = this.actionItem.MeetingID;
+    var object = {};
+    object["ActionItemID"] = this.actionItem.ActionItemID;
+    object["ActionItem_Title"] = this.actionItem.ActionItem_Title;
+    object["project_Name"] = this.actionItem.project_Name;
+    object["ActionDate"] = this.actionItem.ActionDate;
+    object["ActionTime"] = this.actionItem.ActionTime;
+    object["ActionAssignedTo"] = this.actionItem.ActionAssignedTo;
+    object["Status"] = this.actionItem.Status;
+    object["Action_Description"] = this.actionItem.Action_Description;
+    object["MeetingID"] = this.actionItem.MeetingID;
+    object["meetingName"] = this.actionItem.meetingName;
 
-      switch (val) {
-        case 'High': object["Priority"] = 'Medium';
-          break;
-        case 'Medium': object["Priority"] = 'Low';
-          break;
-        case 'Low': object["Priority"] = 'High';
-          break;
-      }
-      const data = this.actionService.updateAction(id, object).then(data => {
-        this.refresh();
-      })
+    switch (val) {
+      case 'High': object["Priority"] = 'Medium';
+        break;
+      case 'Medium': object["Priority"] = 'Low';
+        break;
+      case 'Low': object["Priority"] = 'High';
+        break;
     }
-    else {
-      location.reload();
-    }
+    const data = this.actionService.updateAction(id, object).then(data => {
+      this.refresh();
+    })
+
   }
 
   updateAction(val: any, field: any) {
-    if (this.currentUser.DisplayName == this.actionItem.ActionAssignedTo || this.currentUser.Initials === 'sAdmin') {
-      const id = this._route.snapshot.params['id'];
-      var object = {};
+ 
+    const id = this._route.snapshot.params['id'];
+    var object = {};
 
-      object["ActionItemID"] = this.actionItem.ActionItemID;
-      object["ActionItem_Title"] = this.actionItem.ActionItem_Title;
-      object["project_Name"] = this.actionItem.project_Name;
-      object["ActionDate"] = this.actionItem.ActionDate;
-      object["ActionTime"] = this.actionItem.ActionTime;
-      object["ActionAssignedTo"] = this.actionItem.ActionAssignedTo;
-      object["Status"] = this.actionItem.Status;
-      object["Action_Description"] = this.actionItem.Action_Description;
-      object["MeetingID"] = this.actionItem.MeetingID;
-      object["Priority"] = this.actionItem.Priority;
+    object["ActionItemID"] = this.actionItem.ActionItemID;
+    object["ActionItem_Title"] = this.actionItem.ActionItem_Title;
+    object["project_Name"] = this.actionItem.project_Name;
+    object["ActionDate"] = this.actionItem.ActionDate;
+    object["ActionTime"] = this.actionItem.ActionTime;
+    object["ActionAssignedTo"] = this.actionItem.ActionAssignedTo;
+    object["Status"] = this.actionItem.Status;
+    object["Action_Description"] = this.actionItem.Action_Description;
+    object["MeetingID"] = this.actionItem.MeetingID;
+    object["Priority"] = this.actionItem.Priority;
+    object["meetingName"] = this.actionItem.meetingName;
 
-      switch (field) {
-        case 'ActionItem_Title': object["ActionItem_Title"] = val;
-          break;
-        case 'project_Name': object["project_Name"] = val;
-          break;
-        case 'Status': if (val === 0) {
-          object["Status"] = 1;
-        } else if (val === 1) {
-          object["Status"] = 2;
-        } else {
-          object["Status"] = 0;
-        }
-          break;
+    if (field == 'Status') {
+      if (val === 0) {
+        object["Status"] = 1;
+      } else if (val === 1) {
+        object["Status"] = 2;
+      } else {
+        object["Status"] = 0;
       }
-      const data = this.actionService.updateAction(id, object).then(data => {
-        this.refresh();
-      })
     }
     else {
-      location.reload();
+      object[field] = val;
     }
+
+    const data = this.actionService.updateAction(id, object).then(data => {
+      this.refresh();
+    })
+
   }
 
   transform(name: any) {

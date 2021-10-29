@@ -16,7 +16,7 @@ export interface SearchDailogData {
 })
 export class SearchDialogComponent implements OnInit {
 
-  searchedMeetings: Meetings[];
+  meetings: Array<any> = [];
   dataLoad = false;
   searchString: any;
   noData = false;
@@ -31,24 +31,72 @@ export class SearchDialogComponent implements OnInit {
   }
 
   async refresh() {
-    const data = await this.meetingService.searchMeetings(this.data.searchString).then( result => {
-      console.log(result)
-      this.searchString = this.data.searchString;
-      this.searchedMeetings = result;
-      if(this.searchedMeetings.length < 1){
-        this.noData = true;
+    var string = this.data['value'].toLowerCase()
+    var re = new RegExp(string, "g");
+    console.log(re)
+
+    this.meetings = [];
+    var meetingName;
+    var meetingId;
+    var objective;
+    var hostUser;
+
+    const data = await this.meetingService.getMeetings().then(result => {
+      if(result !== null) {
+        result.forEach(meeting => {
+          meetingName = meeting.Meeting_Subject.toLowerCase();
+          meetingId = meeting.MeetingID.toString();
+          objective = meeting.Meeting_objective.toLowerCase();
+          hostUser = meeting.HostUser.toLowerCase();
+
+          if(meetingName.search(re) == -1) {
+            if(objective.search(re) == -1) {
+              if(meetingId.search(re) == -1) {
+                if(hostUser.search(re) == -1) {
+
+                }
+                else {
+                  this.meetings.push(meeting)
+                }
+              }
+              else {
+                this.meetings.push(meeting)
+              }
+            }
+            else {
+              this.meetings.push(meeting)
+            }
+          }
+          else {
+            this.meetings.push(meeting)
+          }
+          
+        });
       }
+      else {
+        this.meetings = [];
+      }
+
       this.dataLoad = true;
+      
     })
+
+    // const data = await this.meetingService.searchMeetings(this.data.searchString).then( result => {
+    //   console.log(result)
+    //   this.searchString = this.data.searchString;
+    //   this.searchedMeetings = result;
+    //   if(this.searchedMeetings.length < 1){
+    //     this.noData = true;
+    //   }
+    //   this.dataLoad = true;
+    // })
   }
 
-  getMeeting(meetingID: any) {
+  onMeeting(meetingID: any) {
     this.dialogRef.close()
-    window.open(
-      'browse/' + meetingID,
-      '_blank'
-    );
-    // this.route.navigate(['/browse/'+ meetingID])
+    this.route.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.route.onSameUrlNavigation = 'reload';
+    this.route.navigate(['/browse/'+ meetingID])
   }
 
 }

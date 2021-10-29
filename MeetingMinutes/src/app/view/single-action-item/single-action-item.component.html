@@ -33,8 +33,12 @@
                                 </ng-template>
                                 <table class="meetingMain">
                                     <tr>
-                                        <td class="meetingLabel" style="font-size: 24px;width: 100%;">
-                                            {{actionItem.ActionItem_Title}}</td>
+                                        <td class="meetingLabel" style="font-size: 24px; width: 100%;">
+                                            <ejs-inplaceeditor id="element" style="font-weight: 700; font-size: 24px; font-size: large; color: dimgrey;"
+                                                type="Text" data-underline="false" value="{{actionItem.ActionItem_Title}}"
+                                                (actionSuccess)="updateAction($event.value, 'ActionItem_Title')">
+                                            </ejs-inplaceeditor>
+                                        </td>
                                     </tr>
                                 </table>
                                 <table class="meetingMain">

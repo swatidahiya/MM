@@ -13,7 +13,6 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 import { CommentService } from 'src/app/controllers/comment.service';
 import { Comments } from 'src/app/models/comment.model';
-import { MeetingNote } from 'src/app/models/meetingNote.model';
 import { MeetingNoteService } from 'src/app/controllers/meetingNote.service';
 import { MatSnackBar } from '@angular/material';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -68,11 +67,10 @@ export class MeetingDetailsComponent implements OnInit {
   fabIcon = false;
 
   timeToDisplay: any;
-
+  fileList: FileList;
   currentUser: User;
   meetingNotes: any = {};
-  mNotes: MeetingNote;
-  mNote: MeetingNote;
+
   editMode = false;
   editHeader = false;
   editConclusion = false;
@@ -347,7 +345,7 @@ export class MeetingDetailsComponent implements OnInit {
 
       this.commentLoad = true;
 
-      
+
     })
   }
 
@@ -764,18 +762,33 @@ export class MeetingDetailsComponent implements OnInit {
 
   onFileInput(val: any) {
 
+    // const id = this._route.snapshot.params['id'];
+    // const fileList = val.target.files;
+    // if (fileList.length > 0) {
+    //   const file: File = fileList[0];
+    //   console.log(file)
+    //   let formData: FormData = new FormData();
+    //   formData.append('uploadFile', file);
+    //   console.log(formData)
+    //   this.meetingService.uploadFile(formData, id).then(result => {
+    //     this.openSnackBar("Attachment is Uploaded", "OK");
+    //     this.refresh();
+    //   })
+    // }
+
     const id = this._route.snapshot.params['id'];
-    const fileList = val.target.files;
-    if (fileList.length > 0) {
-      const file: File = fileList[0];
-      console.log(file)
-      let formData: FormData = new FormData();
+    this.fileList = val.target.files;
+
+    console.log(this.fileList)
+
+    if (this.fileList.length > 0) {
+      const file: File = this.fileList[0];
+      const formData: FormData = new FormData();
       formData.append('uploadFile', file);
-      console.log(formData)
-      this.meetingService.uploadFile(formData, id).then(result => {
-        this.openSnackBar("Attachment is Uploaded", "OK");
-        this.refresh();
-      })
+      console.log(file)
+      this.meetingService.uploadFile(id, formData).then(data => {
+        console.log(data)
+      });
     }
   }
 
@@ -789,14 +802,54 @@ export class MeetingDetailsComponent implements OnInit {
     const id = this._route.snapshot.params['id'];
 
     const images = await this.meetingService.getAllFiles(id).then(result => {
-      this.allFiles = [];
-      for (var i = 0; i < result.length; i++) {
-        var filename = result[i].replace(/^.*[\\\/]/, '')
-        this.allFiles.push(filename);
-        this.filesLoaded = true
-      }
+      console.log(result)
+      this.allFiles = result;
+      this.filesLoaded = true
     })
 
+  }
+
+  downloadAttachment(index: number) {
+    this.meetingService.downloadAttachment(this.allFiles[index].attachmentName)
+      .subscribe(res => {
+        let options = { type: 'image/jpeg;' };
+        let filename = this.allFiles[index].originalName;
+        this.createAndDownloadBlobFile(res, options, filename);
+      });
+  }
+
+  createAndDownloadBlobFile(blob, options, filename) {
+    var link = document.createElement("a");        // Browsers that support HTML5 download attribute
+    if (link.download !== undefined) {
+      var url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
+
+  async deleteAttachment(id: any) {
+    const meetingID = this._route.snapshot.params['id'];
+
+    var c = confirm("Do you want delete the attchment?");
+    if (c == true) {
+      this.filesLoaded = true
+      await this.meetingService.deleteAttachmentById(id).then(data => {
+        const images = this.meetingService.getAllFiles(meetingID).then(result => {
+          this.allFiles = result;
+          this.filesLoaded = true
+        })
+        alert("Attachment deleted successfully!")
+      })
+
+
+    }
+    else {
+      alert("Process Terminated")
+    }
   }
 
   // async editComment(val: any, id: any) {
@@ -815,65 +868,65 @@ export class MeetingDetailsComponent implements OnInit {
   //   })
   // }
 
-  getFile(filename: any) {
+  // getFile(filename: any) {
 
-    const id = this._route.snapshot.params['id'];
+  //   const id = this._route.snapshot.params['id'];
 
-    let checkFileType = filename.split('.').pop();
-    var fileType;
-    if (checkFileType == ".txt") {
-      fileType = "text/plain";
-    }
-    if (checkFileType == ".pdf") {
-      fileType = "application/pdf";
-    }
-    if (checkFileType == ".doc") {
-      fileType = "application/vnd.ms-word";
-    }
-    if (checkFileType == ".docx") {
-      fileType = "application/vnd.ms-word";
-    }
-    if (checkFileType == ".xls") {
-      fileType = "application/vnd.ms-excel";
-    }
-    if (checkFileType == ".xlsx") {
-      fileType = "application/vnd.ms-excel";
-    }
-    if (checkFileType == ".png") {
-      fileType = "image/png";
-    }
-    if (checkFileType == ".jpg") {
-      fileType = "image/jpeg";
-    }
-    if (checkFileType == ".jpeg") {
-      fileType = "image/jpeg";
-    }
-    if (checkFileType == ".gif") {
-      fileType = "image/gif";
-    }
-    if (checkFileType == ".csv") {
-      fileType = "text/csv";
-    }
-    this.meetingService.downloadAttachment(filename, id)
-      .subscribe(res => {
-        document.getElementById('id02').style.display = 'none';
-        let options = { type: fileType };
-        this.createAndDownloadBlobFile(res, options, filename);
-      });
-  }
+  //   let checkFileType = filename.split('.').pop();
+  //   var fileType;
+  //   if (checkFileType == ".txt") {
+  //     fileType = "text/plain";
+  //   }
+  //   if (checkFileType == ".pdf") {
+  //     fileType = "application/pdf";
+  //   }
+  //   if (checkFileType == ".doc") {
+  //     fileType = "application/vnd.ms-word";
+  //   }
+  //   if (checkFileType == ".docx" || checkFileType == ".odt") {
+  //     fileType = "application/vnd.ms-word";
+  //   }
+  //   if (checkFileType == ".xls") {
+  //     fileType = "application/vnd.ms-excel";
+  //   }
+  //   if (checkFileType == ".xlsx") {
+  //     fileType = "application/vnd.ms-excel";
+  //   }
+  //   if (checkFileType == ".png") {
+  //     fileType = "image/png";
+  //   }
+  //   if (checkFileType == ".jpg") {
+  //     fileType = "image/jpeg";
+  //   }
+  //   if (checkFileType == ".jpeg") {
+  //     fileType = "image/jpeg";
+  //   }
+  //   if (checkFileType == ".gif") {
+  //     fileType = "image/gif";
+  //   }
+  //   if (checkFileType == ".csv") {
+  //     fileType = "text/csv";
+  //   }
+  //   this.meetingService.downloadAttachment(filename, id)
+  //     .subscribe(res => {
+  //       document.getElementById('id02').style.display = 'none';
+  //       let options = { type: fileType };
+  //       this.createAndDownloadBlobFile(res, options, filename);
+  //     });
+  // }
 
-  createAndDownloadBlobFile(blob, options, filename) {
-    var link = document.createElement("a");
-    if (link.download !== undefined) {
-      var url = URL.createObjectURL(blob);
-      link.setAttribute("href", url);
-      link.setAttribute("download", filename);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  }
+  // createAndDownloadBlobFile(blob, options, filename) {
+  //   var link = document.createElement("a");
+  //   if (link.download !== undefined) {
+  //     var url = URL.createObjectURL(blob);
+  //     link.setAttribute("href", url);
+  //     link.setAttribute("download", filename);
+  //     link.style.visibility = 'hidden';
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     document.body.removeChild(link);
+  //   }
+  // }
 
   createImageFromBlob(image: Blob) {
     let reader = new FileReader();

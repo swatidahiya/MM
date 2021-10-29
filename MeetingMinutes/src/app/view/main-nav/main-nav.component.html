@@ -13,12 +13,12 @@
       <mat-nav-list>
         <div class="input-group mb-3" *ngIf="!deviceDetector()">
           <input type="text" class="form-control" placeholder="Search Meeting" aria-label="Recipient's username"
-            aria-describedby="basic-addon2" #searchArea>
+            aria-describedby="basic-addon2" type="text" [(ngModel)]="value" #searchArea>
           <div class="input-group-append">
             <!-- <mat-icon style="font-size: 30px;">search</mat-icon> -->
             <span class="input-group-text"
               style="background-color: #3F51B5; border-radius: 50%; border: 1px solid #3F51B5;" id="basic-addon2"
-              (click)="searchFilter()"><i style="color: white;" class="fa fa-search"></i></span>
+              (click)="onSearchChange(value)"><i style="color: white;" class="fa fa-search"></i></span>
           </div>
         </div>
         <a mat-list-item routerLink="/dashboard" routerLinkActive="active-list-item"
@@ -59,12 +59,13 @@
         <a><img class="logo" src="../../../assets/newLogo.png" alt="My Ad Cubes"></a>
         <span class="example-spacer"></span>
         <!-- <div *ngIf="deviceDetector()"> -->
-        <input class="form-control search" *ngIf="deviceDetector()" placeholder="Search Meetings"
-          (keyup.enter)="searchFilter()" #searchArea>
+        <input class="form-control search" *ngIf="deviceDetector()" placeholder="Search Meetings" type="text"
+          [(ngModel)]="value" #searchArea>
         <button mat-fab color="primary" *ngIf="deviceDetector()" style="margin-right: 10px;margin-left: 10px;"
-          (click)="searchFilter()" title="Search Meeting">
+          (click)="onSearchChange(value)" title="Search Meeting">
           <mat-icon>search</mat-icon>
         </button>
+
         <!-- <button mat-icon-button>
           <mat-icon matBadge="15" *ngIf="deviceDetector()" matBadgeColor="warn">notification_important</mat-icon>
         </button> -->

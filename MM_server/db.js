@@ -14,6 +14,7 @@ module.exports = {
     Action: require('./actions/actions.model').actionModel,
     Decision: require('./decisions/decisions.model').decisionModel, 
     Comment: require('./comments/comments.model').commentModel,
-    Poll: require('./polls/polls.model').pollModel
+    Poll: require('./polls/polls.model').pollModel,
+    MeetingNotes: require('./MeetingNote/MeetingNote.model').MeetingNoteModel
     
 };
