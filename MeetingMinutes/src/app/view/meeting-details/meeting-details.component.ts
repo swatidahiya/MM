@@ -747,7 +747,7 @@ export class MeetingDetailsComponent implements OnInit {
 
           mailObject["toname"] = tempUser.FirstName + " " + tempUser.LastName;
           mailObject["toemail"] = tempUser.Email;
-          mailObject["Meeting_Location"] = "https://meetingminutes.checkboxtechnology.com/videoRoom/" + this.meeting.RoomKey;;
+          mailObject["Meeting_Location"] = "https://mmv1.checkboxtechnology.com/videoRoom/" + this.meeting.RoomKey;;
           await this.meetingService.sendMailReschedule(mailObject).then(result => {
             console.log("Message sent");
           })
@@ -982,7 +982,7 @@ export class MeetingDetailsComponent implements OnInit {
       var temp = this.options.find(({ Email }) => Email === this.participants[i]);
       object["toname"] = temp.FirstName + " " + temp.LastName;
       object["toemail"] = temp.Email;
-      object["Meeting_Location"] = "https://meetingminutes.checkboxtechnology.com/videoRoom/" + this.meeting.RoomKey + '$' + this.currentUser.FirstName;
+      object["Meeting_Location"] = "https://mmv1.checkboxtechnology.com/videoRoom/" + this.meeting.RoomKey + '$' + this.currentUser.FirstName;
       this.meetingService.sendMailConclusion(object).then(result => {
         console.log("Message sent to  the participant");
       })

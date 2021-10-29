@@ -54,6 +54,20 @@ export class ManageUsersComponent implements OnInit {
     })
   }
 
+  makeAdmin(username: any){
+    this.tempUpdateUser = this.users.find(({LoginName}) => LoginName === username);
+    this.tempUpdateUser.IsActive = true;
+    this.tempUpdateUser.Initials = "sAdmin";
+    if(this.tempUpdateUser.Phone === null) {
+      this.tempUpdateUser.Phone = '8090909090'
+    }
+    const data = this.userService.updateUser(this.tempUpdateUser.AppUserID, this.tempUpdateUser).then( result => {
+      this.refresh();
+      this.tempUpdateUser = null;
+    })
+
+  }
+
   deviceDetector() {
     this.deviceDetectorInfo = this.deviceDetectorService.getDeviceInfo();
     const isDesktop = this.deviceDetectorService.isDesktop();

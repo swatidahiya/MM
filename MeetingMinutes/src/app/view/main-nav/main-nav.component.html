@@ -120,9 +120,13 @@
       </mat-toolbar>
       <div class="secondToolbar example-button-row" *ngIf="deviceDetector()">
         <!-- <img class="userImg" src="../../../assets/facebook.png"> -->
-        <div class="float-left" routerLink="/dashboard"
+        <!-- <div class="float-left" routerLink="/dashboard"
           style="color: white; font-size: 18px; margin-left: 10px; padding: 30px 20px;">
           <i class="fas fa-angle-left"></i> <a style="margin-left: 10px;">Dashboard</a>
+        </div> -->
+        <div style="text-align: end; margin-bottom: 5px;">
+          <button mat-raised-button color="primary" [disabled]="isRecording" (click)="startRecorder()">Start Recording</button>
+          <button mat-raised-button color="warn" [disabled]="!isRecording" id="stopRecording" (click)=stopRecording()>Stop Recording</button>
         </div>
         <!-- <div class="col-9">
           <a style="font-size: 16px; color: whitesmoke; margin-left: 10px;">{{currentUser.FirstName}}

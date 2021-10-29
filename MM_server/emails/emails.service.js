@@ -52,7 +52,7 @@ async function sendEmail(to, subject, body, calendarObj = null){
 
 
 function getIcalObjectInstance(starttime, summary, description, url , name , email){
-    const cal = ical({ domain: "mmdemo-free.checkboxtechnology.com", name: 'My test calendar event' });
+    const cal = ical({ domain: "mmv1.checkboxtechnology.com", name: 'My test calendar event' });
     // cal.domain("mmdemo-free.checkboxtechnology.com");
     cal.createEvent({
         start: starttime,                    

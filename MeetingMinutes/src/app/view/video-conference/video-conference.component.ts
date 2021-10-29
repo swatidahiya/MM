@@ -53,7 +53,7 @@ export class VideoConferenceComponent implements OnInit {
     this.options = {
       roomName: "MM-" + this.params[0] + "-utf",
       width: 100 + "%",
-      height: 100 + "%", 
+      height: 110 + "%", 
       parentNode: document.querySelector("#meet"),
       // userInfo: {
       //   email: this.currentUser.Email,

@@ -17,6 +17,7 @@ import { SearchDialogComponent } from '../search-dialog/search-dialog.component'
 import { DeviceDetectorService } from 'ngx-device-detector'
 import { MatFabMenu } from '@angular-material-extensions/fab-menu';
 import { DomSanitizer } from '@angular/platform-browser';
+import * as RecordRTC from 'recordrtc';
 
 export interface ActionDailogData {
   meetingID: any;
@@ -40,6 +41,8 @@ export class MainNavComponent implements OnInit {
   username: string;
   search: any;
   deviceDetectorInfo = null;
+  isRecording = false;
+  private recorder: any;
 
   fabButtonsRandom: MatFabMenu[] = [
     {
@@ -99,7 +102,8 @@ export class MainNavComponent implements OnInit {
     private http: HttpClient,
     private deviceDetectorService: DeviceDetectorService,
     private meetingService: MeetingService,
-    private domSanitizer: DomSanitizer,) { }
+    private domSanitizer: DomSanitizer,
+    private _route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.refresh();
@@ -255,5 +259,153 @@ export class MainNavComponent implements OnInit {
         break;
     }
   }
+
+  startRecorder() {
+    this.captureScreen((screen) => {
+      this.recorder = RecordRTC(screen, {
+          type: 'video'
+      });
+      this.isRecording = true;
+
+      this.recorder.startRecording();
+
+      // release screen on stopRecording
+      this.recorder.screen = screen;
+    });
+  }
+
+  captureScreen(callback) {
+    let audioTrack, videoTrack, stream;
+    this.invokeGetDisplayMedia((videoScreen) => {
+      this.invokeUserMedia((screen) => {
+        [audioTrack] = screen.getAudioTracks();
+        [videoTrack] = videoScreen.getVideoTracks();
+        stream  = new MediaStream([videoTrack, audioTrack])
+
+        this.addStreamStopListener(stream, () => {
+            document.getElementById('stopRecording').click();
+        });
+        callback(stream);
+      }, (error) => {
+        console.log(error);
+      })
+    }, (error) => {
+        console.error(error);
+        alert('Unable to capture your screen. Please check console logs.\n' + error);
+    });
+  }
+
+  invokeUserMedia(success, error) {
+    navigator.mediaDevices.getUserMedia({audio: true}).then(success).catch(error)
+  }
+
+  invokeGetDisplayMedia(success, error) {
+    console.log(success)
+    const displaymediastreamconstraints = {
+        video: {
+            displaySurface: 'monitor', // monitor, window, application, browser
+            logicalSurface: true,
+            cursor: 'always' // never, always, motion,
+        },
+        audio: true
+    };
+  
+    if ((navigator.mediaDevices as any).getDisplayMedia) {
+        (navigator.mediaDevices as any).getDisplayMedia(displaymediastreamconstraints).then(success).catch(error);
+    }
+    else {
+         (navigator as any).getDisplayMedia(displaymediastreamconstraints).then(success).catch(error);
+    }
+  }
+  
+  addStreamStopListener(stream, callback) {
+    stream.addEventListener('ended', () => {
+        callback();
+        callback = () => {};
+    }, false);
+    stream.addEventListener('inactive', () => {
+        callback();
+        callback = () => {};
+    }, false);
+    stream.getTracks().forEach((track) => {
+        track.addEventListener('ended', () => {
+            callback();
+            callback = () => {};
+        }, false);
+        track.addEventListener('inactive', () => {
+            callback();
+            callback = () => {};
+        }, false);
+    });
+  }
+
+  async stopRecording() {
+    await this.recorder.stopRecording(this.stopRecordingCallback.bind(this));
+  }
+  
+  async stopRecordingCallback() {
+    this.isRecording = false;
+
+    const id = this._route.snapshot.params['id'];
+    var params = id.split('$');
+   
+    await this.recorder.screen.stop();
+    console.log(this.recorder)
+    let options = { type: 'video/mp4' };
+    // this.onFileInput(this.recorder)
+    this.createAndDownloadBlobFile(this.recorder.blob, options, params[1])
+  }
+
+ async  onFileInput(val: any) {
+
+    const id = this._route.snapshot.params['id'];
+    var params = id.split('$');
+    // console.log(val)
+
+    
+
+
+    const fileList = this.blobToFile(val.blob, params[1]);;
+    // if (fileList.length > 0) {
+      console.log(fileList)
+      const file: File = fileList;
+      console.log(file)
+      let formData: FormData = new FormData();
+      formData.append('uploadFile', file);
+      console.log(formData)
+      await this.meetingService.uploadFile(formData, id).then(result => {
+        // this.openSnackBar("Attachment is Uploaded", "OK");
+        console.log("success")
+        this.refresh();
+      })
+    // }
+  }
+
+  public blobToFile = (theBlob: Blob, fileName:string): File => {
+    var b: any = theBlob;
+    //A Blob() is almost a File() - it's just missing the two properties below which we will add
+    b.lastModifiedDate = new Date();
+    b.lastModified = 1609236060949;
+    b.name = fileName;
+    b.webkitRelativePath  = "";
+
+
+    //Cast to a File() type
+    return <File>theBlob;
+}
+
+  createAndDownloadBlobFile(blob, options, filename) {
+    var link = document.createElement("a");        // Browsers that support HTML5 download attribute
+    if (link.download !== undefined) {
+      var url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
+
 
 }

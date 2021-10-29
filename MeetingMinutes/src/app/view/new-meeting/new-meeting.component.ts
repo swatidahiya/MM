@@ -194,7 +194,7 @@ export class NewMeetingComponent implements OnInit {
       for (var i = 0; i < this.displayName.length; i++) {
         mailObject["toemail"] = this.displayName[i].Email;
         var temp = this.options.find(({ Email }) => Email === this.displayName[i].Email);
-        mailObject["Meeting_Location"] = "https://meetingminutes.checkboxtechnology.com/videoRoom/" + object.RoomKey;
+        mailObject["Meeting_Location"] = "https://mmv1.checkboxtechnology.com/videoRoom/" + object.RoomKey;
 
         this.meetingService.sendMail(mailObject).then(result => {
           console.log("Message sent");
@@ -203,7 +203,7 @@ export class NewMeetingComponent implements OnInit {
 
       this.otherMails.forEach(mail => {
         mailObject["toemail"] = mail;
-        mailObject["Meeting_Location"] = "https://meetingminutes.checkboxtechnology.com/videoRoom/" + object.RoomKey;
+        mailObject["Meeting_Location"] = "https://mmv1.checkboxtechnology.com/videoRoom/" + object.RoomKey;
         this.meetingService.sendMail(mailObject).then(result => {
           console.log("other mail sent");
         })

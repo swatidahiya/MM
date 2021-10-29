@@ -16,6 +16,10 @@
                                     <button mat-raised-button color="accent" (click)="deleteUser(user.LoginName)"
                                         style="border-radius: 10px; padding: 5px; width: 150px;">Delete</button>
                                 </div>
+                                <div class="float-right" style="margin-left: 40px;" *ngIf="user.Initials != 'sAdmin'">
+                                    <button mat-raised-button color= "info" (click)="makeAdmin(user.LoginName)"
+                                        style="background-color: green; color:white; border-radius: 10px; padding: 5px; width: 150px;">Make Admin</button>
+                                </div>
                                 <div class="float-right" *ngIf="user.IsActive === true;else unblock">
                                     <div *ngIf="user.Initials != 'sAdmin'; else superAdmin">
                                         <button mat-raised-button color="warn"

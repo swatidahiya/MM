@@ -1,7 +1,7 @@
 #container{
     background-image: url('src/assets/background.jpg');
     /* height: 100%; */
-    min-height: 855px;
+    min-height: 900px;
     background-size: cover;
     background-repeat: repeat-y;
     align-content: center;
