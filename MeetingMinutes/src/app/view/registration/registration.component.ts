@@ -68,6 +68,10 @@ export class RegistrationComponent implements OnInit {
     }
   }
 
+  onLogin() {
+    this.route.navigateByUrl('/login')
+  }
+
   async getOTP(){
     
   }

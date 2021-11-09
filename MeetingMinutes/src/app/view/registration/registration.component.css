@@ -218,3 +218,22 @@ cursor: pointer;
     color: red;
     /* margin-left: 25px; */
 }
+.checkboxLogo {
+    text-align: right;
+    margin-right: 10px;
+}
+
+.back {
+    cursor: pointer;
+}
+.back:hover {
+    color: chartreuse;
+}
+
+@media screen and (max-width: 600px) {
+    .checkboxLogo {
+        background-color: rgb(0, 0, 0, 0.7);
+        text-align: center;
+        margin-right: 0;
+    }
+}
