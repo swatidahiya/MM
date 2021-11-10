@@ -12,6 +12,7 @@ import * as QuillNamespace from 'quill';
 import QuillMention from 'quill-mention';
 import { QuillEditorComponent } from "ngx-quill";
 import Quill from 'quill'
+import { MeetingService } from 'src/app/controllers/meetings.service';
 
 const Quill: any = QuillNamespace;
 Quill.register({ 'modules/mention': QuillMention }, true);
@@ -28,7 +29,7 @@ export class SingleActionItemComponent implements OnInit {
   imageToShow: any;
   image: any;
   isImageLoading = true;
-
+  meeting: Array<any> = [];
   actionItem: MeetingActions;
   dataLoaded = false;
   redLoad = false;
@@ -102,6 +103,7 @@ export class SingleActionItemComponent implements OnInit {
   }
 
   constructor(private actionService: ActionService,
+    private meetingService: MeetingService,
     private _route: ActivatedRoute,
     private route: Router,
     private commentService: CommentService,
@@ -120,7 +122,7 @@ export class SingleActionItemComponent implements OnInit {
 
     this.currentUser = this.userService.currentUserValue;
 
-
+  
     const data = await this.actionService.getActionById(id).then(data => {
       this.actionItem = data;
       console.log(data)
@@ -145,10 +147,15 @@ export class SingleActionItemComponent implements OnInit {
         console.log(this.comments)
       })
 
+      const mdata = this.meetingService.getMeetingById(this.actionItem.MeetingID).then(data => {
+        this.meeting = data[0];
+      })
+
       this.dataLoaded = true;
 
 
       this.atValues = [];
+      
       const data1 = this.userService.getAllUsers().then(result => {
         this.options = result;
 
@@ -156,14 +163,36 @@ export class SingleActionItemComponent implements OnInit {
         this.options.forEach(user => {
           object['username'] = user.LoginName;
           object['value'] = user.FirstName + '(' + user.LoginName + ')';
-          object['id'] = user.id;
+          object['id'] = user.Email;
+
 
           this.atValues.push(object);
           object = {}
         });
 
-        this.commentLoad = true;
+        var count = 0;
+        this.meeting['Partipatents'].forEach(mail => {
+          count = 0;
+          this.atValues.forEach(user => {
+            if (user.id === mail) {
+              count += 1;
+            }
+          });
+          if (count !== 0) {
 
+          }
+          else {
+            object['username'] = mail;
+            object['value'] = mail;
+            object['id'] = mail;
+
+
+            this.atValues.push(object);
+            object = {}
+          }
+        })
+
+        this.commentLoad = true;
       })
 
     })
@@ -229,7 +258,7 @@ export class SingleActionItemComponent implements OnInit {
   }
 
   updateAction(val: any, field: any) {
- 
+
     const id = this._route.snapshot.params['id'];
     var object = {};
 

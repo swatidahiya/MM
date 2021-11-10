@@ -330,6 +330,7 @@ export class MeetingDetailsComponent implements OnInit {
     })
 
     this.atValues = [];
+    
     const data1 = this.userService.getAllUsers().then(result => {
       this.options = result;
 
@@ -337,16 +338,39 @@ export class MeetingDetailsComponent implements OnInit {
       this.options.forEach(user => {
         object['username'] = user.LoginName;
         object['value'] = user.FirstName + '(' + user.LoginName + ')';
-        object['id'] = user.id;
+        object['id'] = user.Email;
+
 
         this.atValues.push(object);
         object = {}
       });
 
+      var count = 0;
+      this.meeting.Partipatents.forEach(mail => {
+        count = 0;
+        this.atValues.forEach(user => {
+          if (user.id === mail) {
+            count += 1;
+          }
+        });
+        if (count !== 0) {
+
+        }
+        else {
+          object['username'] = mail;
+          object['value'] = mail;
+          object['id'] = mail;
+
+
+          this.atValues.push(object);
+          object = {}
+        }
+      })
+      console.log("At values:", this.atValues)
+
       this.commentLoad = true;
-
-
     })
+
   }
 
   invitees(val: any) {

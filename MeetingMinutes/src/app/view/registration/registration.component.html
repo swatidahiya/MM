@@ -6,6 +6,9 @@
         <mat-divider></mat-divider>
     </div>
     <mat-divider></mat-divider>
+    <div class="checkboxLogo">
+        <img style="height: 40px;" src="../../../assets/reserved_logo.png">
+    </div>
     <div class="login-box">
         <!-- /.login-logo -->
         <div class="d-flex justify-content-center h-100">
@@ -19,13 +22,16 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-user-plus"></i></span>
                             </div>
-                            <input type="text" name="FirstName" id="FirstName" class="form-control userinput" #FirstName="ngModel"
-                                [(ngModel)]="firstnameText" placeholder="Type your Firstname" required minlength="4">
+                            <input type="text" name="FirstName" id="FirstName" class="form-control userinput"
+                                #FirstName="ngModel" [(ngModel)]="firstnameText" placeholder="Type your Firstname"
+                                required minlength="4">
 
                         </div>
-                        <div *ngIf="FirstName.invalid && (FirstName.dirty || FirstName.touched)" class="alert1 float-left">
+                        <div *ngIf="FirstName.invalid && (FirstName.dirty || FirstName.touched)"
+                            class="alert1 float-left">
                             <div *ngIf="FirstName.errors.required" class="alert1">Firstname is required</div>
-                            <div *ngIf="FirstName.errors.minlength" class="alert1">Firstname should contain atleast 4 characters </div>
+                            <div *ngIf="FirstName.errors.minlength" class="alert1">Firstname should contain atleast 4
+                                characters </div>
                         </div>
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
@@ -42,14 +48,16 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                             </div>
-                            <input type="text"  name="Email" class="form-control userinput" 
-                                [(ngModel)]="emailIDText" placeholder="Type your Email ID"  #formControlName="ngModel" email required>
-                                <!-- #Email="ngModel" -->
+                            <input type="text" name="Email" class="form-control userinput" [(ngModel)]="emailIDText"
+                                placeholder="Type your Email ID" #formControlName="ngModel" email required>
+                            <!-- #Email="ngModel" -->
 
                         </div>
-                        <div *ngIf="formControlName.invalid && (formControlName.dirty || formControlName.touched)" class="alert1 float-left">
+                        <div *ngIf="formControlName.invalid && (formControlName.dirty || formControlName.touched)"
+                            class="alert1 float-left">
                             <div *ngIf="formControlName.errors.required" class="alert1">Email ID is required</div>
-                            <div *ngIf="formControlName.hasError('normalEmailRule')" class="error">It is not an email Id</div>
+                            <div *ngIf="formControlName.hasError('normalEmailRule')" class="error">It is not an email Id
+                            </div>
                         </div>
                         <!-- <div class="input-group form-group">
                             <div class="input-group-prepend">
@@ -67,9 +75,10 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-phone"></i></span>
                             </div>
-                            <input type="text" name="Phone" class="form-control userinput" #Phone="ngModel" 
-                                [(ngModel)]="phoneText" placeholder="Type your 10 digit Mobile number"  pattern="[1-9]{1}[0-9]{9}" Phone required minlength="10">
-                                <!-- title="Please enter 10 digit Mobile Number" -->
+                            <input type="text" name="Phone" class="form-control userinput" #Phone="ngModel"
+                                [(ngModel)]="phoneText" placeholder="Type your 10 digit Mobile number"
+                                pattern="[1-9]{1}[0-9]{9}" Phone required minlength="10">
+                            <!-- title="Please enter 10 digit Mobile Number" -->
                         </div>
                         <div *ngIf="Phone.invalid && (Phone.dirty || Phone.touched)" class="alert1 float-left">
                             <div *ngIf="Phone.errors.required" class="alert1">Mobile Number is required</div>
@@ -83,41 +92,46 @@
                                 [(ngModel)]="usernameText" placeholder="Type Your Username" required minlength="5">
 
                         </div>
-                        <div *ngIf="LoginName.invalid && (LoginName.dirty || LoginName.touched)" class="alert1 float-left">
+                        <div *ngIf="LoginName.invalid && (LoginName.dirty || LoginName.touched)"
+                            class="alert1 float-left">
                             <div *ngIf="LoginName.errors.required" class="alert1">Username is required</div>
-                            <div *ngIf="LoginName.errors.minlength" class="alert1">Username should contain atleast 5 characters </div>
+                            <div *ngIf="LoginName.errors.minlength" class="alert1">Username should contain atleast 5
+                                characters </div>
                         </div>
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-key"></i></span>
                             </div>
                             <input type="Password" name="Password" class="form-control userinput" #formControl="ngModel"
-                                [(ngModel)]="passwordText" placeholder="Type Your Password"  password 
-                                [repeatCharacter]="2"
-                                [alphabeticalCharacter]="2"
-                                [digitCharacter]="1"
-                                [lowercaseCharacter]="2"
-                                [uppercaseCharacter]="1" required minlength="7"/>
+                                [(ngModel)]="passwordText" placeholder="Type Your Password" password
+                                [repeatCharacter]="2" [alphabeticalCharacter]="2" [digitCharacter]="1"
+                                [lowercaseCharacter]="2" [uppercaseCharacter]="1" required minlength="7" />
                         </div>
-                        <div *ngIf="formControl.invalid && (formControl.dirty || formControl.touched)" class="alert1 float-left">
+                        <div *ngIf="formControl.invalid && (formControl.dirty || formControl.touched)"
+                            class="alert1 float-left">
                             <div *ngIf="formControl.errors.required" class="alert1">Password is required</div>
                             <div *ngIf="formControl.errors.minlength">Password should contain atleast 7 characters</div>
-                                <div *ngIf="formControl.hasError('repeatCharacterRegexRule')" class="alert1">
+                            <div *ngIf="formControl.hasError('repeatCharacterRegexRule')" class="alert1">
                                 Password contains repeating characters</div>
-                                <div *ngIf="formControl.hasError('digitCharacterRule')" class="alert1">
+                            <div *ngIf="formControl.hasError('digitCharacterRule')" class="alert1">
                                 Password should contain atleast one digit</div>
-                                <div *ngIf="formControl.hasError('alphabeticalCharacterRule')" class="alert1">
+                            <div *ngIf="formControl.hasError('alphabeticalCharacterRule')" class="alert1">
                                 Password should contain atleast on alphabetical character</div>
-                                <div *ngIf="formControl.hasError('specialCharacterRule')" class="alert1">
-                                    Password should contain atleast one specialCharacter character</div>
+                            <div *ngIf="formControl.hasError('specialCharacterRule')" class="alert1">
+                                Password should contain atleast one specialCharacter character</div>
 
-                                <div *ngIf="formControl.hasError('lowercaseCharacterRule')" class="alert1">
+                            <div *ngIf="formControl.hasError('lowercaseCharacterRule')" class="alert1">
                                 Password should contain atleast one lowercase character</div>
-                                <div *ngIf="formControl.hasError('uppercaseCharacterRule')" class="alert1">
-                                Password should contain atleast one uppercase character</div>    
+                            <div *ngIf="formControl.hasError('uppercaseCharacterRule')" class="alert1">
+                                Password should contain atleast one uppercase character</div>
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="Register" [disabled]="!registerForm.valid"  class="btn form-control login_btn">
+                            <button type="submit" value="Register" [disabled]="!registerForm.valid"
+                                class="btn form-control login_btn">Register</button>
+                            <!-- <input type="submit" value="Register" [disabled]="!registerForm.valid"  class="btn form-control login_btn"> -->
+                        </div>
+                        <div style="text-align: right;">
+                            <span (click)="onLogin()" class="mr-2 back"><u>Back to login</u></span>
                         </div>
                     </form>
                 </div>

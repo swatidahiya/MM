@@ -39,28 +39,28 @@ async function postComment(commentParam) {
 
     });
 
-    var participants = [];
-    const users = await userService.getAllUsers();
+    // var participants = [];
+    // const users = await userService.getAllUsers();
 
-    users.forEach(user => {
-        commentParam.mentionData.forEach(id => {
-            if(user.id == id) {
-                participants.push(user.Email)
-            }
-        });
-    });
+    // users.forEach(user => {
+    //     commentParam.mentionData.forEach(id => {
+    //         if(user.id == id) {
+    //             participants.push(user.Email)
+    //         }
+    //     });
+    // });
 
-    if(commentParam.mentionData) {
-       
+    if (commentParam.mentionData.length > 0) {
+
         fs.readFile('mentionUser.html', 'utf8', function (err, data) {
             data = data.replace(/%username%/g, commentParam.HostUser);
             data = data.replace(/%MeetingName%/g, commentParam.meetingName);
             data = data.replace(/%comment%/g, commentParam.comment);
-    
-            emailService.sendEmail(participants, 'Mentioned you', data, null)
-    
+
+            emailService.sendEmail(commentParam.mentionData, 'Mentioned you', data, null)
+
         });
-    } 
+    }
 
     return comment;
 
@@ -100,28 +100,28 @@ async function postAgendaComment(commentParam) {
 
     });
 
-    var participants = [];
-    const users = await userService.getAllUsers();
+    // var participants = [];
+    // const users = await userService.getAllUsers();
 
-    users.forEach(user => {
-        commentParam.mentionData.forEach(id => {
-            if(user.id == id) {
-                participants.push(user.Email)
-            }
-        });
-    });
+    // users.forEach(user => {
+    //     commentParam.mentionData.forEach(id => {
+    //         if (user.id == id) {
+    //             participants.push(user.Email)
+    //         }
+    //     });
+    // });
 
-    if(commentParam.mentionData) {
-       
+    if (commentParam.mentionData.length > 0) {
+
         fs.readFile('mentionUser.html', 'utf8', function (err, data) {
             data = data.replace(/%username%/g, commentParam.HostUser);
             data = data.replace(/%MeetingName%/g, commentParam.meetingName);
             data = data.replace(/%comment%/g, commentParam.comment);
-    
-            emailService.sendEmail(participants, 'Mentioned you', data, null)
-    
+
+            emailService.sendEmail(commentParam.mentionData, 'Mentioned you', data, null)
+
         });
-    } 
+    }
 
     return comment;
 
