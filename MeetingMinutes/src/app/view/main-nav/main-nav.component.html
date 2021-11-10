@@ -104,7 +104,7 @@
         <mat-fab-menu color="warn" [fabButtons]="fabButtonsRandom" (onFabMenuItemSelected)="selectedAction($event)"
           *ngIf="!deviceDetector()">
         </mat-fab-menu>
-      </div>
+      </div>2
       <ng-template #default>
         <mat-fab-menu color="warn" [fabButtons]="fabButtonsDetailed" (onFabMenuItemSelected)="selectedEvent($event)"
           *ngIf="!deviceDetector()">
@@ -125,6 +125,10 @@
           style="color: white; font-size: 18px; margin-left: 10px; padding: 30px 20px;">
           <i class="fas fa-angle-left"></i> <a style="margin-left: 10px;">Dashboard</a>
         </div> -->
+        <div class="float-left">
+          <span style="font-size: 10px; color: white; margin-left: 8px;">Powered by</span><br>
+          <img style="height: 35px; width: auto; margin-top: -15px;" src="../../../assets/reserved_logo.png">
+        </div>
         <div style="text-align: end; margin-bottom: 5px;">
           <button mat-raised-button color="primary" [disabled]="isRecording" (click)="startRecorder()">Start Recording</button>
           <button mat-raised-button color="warn" [disabled]="!isRecording" id="stopRecording" (click)=stopRecording()>Stop Recording</button>

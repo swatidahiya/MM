@@ -43,10 +43,11 @@ export class MeetingService {
     }
 
     updateMeeting(meetingID: any, object: any): any {
-      console.log("inside service.ts")
-      console.log(meetingID)
-      console.log(object);
       return this.request('put', this.baseUrl + '/Meeting/updateMeeting/' + meetingID, object)
+    }
+
+    archiveMeeting(meetingID: any, object: any): any {
+      return this.request('put', this.baseUrl + '/Meeting/archiveMeeting/' + meetingID, object)
     }
 
     sendMail(data: any) {

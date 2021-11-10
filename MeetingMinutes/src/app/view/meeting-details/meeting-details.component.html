@@ -1115,7 +1115,7 @@
                         <div class="col">
                             <span class="mr-2" (click)="downloadAttachment(i)" title="Download File"><i
                                     class="fas fa-download"></i></span>
-                            <span title="Remove File" (click)="deleteAttachment(file._id)"><i
+                            <span  *ngIf="currentUser.Initials === 'sAdmin' || currentUser.LoginName === meeting.HostUser" title="Remove File" (click)="deleteAttachment(file._id)"><i
                                     class="fas fa-trash-alt"></i></span>
                         </div>
 
@@ -1150,7 +1150,7 @@
                         <div class="col">
                             <span class="mr-2" (click)="downloadAttachment(i)" title="Download File"><i
                                     class="fas fa-download"></i></span>
-                            <span title="Remove File" (click)="deleteAttachment(file._id)"><i
+                            <span *ngIf="currentUser.Initials === 'sAdmin' || currentUser.LoginName === meeting.HostUser" title="Remove File" (click)="deleteAttachment(file._id)"><i
                                     class="fas fa-trash-alt"></i></span>
                         </div>
 
