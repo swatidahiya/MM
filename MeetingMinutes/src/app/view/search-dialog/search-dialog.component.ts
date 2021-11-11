@@ -49,9 +49,21 @@ export class SearchDialogComponent implements OnInit {
     const data = await this.meetingService.getMeetings().then(result => {
       if(result !== null) {
         result.forEach(meeting => {
-          meetingName = meeting.Meeting_Subject.toLowerCase();
+          if(meeting.Meeting_Subject == undefined || meeting.Meeting_Subject == null) {
+            meetingName = ' ';
+          }
+          else {
+            meetingName = meeting.Meeting_Subject.toLowerCase();
+          }
+
+          if(meeting.Meeting_objective == undefined || meeting.Meeting_objective == null) {
+            meetingName = ' ';
+          }
+          else {
+            objective = meeting.Meeting_objective.toLowerCase();
+          }
+          
           meetingId = meeting.MeetingID.toString();
-          objective = meeting.Meeting_objective.toLowerCase();
           hostUser = meeting.HostUser.toLowerCase();
           meetingdate = new Date(meeting.MeetingDate);
 

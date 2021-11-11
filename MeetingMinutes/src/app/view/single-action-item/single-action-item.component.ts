@@ -183,7 +183,7 @@ export class SingleActionItemComponent implements OnInit {
           }
           else {
             object['username'] = mail;
-            object['value'] = mail;
+            object['value'] = '<span style="color: red;"><i>' + mail + '</i></span>';
             object['id'] = mail;
 
 
