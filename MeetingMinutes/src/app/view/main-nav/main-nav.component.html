@@ -37,6 +37,11 @@
             style="margin-right: 5px;"></i>
           Decision List</a>
         <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;"
+          *ngIf="currentUser.Initials === 'sAdmin'" routerLink="/archivedMeetings" routerLinkActive="active-list-item"><i
+            class="nav-icon fas fa-box" style="margin-right: 5px;"></i>
+          Archived Meetings</a>
+
+        <a mat-list-item style="color: rgb(157, 179, 139);font-size: 18px;font-weight: bold;"
           *ngIf="currentUser.Initials === 'sAdmin'" routerLink="/manageUsers" routerLinkActive="active-list-item"><i
             class="nav-icon far fa-user-circle" style="margin-right: 5px;"></i>
           Manage Users</a>

@@ -72,6 +72,7 @@ import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
 import { QuillModule } from 'ngx-quill'
 import {Mention} from 'quill-mention';
 import {MatTabsModule} from '@angular/material/tabs';
+import { ArchivedMeetingsModule } from './view/archived-meetings/archived-meetings.module';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -206,6 +207,7 @@ const routes: Routes = [
     ChartsModule,
     ValidatorsModule,
     MatTableModule,
+    ArchivedMeetingsModule,
     NgCircleProgressModule.forRoot({
       // set defaults here
       radius: 100,
