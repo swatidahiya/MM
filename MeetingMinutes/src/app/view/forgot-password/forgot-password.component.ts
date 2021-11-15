@@ -14,9 +14,10 @@ import { Router } from '@angular/router';
 })
 export class ForgotPasswordComponent implements OnInit {
   usernameText: any;
-  emailText:any;
+  emailText: any;
   users: User[];
   currentUser: User;
+  validMail: boolean;
 
 
   constructor(private emailService: EmailService,
@@ -29,49 +30,71 @@ export class ForgotPasswordComponent implements OnInit {
     this.refresh();
   }
   async refresh() {
-    const data = this.userService.getAllUsers().then( user => {
+    const data = this.userService.getAllUsers().then(user => {
       this.users = user;
     })
   }
 
+  emailChange(val: any) {
+    var count = 0;
+    this.users.forEach(user => {
+      if (user.Email == val) {
+        count += 1;
+      }
+    });
+
+    if (count > 0) {
+      this.validMail = true
+    }
+    else {
+      this.validMail = false;
+    }
+  }
+
   async onSubmit(forgotPassForm: any) {
-    
-    var mailobject = {};
-    this.currentUser = this.users.find(({LoginName}) => LoginName === forgotPassForm.value.LoginName);
-    if(this.currentUser.Email == forgotPassForm.value.Email){
-      mailobject["subject"]="CheckBox - Reset Forgotten Password";
+
+    if (this.validMail !== false) {
+      var mailobject = {};
+      this.currentUser = this.users.find(({ LoginName }) => LoginName === forgotPassForm.value.LoginName);
+      if (this.currentUser.Email == forgotPassForm.value.Email) {
+        mailobject["subject"] = "CheckBox - Reset Forgotten Password";
         mailobject["toname"] = this.currentUser.FirstName;
         mailobject["message"] = "test"
         mailobject["toemail"] = this.currentUser.Email;
         await this.emailService.ResetPasswordMail(mailobject).then(data => {
-          alert("Reset password link sent to  your email Id please check it"); 
-          this.usernameText ="";
-          this.emailText=""; 
+          alert("Reset password link sent to  your email Id please check it");
+          this.usernameText = "";
+          this.emailText = "";
           this.route.navigateByUrl("/login");
         });
-    // const data = await this.userService.checkUser(forgotPassForm.value.LoginName).then(async result => {
-    //   if (result) {
-    //     mailobject["subject"]="CheckBox - Reset Forgotten Password";
-    //     mailobject["toname"] = this.currentUser.FirstName;
-    //     mailobject["message"] = "test"
-    //     mailobject["toemail"] = this.currentUser.Email;
-    //     await this._emailService.ResetPasswordMail(mailobject).then(data => {
-    //       alert("Reset password link sent to  your email Id please check it"); 
-    //       this.usernameText ="";
-    //       this.emailText=""; 
-    //       this.route.navigateByUrl("/login");
-    //     });
-        
-    //   } else {
-    //     alert("User doesnot exists")
-    //   }     
-    // })
-  }
-  else{
-    alert("Email Id doesnot exists")
-  }
+        // const data = await this.userService.checkUser(forgotPassForm.value.LoginName).then(async result => {
+        //   if (result) {
+        //     mailobject["subject"]="CheckBox - Reset Forgotten Password";
+        //     mailobject["toname"] = this.currentUser.FirstName;
+        //     mailobject["message"] = "test"
+        //     mailobject["toemail"] = this.currentUser.Email;
+        //     await this._emailService.ResetPasswordMail(mailobject).then(data => {
+        //       alert("Reset password link sent to  your email Id please check it"); 
+        //       this.usernameText ="";
+        //       this.emailText=""; 
+        //       this.route.navigateByUrl("/login");
+        //     });
+
+        //   } else {
+        //     alert("User doesnot exists")
+        //   }     
+        // })
+      }
+      else {
+        alert("Email Id doesnot exists")
+      }
+    }
+    else {
+      alert("Email is not registered.")
+    }
+
   }
 
-  
+
 }
 
