@@ -681,7 +681,7 @@ export class MeetingDetailsComponent implements OnInit {
       mailobject["MeetingDate"] = this.meeting.MeetingTime;
       mailobject["HostUser"] = this.meeting.HostUser;
       var tempUser = this.options.find(({ Email }) => Email === val);
-      mailobject["Meeting_Location"] = "https://mmconferenceroom.checkboxtechnology.com:9002/#MM" + this.meeting.RoomKey + "$" + tempUser.LoginName + "$" + this.meeting.MeetingID + "$1";
+      mailobject["Meeting_Location"] = "https://mmv1.checkboxtechnology.com/videoRoom/" + this.meeting.RoomKey + "$" + tempUser.LoginName ;
       const data = this.meetingService.updateMeeting(id, object).then(async () => {
         this.newParticipant = false;
 
