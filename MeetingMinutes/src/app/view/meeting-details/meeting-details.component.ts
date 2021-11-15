@@ -857,11 +857,16 @@ export class MeetingDetailsComponent implements OnInit {
 
   async deleteAttachment(id: any) {
     const meetingID = this._route.snapshot.params['id'];
+    var object = {}
 
     var c = confirm("Do you want delete the attchment?");
     if (c == true) {
+      object['username'] = this.currentUser.LoginName;
+      object['MeetingSubject'] = this.meeting.Meeting_Subject;
+      object['meetingID'] = meetingID;
+      object['toUsers'] = this.meeting.Partipatents;
       this.filesLoaded = true
-      await this.meetingService.deleteAttachmentById(id).then(data => {
+      await this.meetingService.deleteAttachmentById(id, object).then(data => {
         const images = this.meetingService.getAllFiles(meetingID).then(result => {
           this.allFiles = result;
           this.filesLoaded = true

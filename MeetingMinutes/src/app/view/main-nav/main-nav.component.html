@@ -85,8 +85,8 @@
       <div class="secondToolbar example-button-row" *ngIf="deviceDetector()">
         <!-- <img class="userImg" src="../../../assets/facebook.png"> -->
         <div style="text-align: end">
-          <button mat-raised-button color="primary" (click)="openScheduler()">Scheduler
-          </button>
+          <!-- <button mat-raised-button color="primary" (click)="openScheduler()">Scheduler
+          </button> -->
           <button mat-raised-button color="primary" [matMenuTriggerFor]="pollMenu">Poll</button>
           <mat-menu #pollMenu="matMenu">
             <button mat-menu-item style="color: black;" (click)="openCreatePoll()"><b>Create Poll</b></button>

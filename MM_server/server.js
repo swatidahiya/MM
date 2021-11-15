@@ -11,6 +11,7 @@ var jimp = require('jimp');
 var multer = require('multer');
 var uploadDocs = multer({ dest: "/data/uploadImages" })
 const userService = require('./users/users.service');
+const emailService = require('./emails/emails.service');
 var meetingNoteModel = db.MeetingNotes;
 var fs = require('fs');
 
@@ -64,7 +65,7 @@ app.post('/attachment/:id', uploadDocs.single("uploadFile"), async function (req
     const meeting = await Meeting.find({ id: id })
 
     var file = req.file;
-    console.log("file",file)
+    console.log("file", file)
 
     // file.forEach(element => {
     // const user = userService.getUser(req.users.sub).then(async user => {
@@ -120,6 +121,29 @@ app.get('/download/:id', function (req, res) {
 });
 
 app.delete('/attachment/:id', async function (req, res, next) {
+    console.log(req)
+
+    var MeetingSubject;
+    if (req.body.MeetingSubject == undefined || req.body.MeetingSubject == null) {
+        MeetingSubject = "";
+    }
+    else {
+        MeetingSubject = req.body.MeetingSubject;
+    }
+
+    if (req.body != null) {
+        const to = req.body.toUsers;
+
+        fs.readFile('deleteAttachments.html', 'utf8', function (err, data) {
+            data = data.replace(/%username%/g, req.body.username);
+            data = data.replace(/%MeetingID%/g, req.body.meetingID);
+            data = data.replace(/%MeetingSubject%/g, MeetingSubject);
+
+            emailService.sendEmail(to, 'Attachment Removed', data, null)
+
+        });
+    }
+
 
     const attachment = await meetingNoteModel.findById(req.params.id);
     const filename = attachment.attachmentName;

@@ -96,8 +96,8 @@ export class MeetingService {
       //   );
     }
 
-    deleteAttachmentById(id: number) {
-      return this.request('delete', this.baseUrl + '/attachment/' + id);
+    deleteAttachmentById(id: number, data: any) {
+      return this.request('delete', this.baseUrl + '/attachment/' + id, data);
     }
    
 
