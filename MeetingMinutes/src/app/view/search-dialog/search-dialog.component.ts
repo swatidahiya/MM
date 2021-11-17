@@ -57,7 +57,7 @@ export class SearchDialogComponent implements OnInit {
           }
 
           if(meeting.Meeting_objective == undefined || meeting.Meeting_objective == null) {
-            meetingName = ' ';
+            objective = ' ';
           }
           else {
             objective = meeting.Meeting_objective.toLowerCase();

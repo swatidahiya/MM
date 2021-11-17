@@ -279,13 +279,13 @@
                                     </td>
                                     <td style="text-align: start;padding: 4px;vertical-align: bottom;">
                                         <div *ngIf="participants != null; else somethingElse">
-                                            <a style="font-size: 2vw; color: rgb(158, 158, 158);">Participants</a><br>
+                                            <a style="font-size: 2vw; color: rgb(158, 158, 158);">Invitees</a><br>
                                             <a
                                                 style="font-size: 1vw; color: orangered;"><b>{{participants.length}}</b></a>
                                             <a style="font-size: 1vw; color: rgb(60, 120, 168);"> of <b>100</b></a>
                                         </div>
                                         <ng-template #somethingElse>
-                                            <a style="font-size: 2vw; color: rgb(158, 158, 158);">Participants</a><br>
+                                            <a style="font-size: 2vw; color: rgb(158, 158, 158);">Invitees</a><br>
                                             <a style="font-size: 1vw; color: orangered;"><b>0</b></a>
                                             <a style="font-size: 1vw; color: rgb(60, 120, 168);"> of <b>100</b></a>
                                         </ng-template>
