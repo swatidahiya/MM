@@ -35,62 +35,8 @@ export class QuickMeetingComponent implements OnInit {
     private route: Router) { }
 
   ngOnInit() {
-    // document.getElementById('ribbonA').style.background = '#e74c3c';
-    // document.getElementById('headerA').style.color = '#e74c3c';
-    // this.currentUser = this.userService.currentUserValue;
-
-
     this.refresh();
-
   }
-
-  // openExapnsion(val: any) {
-  //   switch (val) {
-  //     case 'A': this.collapsedA = !this.collapsedA;
-  //       this.collapsedB = false;
-  //       this.collapsedC = false;
-  //       if (this.collapsedA) {
-  //         document.getElementById('ribbonA').style.background = '#e74c3c';
-  //         document.getElementById('headerA').style.color = '#e74c3c';
-  //         document.getElementById('ribbonB').style.background = '#21759a';
-  //         document.getElementById('headerB').style.color = '#21759a';
-  //         document.getElementById('ribbonC').style.background = '#21759a';
-  //         document.getElementById('headerC').style.color = '#21759a';
-  //       } else {
-  //         document.getElementById('ribbonA').style.background = '#21759a';
-  //         document.getElementById('headerA').style.color = '#21759a';
-  //       }
-  //       break;
-  //     case 'B': this.collapsedB = !this.collapsedB;
-  //       this.collapsedA = false;
-  //       this.collapsedC = false;
-  //       if (this.collapsedB) {
-  //         document.getElementById('ribbonB').style.background = '#e74c3c';
-  //         document.getElementById('headerB').style.color = '#e74c3c';
-  //         document.getElementById('ribbonA').style.background = '#21759a';
-  //         document.getElementById('headerA').style.color = '#21759a';
-  //       } else {
-  //         document.getElementById('ribbonB').style.background = '#21759a';
-  //         document.getElementById('headerB').style.color = '#21759a';
-  //       }
-  //       break;
-  //     case 'C': this.collapsedC = !this.collapsedC;
-  //       this.collapsedB = false;
-  //       this.collapsedA = false;
-  //       if (this.collapsedC) {
-  //         document.getElementById('ribbonC').style.background = '#e74c3c';
-  //         document.getElementById('headerC').style.color = '#e74c3c';
-  //         document.getElementById('ribbonA').style.background = '#21759a';
-  //         document.getElementById('headerA').style.color = '#21759a';
-  //         document.getElementById('ribbonB').style.background = '#21759a';
-  //         document.getElementById('headerB').style.color = '#21759a';
-  //       } else {
-  //         document.getElementById('ribbonC').style.background = '#21759a';
-  //         document.getElementById('headerC').style.color = '#21759a';
-  //       }
-  //       break;
-  //   }
-  // }
 
   async refresh() {
     this.currentUser = this.userService.currentUserValue;
@@ -172,72 +118,84 @@ export class QuickMeetingComponent implements OnInit {
 
   async createMeeting(formData: NgForm) {
 
-    var object = formData.value;
-    var partipatents = [];
-    var assignee = [];
-
-    this.displayName.forEach(user => {
-      partipatents.push(user.Email);
-      assignee.push(user.LoginName);
-    });
-
-    var count = 0;
-    partipatents.forEach(email => {
-      if (email == this.currentUser.Email) {
-        count++;
-      }
-    });
-
-    if (count == 0) {
-      partipatents.push(this.currentUser.Email)
+    if(this.meeting.Meeting_Subject == undefined || this.meeting.Meeting_Subject == null) {
+      alert("Meeting Subject is Required.");
     }
-
-    if (this.otherMails.length > 0) {
-      this.otherMails.forEach(mail => {
-        partipatents.push(mail);
-      });
-    }
-
-    object['Partipatents'] = partipatents;
-    object['MeetingAssignedTo'] = assignee;
-
-    var temp = Date.now();
-    var temp1 = new Date(temp);
-    temp1.setHours(temp1.getHours() + 1);
-
-    object['MeetingDate'] = temp1
-    object['MeetingTime'] = temp1.toLocaleString();
-    object['Conclusion'] = "Add Your Conclusion Here!";
-    object['reoccrence'] = 'Yes';
-    object['Status'] = 0;
-    object['HostUser'] = this.currentUser.LoginName;
-    object['RoomKey'] = Math.floor(Math.random() * 0xFFFFFF);
-
-
-    var mailObject = {};
-    mailObject["subject"] = "Meeting Invitation",
-    mailObject["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + object.Meeting_Subject;
-    mailObject["MeetingSubject"] = object.Meeting_Subject;
-    mailObject["MeetingDate"] = object.MeetingTime;
-    mailObject["HostUser"] = object.HostUser;
-    mailObject["MeetingDescription"] = object.Meeting_objective;
-    mailObject["toname"] = this.currentUser.FirstName + " " + this.currentUser.LastName;
-
-
-    await this.meetingService.postMeeting(object).then(async () => {
-      alert("The meeting has been created successfully");
-
-      for (var i = 0; i < partipatents.length; i++) {
-        mailObject["toemail"] = partipatents[i];
-        mailObject["Meeting_Location"] = "https://meetingminutes.checkboxtechnology.com/videoRoom/" + object.RoomKey;
-        this.meetingService.sendMail(mailObject).then(result => {
-          console.log("Message sent");
+    else {
+      if(this.meeting.Meeting_Subject !== '') {
+        var object = formData.value;
+        var partipatents = [];
+        var assignee = [];
+    
+        this.displayName.forEach(user => {
+          partipatents.push(user.Email);
+          assignee.push(user.LoginName);
+        });
+    
+        var count = 0;
+        partipatents.forEach(email => {
+          if (email == this.currentUser.Email) {
+            count++;
+          }
+        });
+    
+        if (count == 0) {
+          partipatents.push(this.currentUser.Email)
+        }
+    
+        if (this.otherMails.length > 0) {
+          this.otherMails.forEach(mail => {
+            partipatents.push(mail);
+          });
+        }
+    
+        object['Partipatents'] = partipatents;
+        object['MeetingAssignedTo'] = assignee;
+    
+        var temp = Date.now();
+        var temp1 = new Date(temp);
+        temp1.setHours(temp1.getHours() + 1);
+    
+        object['MeetingDate'] = temp1
+        object['MeetingTime'] = temp1.toLocaleString();
+        object['Conclusion'] = "Add Your Conclusion Here!";
+        object['reoccrence'] = 'Yes';
+        object['Status'] = 0;
+        object['HostUser'] = this.currentUser.LoginName;
+        object['RoomKey'] = Math.floor(Math.random() * 0xFFFFFF);
+    
+    
+        var mailObject = {};
+        mailObject["subject"] = "Meeting Invitation",
+        mailObject["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + object.Meeting_Subject;
+        mailObject["MeetingSubject"] = object.Meeting_Subject;
+        mailObject["MeetingDate"] = object.MeetingTime;
+        mailObject["HostUser"] = object.HostUser;
+        mailObject["MeetingDescription"] = object.Meeting_objective;
+        mailObject["toname"] = this.currentUser.FirstName + " " + this.currentUser.LastName;
+    
+    
+        await this.meetingService.postMeeting(object).then(async () => {
+          alert("The meeting has been created successfully");
+    
+          for (var i = 0; i < partipatents.length; i++) {
+            mailObject["toemail"] = partipatents[i];
+            mailObject["Meeting_Location"] = "https://meetingminutes.checkboxtechnology.com/videoRoom/" + object.RoomKey;
+            this.meetingService.sendMail(mailObject).then(result => {
+              console.log("Message sent");
+            })
+          }
+          this.route.navigate(['/dashboard/'])
+    
         })
       }
-      this.route.navigate(['/dashboard/'])
+      else {
+        alert("Meeting Subject is Required.");
 
-    })
+      }
+    }
 
+  
   }
 
   // async submitMeeting(meeting: any) {
