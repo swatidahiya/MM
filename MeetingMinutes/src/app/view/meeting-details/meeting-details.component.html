@@ -93,63 +93,34 @@
                             </div>
                         </div>
                         <mat-divider></mat-divider>
+                    
                         <div class="row">
-                            <div class="tabToolbar col-12" style="height: 30px;">
-                                <!-- <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-                                    <mat-button-toggle class="flatButton" (click)="invitees('A')" value="INVITED">
-                                        INVITED
-                                    </mat-button-toggle>
-                                    <mat-button-toggle class="flatButton" (click)="invitees('B')" value="ATTENDED">
-                                        ATTENDED
-                                    </mat-button-toggle>
-                                    <mat-button-toggle class="flatButton" (click)="invitees('C')" value="REGRETS">
-                                        REGRETS
-                                    </mat-button-toggle>
-                                    <mat-button-toggle class="flatButton" (click)="invitees('D')"
-                                        value="PENDING APPROVAL">
-                                        PENDING APPROVAL</mat-button-toggle>
-                                </mat-button-toggle-group> -->
-
-
-                                <a *ngIf="!newParticipant" (click)="showAutoComplete()">Add Participant +</a>
-                                <div *ngIf="newParticipant">
-                                    <input class="addSearch" type="text" placeholder="Pick one" aria-label="Number" matInput
-                                        [matAutocomplete]="auto" >
-                                    <mat-autocomplete #auto="matAutocomplete"
-                                        (optionSelected)='getPosts($event.option.value)'>
-                                        <mat-option *ngFor="let option of options" [value]="option.Email">
-                                            {{option.FirstName}} {{option.LastName}}
-                                        </mat-option>
-                                    </mat-autocomplete>
+                            <div class="col-9" style="max-height: 500px; overflow-y: auto;">
+                                <div class="row my-2">
+                                    <div class="col">
+                                        <a class="ml-2" *ngIf="!newParticipant" (click)="showAutoComplete()">Add Participant +</a>
+                                        <div class="ml-2" *ngIf="newParticipant">
+                                            <input class="addSearch" type="text" placeholder="Pick one" aria-label="Number"
+                                                matInput [matAutocomplete]="auto">
+                                            <mat-autocomplete #auto="matAutocomplete"
+                                                (optionSelected)='getPosts($event.option.value)'>
+                                                <mat-option *ngFor="let option of options" [value]="option.Email">
+                                                    {{option.FirstName}} {{option.LastName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                            <span class="ml-2" (click)="showAutoComplete()" style="cursor: pointer;"><i class="fas fa-times"></i></span>
+                                           
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-9 mt-2">
-                                <!-- <div *ngIf="dataPage === 'A'"> -->
-                                <div *ngIf="participants.length != 0; else noParticipants">
-                                    <div class="row">
-                                        <div *ngFor="let participant of participants">
-                                            <div title="Click to block {{participant}}"
-                                                *ngIf="userVerified; else normalInvites"
-                                                (click)="blockParticipant(participant)">
-                                                <table
-                                                    style="text-align: center; justify-content: center; display: block; overflow: hidden; text-overflow: ellipsis;">
-                                                    <td>
-                                                        <img class="attendeesLogo"
-                                                            src="../../../assets/avatar1.png"><br>
-                                                        <a class="attendeesLogo"
-                                                            style="font-size: 12px;">{{participant}}</a>
-                                                    </td>
-                                                </table>
-                                            </div>
-                                            <ng-template #normalInvites>
-                                                <table style="text-align: center; justify-content: center;">
-                                                    <td>
-                                                        <img class="attendeesLogo"
-                                                            src="../../../assets/avatar1.png"><br>
-                                                        <a class="attendeesLogo">{{participant}} </a>
-                                                    </td>
-                                                </table>
-                                            </ng-template>
+                                <div class="row" *ngIf="participants.length != 0; else noParticipants" >
+                                    <div *ngFor="let participant of participants">
+                                        <div class="col" style="display: inline-flex;">
+                                            <img class="attendeesLogo" src="../../../assets/avatar1.png">
+                                            <p class="mt-4 ml-md-3 ml-2">{{participant}} <span class="ml-3"
+                                                    style="cursor: pointer;" (click)="blockParticipant(participant)"
+                                                    title="Remove user from meeting"><i class="fas fa-trash-alt"></i></span>
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -158,119 +129,6 @@
                                         <h1><b>No Participants</b></h1>
                                     </div>
                                 </ng-template>
-                                <!-- </div> -->
-                                <!-- <div *ngIf="dataPage === 'B'">
-                                    <table>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/facebook.png"><br>
-                                            <a class="attendeesLogo">User</a>
-
-                                        </td>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/facebook.png"><br>
-                                            <a class="attendeesLogo">User</a>
-
-                                        </td>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/facebook.png"><br>
-                                            <a class="attendeesLogo">User</a>
-
-                                        </td>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/facebook.png"><br>
-                                            <a class="attendeesLogo">User</a>
-
-                                        </td>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/facebook.png"><br>
-                                            <a class="attendeesLogo">User</a>
-
-                                        </td>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/facebook.png"><br>
-                                            <a class="attendeesLogo">User</a>
-
-                                        </td>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/facebook.png"><br>
-                                            <a class="attendeesLogo">User</a>
-
-                                        </td>
-                                    </table>
-                                </div>
-                                <div *ngIf="dataPage === 'C'">
-                                    <table>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
-                                            <a class="attendeesLogo">Profile</a>
-
-                                        </td>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
-                                            <a class="attendeesLogo">Profile</a>
-
-                                        </td>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
-                                            <a class="attendeesLogo">Profile</a>
-
-                                        </td>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
-                                            <a class="attendeesLogo">Profile</a>
-
-                                        </td>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
-                                            <a class="attendeesLogo">Profile</a>
-
-                                        </td>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
-                                            <a class="attendeesLogo">Profile</a>
-
-                                        </td>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
-                                            <a class="attendeesLogo">Profile</a>
-
-                                        </td>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
-                                            <a class="attendeesLogo">Profile</a>
-
-                                        </td>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
-                                            <a class="attendeesLogo">Profile</a>
-
-                                        </td>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
-                                            <a class="attendeesLogo">Profile</a>
-
-                                        </td>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/outlook.png"><br>
-                                            <a class="attendeesLogo">Profile</a>
-
-                                        </td>
-                                    </table>
-                                </div>
-                                <div *ngIf="dataPage === 'D'">
-                                    <table>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/background.jpg"><br>
-                                            <a class="attendeesLogo">Background</a>
-
-                                        </td>
-                                        <td>
-                                            <img class="attendeesLogo" src="../../../assets/background.jpg"><br>
-                                            <a class="attendeesLogo">Background</a>
-
-                                        </td>
-                                    </table>
-                                </div> -->
                             </div>
                             <div class="col-3" style="margin-top: 20px; justify-content: center;text-align: center;">
                                 <table style="display: block;">
@@ -293,7 +151,6 @@
                                 </table>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -305,16 +162,7 @@
                 aria-hidden="true"></i>
         </button>
         <div class="float-right" *ngIf="fabIcon">
-            <!-- <a mat-fab color="primary" style="margin-right: 10px;" title="Audio Conferencing"
-                href="https://mmconferenceroom.checkboxtechnology.com:9002/#MM{{meeting.RoomKey}}${{currentUser.LoginName}}${{meeting.MeetingID}}$0"
-                aria-label="Example icon-button with a heart icon">
-                <mat-icon>phone_in_talk</mat-icon>
-            </a>
-            <a mat-fab color="primary" style="margin-right: 10px;" title="Video Conferencing"
-                href="https://mmconfrenceroomdemo.checkboxtechnology.com:9002/#MM{{meeting.RoomKey}}${{currentUser.LoginName}}${{meeting.MeetingID}}$1"
-                aria-label="Example icon-button with a heart icon">
-                <mat-icon>videocam</mat-icon>
-            </a> -->
+
             <button mat-fab color="primary" style="margin-right: 10px;" (click)="openChat(meeting.RoomKey)"
                 aria-label="Example icon-button with a heart icon" title="Video Room">
                 <mat-icon>airplay</mat-icon>
@@ -1115,7 +963,9 @@
                         <div class="col">
                             <span class="mr-2" (click)="downloadAttachment(i)" title="Download File"><i
                                     class="fas fa-download"></i></span>
-                            <span  *ngIf="currentUser.Initials === 'sAdmin' || currentUser.LoginName === meeting.HostUser" title="Remove File" (click)="deleteAttachment(file._id)"><i
+                            <span
+                                *ngIf="currentUser.Initials === 'sAdmin' || currentUser.LoginName === meeting.HostUser"
+                                title="Remove File" (click)="deleteAttachment(file._id)"><i
                                     class="fas fa-trash-alt"></i></span>
                         </div>
 
@@ -1150,7 +1000,9 @@
                         <div class="col">
                             <span class="mr-2" (click)="downloadAttachment(i)" title="Download File"><i
                                     class="fas fa-download"></i></span>
-                            <span *ngIf="currentUser.Initials === 'sAdmin' || currentUser.LoginName === meeting.HostUser" title="Remove File" (click)="deleteAttachment(file._id)"><i
+                            <span
+                                *ngIf="currentUser.Initials === 'sAdmin' || currentUser.LoginName === meeting.HostUser"
+                                title="Remove File" (click)="deleteAttachment(file._id)"><i
                                     class="fas fa-trash-alt"></i></span>
                         </div>
 

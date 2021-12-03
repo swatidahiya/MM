@@ -1,9 +1,7 @@
 input {
     border-radius: 5px;
 }
-
 .alert1 {
     font-size: 12px;
     color: red;
-    /* margin-left: 25px; */
 }

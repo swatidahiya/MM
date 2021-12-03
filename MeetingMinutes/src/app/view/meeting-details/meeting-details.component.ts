@@ -330,7 +330,7 @@ export class MeetingDetailsComponent implements OnInit {
     })
 
     this.atValues = [];
-    
+
     const data1 = this.userService.getAllUsers().then(result => {
       this.options = result;
 
@@ -358,7 +358,7 @@ export class MeetingDetailsComponent implements OnInit {
         }
         else {
           object['username'] = mail;
-          object['value'] =  '<span style="color: red;"><i>' + mail + '</i></span>';
+          object['value'] = '<span style="color: red;"><i>' + mail + '</i></span>';
           object['id'] = mail;
 
 
@@ -626,27 +626,27 @@ export class MeetingDetailsComponent implements OnInit {
     object["reoccrence"] = "Yes";
     object["RoomKey"] = this.meeting.RoomKey;
 
-    var mailobject = {};
-    mailobject["subject"] = "Meeting Cancellation",
-      mailobject["MeetingSubject"] = this.meeting.Meeting_Subject;
-    mailobject["MeetingDate"] = this.meeting.MeetingTime;
-    mailobject["HostUser"] = this.meeting.HostUser;
-    var tempUser = this.options.find(({ Email }) => Email === val);
-    mailobject["Meeting_Location"] = "https://mmconferenceroom.checkboxtechnology.com:9002/#MM" + this.meeting.RoomKey + "$" + tempUser.LoginName + "$" + this.meeting.MeetingID + "$1";
+    // var mailobject = {};
+    // mailobject["subject"] = "Meeting Cancellation",
+    //   mailobject["MeetingSubject"] = this.meeting.Meeting_Subject;
+    // mailobject["MeetingDate"] = this.meeting.MeetingTime;
+    // mailobject["HostUser"] = this.meeting.HostUser;
+    // var tempUser = this.options.find(({ Email }) => Email === val);
+    // mailobject["Meeting_Location"] = "https://mmconferenceroom.checkboxtechnology.com:9002/#MM" + this.meeting.RoomKey + "$" + tempUser.LoginName + "$" + this.meeting.MeetingID + "$1";
 
     const data = this.meetingService.updateMeeting(id, object).then(async () => {
 
-      mailobject["toname"] = tempUser.FirstName + " " + tempUser.LastName;
-      mailobject["toemail"] = val;
-      await this.meetingService.sendMailCancellation(mailobject).then(result => {
-        console.log("Message sent");
-      })
+      // mailobject["toname"] = tempUser.FirstName + " " + tempUser.LastName;
+      // mailobject["toemail"] = val;
+      // await this.meetingService.sendMailCancellation(mailobject).then(result => {
+      //   console.log("Message sent");
+      // })
       this.refresh();
     })
   }
 
   showAutoComplete() {
-    this.newParticipant = true;
+    this.newParticipant = !this.newParticipant;
   }
 
   getPosts(val: any) {
@@ -681,7 +681,7 @@ export class MeetingDetailsComponent implements OnInit {
       mailobject["MeetingDate"] = this.meeting.MeetingTime;
       mailobject["HostUser"] = this.meeting.HostUser;
       var tempUser = this.options.find(({ Email }) => Email === val);
-      mailobject["Meeting_Location"] = "https://mmv1.checkboxtechnology.com/videoRoom/" + this.meeting.RoomKey + "$" + tempUser.LoginName ;
+      mailobject["Meeting_Location"] = "https://mmv1.checkboxtechnology.com/videoRoom/" + this.meeting.RoomKey + "$" + tempUser.LoginName;
       const data = this.meetingService.updateMeeting(id, object).then(async () => {
         this.newParticipant = false;
 
@@ -786,20 +786,6 @@ export class MeetingDetailsComponent implements OnInit {
 
   onFileInput(val: any) {
 
-    // const id = this._route.snapshot.params['id'];
-    // const fileList = val.target.files;
-    // if (fileList.length > 0) {
-    //   const file: File = fileList[0];
-    //   console.log(file)
-    //   let formData: FormData = new FormData();
-    //   formData.append('uploadFile', file);
-    //   console.log(formData)
-    //   this.meetingService.uploadFile(formData, id).then(result => {
-    //     this.openSnackBar("Attachment is Uploaded", "OK");
-    //     this.refresh();
-    //   })
-    // }
-
     const id = this._route.snapshot.params['id'];
     this.fileList = val.target.files;
 
@@ -881,81 +867,6 @@ export class MeetingDetailsComponent implements OnInit {
     }
   }
 
-  // async editComment(val: any, id: any) {
-  //   var tempComment = this.allComments.find(({ CommentID }) => CommentID === id);
-  //   tempComment["Comment1"] = val;
-  //   const data = await this.commentService.updateComment(tempComment, id).then(data => {
-  //     console.log("Success");
-  //     this.refresh();
-  //   })
-  // }
-
-  // async deleteComment(id: any) {
-  //   const data = await this.commentService.deleteComment(id).then(result => {
-  //     console.log("Success");
-  //     this.refresh();
-  //   })
-  // }
-
-  // getFile(filename: any) {
-
-  //   const id = this._route.snapshot.params['id'];
-
-  //   let checkFileType = filename.split('.').pop();
-  //   var fileType;
-  //   if (checkFileType == ".txt") {
-  //     fileType = "text/plain";
-  //   }
-  //   if (checkFileType == ".pdf") {
-  //     fileType = "application/pdf";
-  //   }
-  //   if (checkFileType == ".doc") {
-  //     fileType = "application/vnd.ms-word";
-  //   }
-  //   if (checkFileType == ".docx" || checkFileType == ".odt") {
-  //     fileType = "application/vnd.ms-word";
-  //   }
-  //   if (checkFileType == ".xls") {
-  //     fileType = "application/vnd.ms-excel";
-  //   }
-  //   if (checkFileType == ".xlsx") {
-  //     fileType = "application/vnd.ms-excel";
-  //   }
-  //   if (checkFileType == ".png") {
-  //     fileType = "image/png";
-  //   }
-  //   if (checkFileType == ".jpg") {
-  //     fileType = "image/jpeg";
-  //   }
-  //   if (checkFileType == ".jpeg") {
-  //     fileType = "image/jpeg";
-  //   }
-  //   if (checkFileType == ".gif") {
-  //     fileType = "image/gif";
-  //   }
-  //   if (checkFileType == ".csv") {
-  //     fileType = "text/csv";
-  //   }
-  //   this.meetingService.downloadAttachment(filename, id)
-  //     .subscribe(res => {
-  //       document.getElementById('id02').style.display = 'none';
-  //       let options = { type: fileType };
-  //       this.createAndDownloadBlobFile(res, options, filename);
-  //     });
-  // }
-
-  // createAndDownloadBlobFile(blob, options, filename) {
-  //   var link = document.createElement("a");
-  //   if (link.download !== undefined) {
-  //     var url = URL.createObjectURL(blob);
-  //     link.setAttribute("href", url);
-  //     link.setAttribute("download", filename);
-  //     link.style.visibility = 'hidden';
-  //     document.body.appendChild(link);
-  //     link.click();
-  //     document.body.removeChild(link);
-  //   }
-  // }
 
   createImageFromBlob(image: Blob) {
     let reader = new FileReader();

@@ -9,12 +9,9 @@
 
 .cardActionItem {
     padding: 30px;
-    /* height: 770px; */
     margin-top: 30px;
     margin-bottom: auto;
     width: 100%;
-    /* height: 100%; */
-    /* margin: 0% 5%; */
     border-radius: 10px;
     background-color: rgb(253, 253, 253) !important;
     border-top: 1px solid rgb(179, 179, 179);
@@ -56,12 +53,10 @@ cursor: pointer;
     font-size: 20px;
     width: 2%;
     color: rgb(145, 145, 145);
-    /* border: 1px solid; */
     padding: 10px;
 }
 
 .meetingContent {
-    /* border: 1px solid; */
     font-size: 18px;
     width: 30%;
     color: rgb(158, 156, 156);
@@ -77,8 +72,6 @@ cursor: pointer;
     height: 40px;
     background: #e74c3c;
     top: 10px;
-    /* left: -10px; */
-    /* padding: 8px 35px; */
     padding: 10px;
     color: white;
     text-align: center;
@@ -92,10 +85,6 @@ cursor: pointer;
     position: absolute;
     top: -10px;
     left: -1px;
-    /* border-left: 5px solid transparent;
-    border-right: 5px solid #14455b;
-    border-top: 5px solid transparent;
-    border-bottom: 5px solid #14455b; */
 }
 
 .text-oneline {
