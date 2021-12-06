@@ -40,6 +40,7 @@ export class ForgotPasswordComponent implements OnInit {
     this.users.forEach(user => {
       if (user.Email == val) {
         count += 1;
+        this.currentUser = user;
       }
     });
 
@@ -55,7 +56,6 @@ export class ForgotPasswordComponent implements OnInit {
 
     if (this.validMail !== false) {
       var mailobject = {};
-      this.currentUser = this.users.find(({ LoginName }) => LoginName === forgotPassForm.value.LoginName);
       if (this.currentUser.Email == forgotPassForm.value.Email) {
         mailobject["subject"] = "CheckBox - Reset Forgotten Password";
         mailobject["toname"] = this.currentUser.FirstName;
@@ -63,7 +63,6 @@ export class ForgotPasswordComponent implements OnInit {
         mailobject["toemail"] = this.currentUser.Email;
         await this.emailService.ResetPasswordMail(mailobject).then(data => {
           alert("Reset password link sent to  your email Id please check it");
-          this.usernameText = "";
           this.emailText = "";
           this.route.navigateByUrl("/login");
         });
