@@ -2,6 +2,7 @@ const config = require('../config.json');
 const jwt = require('jsonwebtoken');
 const db = require('../db');
 const Meeting = db.Meeting;
+const User = db.User;
 var fs = require("fs");
 const emailService = require('../emails/emails.service');
 const MeetingNote = db.MeetingNotes;
@@ -16,7 +17,9 @@ module.exports = {
     filterMeetings,
     updateMeeting,
     SendRescheduleMail,
-    getAttachmentsByMeetingId
+    getAttachmentsByMeetingId,
+    removeUserfromMeeting,
+    cancelMeeting
 }
 
 
@@ -130,23 +133,18 @@ async function sendMail(mailParam){
 
 async function getMeetingById(id){
     const meeting = await Meeting.find({MeetingID : id})
-    // console.log(meeting)
     return meeting;
 }
 
 async function updateMeeting(id, object){
     const meeting = await Meeting.findOne({MeetingID: id})
-    // console.log(meeting);
-    // console.log("-------------------------")
-    // console.log(object);
     Object.assign(meeting, object);
     await meeting.save();
     return meeting;
 }
 
 async function SendRescheduleMail(mailParam){
-    console.log("-----------------------mailParam-------------------------")
-    console.log(mailParam)
+ 
     fs.readFile('meetingReschedule.html', 'utf8', function(err, data){
         data = data.replace(/%MeetingSubject%/g, mailParam.MeetingSubject);
         data = data.replace(/%Meeting_Location%/g, mailParam.Meeting_Location);
@@ -157,6 +155,41 @@ async function SendRescheduleMail(mailParam){
 
         emailService.sendEmail(mailParam.toemail, 'Meeting Rescheduled', data)
     });
+}
+
+async function removeUserfromMeeting(userParam) {
+
+    fs.readFile('meetingCancel.html', 'utf8', function(err, data){
+        data = data.replace(/%MeetingSubject%/g, userParam.Meeting_Subject);
+        data = data.replace(/%Meeting_Location%/g, userParam.Meeting_Location);
+        data = data.replace(/%MeetingDate%/g, userParam.MeetingTime);
+        data = data.replace(/%HostUser%/g, userParam.HostUser);
+
+        emailService.sendEmail(userParam.Partipatents, 'Meeting cancelled', data)
+    });
+}
+
+async function cancelMeeting(req) {
+    const user = await User.findOne({LoginName: req.params.id});
+
+    var object = req.body;
+    object.Status = 2;
+
+    const meeting = await Meeting.findOne({MeetingID: req.body.MeetingID})
+    Object.assign(meeting, object);
+    await meeting.save();
+
+    fs.readFile('meetingCancel.html', 'utf8', function(err, data){
+        data = data.replace(/%MeetingSubject%/g, req.body.Meeting_Subject);
+        data = data.replace(/%Meeting_Location%/g, req.body.Meeting_Location);
+        data = data.replace(/%MeetingDate%/g, req.body.MeetingTime);
+        data = data.replace(/%HostUser%/g, req.body.HostUser);
+
+        emailService.sendEmail(req.body.Partipatents, 'Meeting cancelled', data)
+    });
+
+    return meeting;
+
 }
 
 

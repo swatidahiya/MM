@@ -52,6 +52,7 @@ export class MeetingDetailsComponent implements OnInit {
   tempDecisionPage = false;
   participants: any;
   newParticipant = false;
+  newNonParticipant = false;
   filesLoaded = false;
   allFiles = [];
   comments: Array<any> = [];
@@ -88,6 +89,7 @@ export class MeetingDetailsComponent implements OnInit {
   minDate: Date;
   mentionData: Array<any> = [];
   mentionUsers = [];
+  otherUserMail: any;
   columns: string[] = ['Project Name', 'Agenda Name', 'Status', 'Decision'];
   dataSource = [
     // { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
@@ -416,7 +418,72 @@ export class MeetingDetailsComponent implements OnInit {
     }
   }
 
+  showNonRegisterUserField() {
+    this.otherUserMail = '';
+    this.newNonParticipant = !this.newNonParticipant;
+  }
 
+  addOtherUserMail(val: any) {
+    console.log(val)
+    const id = this._route.snapshot.params['id'];
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if (val.match(mailformat)) {
+      var object = this.meeting;
+      var count = 0;
+
+      this.meeting['Partipatents'].forEach(mail => {
+        if (mail == val) {
+          count += 1;
+          alert("This email is already added.")
+        }
+      });
+
+      if (count == 0) {
+        var mailobject = {};
+        mailobject["subject"] = "Meeting Invitation";
+        mailobject["MeetingSubject"] = this.meeting.Meeting_Subject;
+        mailobject["MeetingDate"] = this.meeting.MeetingTime;
+        mailobject["HostUser"] = this.meeting.HostUser;
+        mailobject["Meeting_Location"] = "https://mmv1.checkboxtechnology.com/videoRoom/" + this.meeting.RoomKey + "$" + val;
+        mailobject["toname"] = this.currentUser.FirstName + " " + this.currentUser.LastName;
+        mailobject["toemail"] = val;
+
+        object['Partipatents'].push(val);
+
+        const data = this.meetingService.updateMeeting(id, object).then(data => {
+          this.meetingService.sendMail(mailobject).then(result => {
+          })
+          this.otherUserMail = '';
+          this.refresh();
+        })
+      }
+      else {
+
+      }
+
+
+    }
+    else {
+      alert("You have entered an invalid email address!");
+    }
+    // var re = new RegExp(val, "g");
+    // var dot = ".";
+    // var at = "@"
+
+    // if (dot.search(re) == -1) {
+    //   alert("Please enter a valid mail.")
+
+    // }
+    // else {
+    //   if (at.search(re) == -1) {
+    //     alert("Please enter a valid mail.")
+    //   }
+    //   else {
+    //     console.log("Found");
+    //   }
+    // }
+  }
 
   updateMeeting(val: any, field: any) {
     if (this.currentUser.LoginName == this.meeting.HostUser || this.currentUser.Initials === 'sAdmin') {
@@ -460,6 +527,13 @@ export class MeetingDetailsComponent implements OnInit {
     else {
       location.reload();
     }
+  }
+
+  onCancelMeeting(meeting: any) {
+    const data = this.meetingService.cancelMeeting(this.currentUser.LoginName, meeting).then(result => {
+      console.log(result)
+      this.refresh();
+    })
   }
 
   onFocusOut() {
@@ -603,6 +677,7 @@ export class MeetingDetailsComponent implements OnInit {
   }
 
   blockParticipant(val: any) {
+
     const index: number = this.participants.indexOf(val);
     if (index !== -1) {
       this.participants.splice(index, 1);
@@ -626,22 +701,12 @@ export class MeetingDetailsComponent implements OnInit {
     object["reoccrence"] = "Yes";
     object["RoomKey"] = this.meeting.RoomKey;
 
-    // var mailobject = {};
-    // mailobject["subject"] = "Meeting Cancellation",
-    //   mailobject["MeetingSubject"] = this.meeting.Meeting_Subject;
-    // mailobject["MeetingDate"] = this.meeting.MeetingTime;
-    // mailobject["HostUser"] = this.meeting.HostUser;
-    // var tempUser = this.options.find(({ Email }) => Email === val);
-    // mailobject["Meeting_Location"] = "https://mmconferenceroom.checkboxtechnology.com:9002/#MM" + this.meeting.RoomKey + "$" + tempUser.LoginName + "$" + this.meeting.MeetingID + "$1";
-
     const data = this.meetingService.updateMeeting(id, object).then(async () => {
+      object["Partipatents"] = val;
+      this.meetingService.removeUserfromMeeting(object).then(result => {
+        this.refresh();
 
-      // mailobject["toname"] = tempUser.FirstName + " " + tempUser.LastName;
-      // mailobject["toemail"] = val;
-      // await this.meetingService.sendMailCancellation(mailobject).then(result => {
-      //   console.log("Message sent");
-      // })
-      this.refresh();
+      })
     })
   }
 

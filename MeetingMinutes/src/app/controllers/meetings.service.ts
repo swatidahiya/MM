@@ -112,4 +112,10 @@ export class MeetingService {
     filterMeetings(object: any){
       return this.request('post', this.baseUrl +'/Meeting/filterMeetings', object);
     }
+    removeUserfromMeeting(object: any) {
+      return this.request('delete', this.baseUrl + '/Meeting/removeUserfromMeeting', object);
+    }
+    cancelMeeting(username: any, object: any) {
+      return this.request('post', this.baseUrl + '/Meeting/cancelMeeting/' + username , object);
+    }
 }

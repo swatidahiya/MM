@@ -10,6 +10,8 @@ router.post('/filterMeetings', filterMeetings)
 router.put('/updateMeeting/:id', updateMeeting)
 router.post('/SendResheduleMeetingEmail', SendRescheduleMail)
 router.get('/getAttachmentsByMeetingId/:id', getAttachmentsByMeetingId)
+router.delete('/removeUserfromMeeting',removeUserfromMeeting)
+router.post('/cancelMeeting/:id', cancelMeeting)
 
 function postMeeting(req, res, next) {
     meetingService.postMeeting(req.body)
@@ -56,6 +58,18 @@ function SendRescheduleMail(req, res, next){
 function getAttachmentsByMeetingId(req, res, next){
     meetingService.getAttachmentsByMeetingId(req.params.id)
         .then(meetingNotes => res.json(meetingNotes))
+        .catch(err => next(err));
+}
+
+function removeUserfromMeeting(req, res, next){
+    meetingService.removeUserfromMeeting(req.body)
+        .then(meeting => res.json(meeting))
+        .catch(err => next(err));
+}
+
+function cancelMeeting(req, res, next){
+    meetingService.cancelMeeting(req)
+        .then(meeting => res.json(meeting))
         .catch(err => next(err));
 }
 

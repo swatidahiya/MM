@@ -2,15 +2,24 @@
     <div class="card card-head" *ngIf="dataLoaded">
         <div *ngIf="meeting.reoccrence == 'Yes' || meeting.reoccrence == null">
             <div class="card-header">
-                <h1 class="card-title"><b style="margin-left: 20px;">
-                        <div *ngIf='!editHeader' (click)='editHeader=true' class="float-left" style="margin-left: 6px;">
-                            {{meeting.Meeting_Subject}}<i class="fas fa-pencil-alt titleIcon"
-                                style="margin-left: 5px;"></i>
+                <h1 class="card-title">
+                    <div class="row">
+                        <div class="col">
+                            <b style="margin-left: 20px;">
+                                <div *ngIf='!editHeader' (click)='editHeader=true' class="float-left"
+                                    style="margin-left: 6px;">
+                                    {{meeting.Meeting_Subject}}<i class="fas fa-pencil-alt titleIcon"
+                                        style="margin-left: 5px;"></i>
+                                </div>
+                                <input *ngIf='editHeader' (focusout)="onHeaderFocused()"
+                                    (keydown.enter)='$event.target.blur()' [(ngModel)]='meeting.Meeting_Subject'
+                                    class="editInput" appAutofocus type='text' (keydown.enter)='$event.target.blur()'
+                                    (focusout)="editHeader=false">
+                            </b>
                         </div>
-                        <input *ngIf='editHeader' (focusout)="onHeaderFocused()" (keydown.enter)='$event.target.blur()'
-                            [(ngModel)]='meeting.Meeting_Subject' class="editInput" appAutofocus type='text'
-                            (keydown.enter)='$event.target.blur()' (focusout)="editHeader=false">
-                    </b>
+
+                    </div>
+
                 </h1>
             </div>
             <div class="card-body">
@@ -90,36 +99,46 @@
                                     onclick="document.getElementById('id01').style.display='block'"
                                     class="form-control"><a style="font-size: 1vw;">Re-Schedule
                                         Meeting</a></button>
+                                <button
+                                    *ngIf="currentUser.LoginName == meeting.HostUser || currentUser.Initials == 'sAdmin'"
+                                    mat-raised-button color="warn" (click)="onCancelMeeting(meeting)"
+                                    class="form-control mt-2">Cancel
+                                    Meeting</button>
                             </div>
                         </div>
                         <mat-divider></mat-divider>
-                    
+
                         <div class="row">
                             <div class="col-9" style="max-height: 500px; overflow-y: auto;">
                                 <div class="row my-2">
                                     <div class="col">
-                                        <a class="ml-2" *ngIf="!newParticipant" (click)="showAutoComplete()">Add Participant +</a>
+                                        <a class="ml-2" style="cursor: pointer;" *ngIf="!newParticipant"
+                                            (click)="showAutoComplete()">Add Participant +</a>
                                         <div class="ml-2" *ngIf="newParticipant">
-                                            <input class="addSearch" type="text" placeholder="Pick one" aria-label="Number"
-                                                matInput [matAutocomplete]="auto">
+                                            <input class="addSearch" type="text" placeholder="Pick one"
+                                                aria-label="Number" matInput [matAutocomplete]="auto">
                                             <mat-autocomplete #auto="matAutocomplete"
                                                 (optionSelected)='getPosts($event.option.value)'>
                                                 <mat-option *ngFor="let option of options" [value]="option.Email">
                                                     {{option.FirstName}} {{option.LastName}}
                                                 </mat-option>
                                             </mat-autocomplete>
-                                            <span class="ml-2" (click)="showAutoComplete()" style="cursor: pointer;"><i class="fas fa-times"></i></span>
-                                           
+                                            <span class="ml-2" (click)="showAutoComplete()" style="cursor: pointer;"><i
+                                                    class="fas fa-times"></i></span>
+
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row" *ngIf="participants.length != 0; else noParticipants" >
+                                <div class="row" *ngIf="participants.length != 0; else noParticipants">
                                     <div *ngFor="let participant of participants">
                                         <div class="col" style="display: inline-flex;">
                                             <img class="attendeesLogo" src="../../../assets/avatar1.png">
-                                            <p class="mt-4 ml-md-3 ml-2">{{participant}} <span class="ml-3"
-                                                    style="cursor: pointer;" (click)="blockParticipant(participant)"
-                                                    title="Remove user from meeting"><i class="fas fa-trash-alt"></i></span>
+                                            <p class="mt-4 ml-md-3 ml-2">{{participant}} <span
+                                                    *ngIf="currentUser.LoginName == meeting.HostUser || currentUser.Initials == 'sAdmin'"
+                                                    class="ml-3" style="cursor: pointer;"
+                                                    (click)="blockParticipant(participant)"
+                                                    title="Remove user from meeting"><i
+                                                        class="fas fa-trash-alt"></i></span>
                                             </p>
                                         </div>
                                     </div>
@@ -129,6 +148,22 @@
                                         <h1><b>No Participants</b></h1>
                                     </div>
                                 </ng-template>
+
+                                <div class="row mt-3 mb-2">
+                                    <div class="col">
+                                        <a class="ml-2" style="cursor: pointer;" *ngIf="!newNonParticipant"
+                                            (click)="showNonRegisterUserField()">Add Non-Register Participant +</a>
+
+                                        <div class="ml-2" *ngIf="newNonParticipant">
+                                            <input type="email" class="form-control mb-2" name="OtherUserMail"
+                                                [(ngModel)]="otherUserMail" placeholder="eg. abc@gmail.com">
+                                            <span class="mt-1 btn btn-info otherUserMail"
+                                                (click)="addOtherUserMail(otherUserMail)">+ Add</span>
+                                            <span class="ml-2 mt-1 btn btn-danger otherUserMail"
+                                                (click)="showNonRegisterUserField()">Cancel</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-3" style="margin-top: 20px; justify-content: center;text-align: center;">
                                 <table style="display: block;">
