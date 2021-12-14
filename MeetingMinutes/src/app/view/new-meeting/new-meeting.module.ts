@@ -21,7 +21,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatNativeDateModule, MatInputModule } from '@angular/material';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { AmazingTimePickerModule } from 'amazing-time-picker';
-
+import { MultiSelectModule } from '@syncfusion/ej2-angular-dropdowns';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 @NgModule({
@@ -49,7 +49,8 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     MatAutocompleteModule,
     AmazingTimePickerModule,
     OwlDateTimeModule,
-    OwlNativeDateTimeModule
+    OwlNativeDateTimeModule,
+    MultiSelectModule
     // IgxTimePickerModule
   ],
   exports: [

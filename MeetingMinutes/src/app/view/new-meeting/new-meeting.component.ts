@@ -10,12 +10,13 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { ActionDialogComponent } from '../action-dialog/action-dialog.component';
 // declare let Email: any;
+import { CheckBoxSelectionService, FilteringEventArgs } from '@syncfusion/ej2-angular-dropdowns';
 
 @Component({
   selector: 'app-new-meeting',
   templateUrl: './new-meeting.component.html',
   styleUrls: ['./new-meeting.component.css'],
-  providers: [MeetingService, UserService]
+  providers: [MeetingService, UserService, CheckBoxSelectionService]
 })
 export class NewMeetingComponent implements OnInit {
 
@@ -40,7 +41,6 @@ export class NewMeetingComponent implements OnInit {
   otherMails: Array<any> = [];
   addMoreUser: boolean = false;
 
-
   constructor(private _formBuilder: FormBuilder, private meetingService: MeetingService,
     private userService: UserService,
     private http: HttpClient,
@@ -50,6 +50,7 @@ export class NewMeetingComponent implements OnInit {
 
   ngOnInit() {
     this.minDate = new Date();
+   
     this.refresh();
   }
 
@@ -193,27 +194,35 @@ export class NewMeetingComponent implements OnInit {
   }
 
   addMail(val: any) {
-    if (this.otherMails.length > 0) {
-      var count = 0;
-      this.otherMails.forEach(mail => {
-        if (mail == val) {
-          count++;
-        }
-      });
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-      if (count == 0) {
-        this.otherMails.push(val);
-        this.otherUsers = '';
+    if(val !== undefined) {
+      if (val.match(mailformat)) {
+        var count = 0;
+        this.otherMails.forEach(mail => {
+          if (mail == val) {
+            count++;
+          }
+        });
+  
+        if (count == 0) {
+          this.otherMails.push(val);
+          this.otherUsers = '';
+        }
+        else {
+          alert("This mail is already added!")
+          this.otherUsers = '';
+        }
       }
       else {
-        alert("This mail is already added!")
-        this.otherUsers = '';
+        alert("Please enter valid mail.")
       }
     }
     else {
-      this.otherMails.push(val);
-      this.otherUsers = '';
+      alert("Please enter valid mail.")
+
     }
+   
   }
 
   onCancelMail(value: any) {

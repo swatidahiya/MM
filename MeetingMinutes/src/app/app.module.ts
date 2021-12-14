@@ -73,6 +73,7 @@ import { QuillModule } from 'ngx-quill'
 import {Mention} from 'quill-mention';
 import {MatTabsModule} from '@angular/material/tabs';
 import { ArchivedMeetingsModule } from './view/archived-meetings/archived-meetings.module';
+import { MultiSelectModule } from '@syncfusion/ej2-angular-dropdowns';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
@@ -227,7 +228,8 @@ const routes: Routes = [
         mention: true,
       }
     }),
-    MatTabsModule
+    MatTabsModule,
+    MultiSelectModule
   ],
   providers: [
     {

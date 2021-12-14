@@ -29,6 +29,7 @@
     "@ng-bootstrap/ng-bootstrap": "^5.3.1",
     "@syncfusion/ej2": "^17.3.30",
     "@syncfusion/ej2-angular-buttons": "^19.3.44",
+    "@syncfusion/ej2-angular-dropdowns": "^19.3.56",
     "@syncfusion/ej2-angular-inplace-editor": "^17.4.51",
     "@syncfusion/ej2-angular-richtexteditor": "^19.3.46",
     "@syncfusion/ej2-angular-schedule": "^18.1.48",
