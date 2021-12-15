@@ -6,17 +6,33 @@
                     <div class="row">
                         <div class="col">
                             <b style="margin-left: 20px;">
-                                <div *ngIf='!editHeader'  class="float-left"
-                                    style="margin-left: 6px;">
+                                <div *ngIf='!editHeader' class="float-left" style="margin-left: 6px;">
                                     {{meeting.Meeting_Subject}}<i
                                         *ngIf="currentUser.LoginName == meeting.HostUser || currentUser.Initials == 'sAdmin'"
-                                        class="fas fa-pencil-alt titleIcon" (click)='editHeader=true' style="margin-left: 5px;"></i>
+                                        class="fas fa-pencil-alt titleIcon" (click)='editHeader=true'
+                                        style="margin-left: 5px;"></i>
                                 </div>
                                 <input *ngIf='editHeader' (focusout)="onHeaderFocused()"
                                     (keydown.enter)='$event.target.blur()' [(ngModel)]='meeting.Meeting_Subject'
                                     class="editInput" appAutofocus type='text' (keydown.enter)='$event.target.blur()'
                                     (focusout)="editHeader=false">
                             </b>
+                        </div>
+                        <div class="col" style="text-align: right;">
+                            <button mat-mini-fab color="primary" style="margin-right: 10px;"
+                                (click)="openChat(meeting.RoomKey)" aria-label="Example icon-button with a heart icon"
+                                title="Video Room">
+                                <i class="fas fa-video"></i>
+                            </button>
+                            <button mat-mini-fab color="primary" style="margin-right: 10px;" (click)="fileInput.click()"
+                                title="Upload File">
+                                <i class="fas fa-upload"></i>
+                                <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
+                            </button>
+                            <button mat-mini-fab color="primary" style="margin-right: 10px;" (click)="getServerFiles()"
+                                title="Download File">
+                                <i class="fas fa-download"></i>
+                            </button>
                         </div>
 
                     </div>
@@ -68,7 +84,7 @@
                                     <tr>
                                         <td class="meetingLabel"> Objective :</td>
                                         <td class="meetingContent">
-                                            <div *ngIf='!editMode'  style="margin-left: 6px;">
+                                            <div *ngIf='!editMode' style="margin-left: 6px;">
                                                 {{meeting.Meeting_objective}} <i
                                                     *ngIf="currentUser.LoginName == meeting.HostUser || currentUser.Initials == 'sAdmin'"
                                                     class="fas fa-pencil-alt" (click)='editMode=true'
@@ -114,7 +130,7 @@
                         <div class="row">
                             <div class="col-9" style="max-height: 500px; overflow-y: auto;">
                                 <div class="row my-2">
-                                    <div class="col">   
+                                    <div class="col">
                                         <a class="ml-2" style="cursor: pointer;" *ngIf="!newParticipant"
                                             (click)="showAutoComplete()">Add Participant +</a>
                                         <div class="ml-2" *ngIf="newParticipant">
@@ -194,7 +210,7 @@
             </div>
         </div>
     </div>
-    <div style="text-align: end; float: right; margin-right: 80px; margin-top: 20px;">
+    <!-- <div style="text-align: end; float: right; margin-right: 80px; margin-top: 20px;">
         <button mat-fab color="warn" *ngIf="!fabIcon" (click)="showFab()"
             aria-label="Example icon-button with a menu"><i style="font-size: 18px;" class="fas fa-plus"
                 aria-hidden="true"></i>
@@ -217,8 +233,8 @@
                     style="font-size: 18px;" class="fa fa-times" aria-hidden="true"></i>
             </button>
         </div>
-    </div>
-    <div class="card card-head" style="margin-top: 100px;" *ngIf="dataLoaded">
+    </div> -->
+    <div class="card card-head" style="margin-top: 50px;" *ngIf="dataLoaded">
 
         <div class="card-body">
             <div class="row">
