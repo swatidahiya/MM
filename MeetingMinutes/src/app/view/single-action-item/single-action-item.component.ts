@@ -302,7 +302,9 @@ export class SingleActionItemComponent implements OnInit {
   }
 
   commentTransform(data: any) {
-    return this.domSanitizer.bypassSecurityTrustHtml(data.toString());
+    if(data !== null) {
+      return this.domSanitizer.bypassSecurityTrustHtml(data.toString());
+    }
   }
 
   test = (event) => {

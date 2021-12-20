@@ -157,12 +157,14 @@ export class QuickMeetingComponent implements OnInit {
         temp1.setHours(temp1.getHours() + 1);
     
         object['MeetingDate'] = temp1
-        object['MeetingTime'] = temp1.toLocaleString();
+        object['MeetingTime'] = temp1.toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
         object['Conclusion'] = "Add Your Conclusion Here!";
         object['reoccrence'] = 'Yes';
         object['Status'] = 0;
         object['HostUser'] = this.currentUser.LoginName;
         object['RoomKey'] = Math.floor(Math.random() * 0xFFFFFF);
+        object['HostUserMail'] = this.currentUser.Email;
+
     
     
         var mailObject = {};
@@ -173,6 +175,8 @@ export class QuickMeetingComponent implements OnInit {
         mailObject["HostUser"] = object.HostUser;
         mailObject["MeetingDescription"] = object.Meeting_objective;
         mailObject["toname"] = this.currentUser.FirstName + " " + this.currentUser.LastName;
+        mailObject['HostUserMail'] = object.HostUserMail;
+
     
     
         await this.meetingService.postMeeting(object).then(async () => {
@@ -180,7 +184,7 @@ export class QuickMeetingComponent implements OnInit {
     
           for (var i = 0; i < partipatents.length; i++) {
             mailObject["toemail"] = partipatents[i];
-            mailObject["Meeting_Location"] = "https://meetingminutes.checkboxtechnology.com/videoRoom/" + object.RoomKey;
+            mailObject["Meeting_Location"] = "https://mmv1.checkboxtechnology.com/videoRoom/" + object.RoomKey;
             this.meetingService.sendMail(mailObject).then(result => {
               console.log("Message sent");
             })

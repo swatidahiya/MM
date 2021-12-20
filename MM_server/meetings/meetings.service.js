@@ -125,6 +125,7 @@ async function sendMail(mailParam){
         data = data.replace(/%HostUser%/g, mailParam.HostUser);
         data = data.replace(/%meetingdescription%/g, mailParam.MeetingDescription);
         data = data.replace(/%HostUserMail%/g, mailParam.HostUserMail);
+
         var calendarObj = emailService.getIcalObjectInstance(mailParam.MeetingDate, mailParam.MeetingSubject, mailParam.MeetingDescription, mailParam.Meeting_Location, mailParam.HostUser, mailParam.HostUserMail)
         emailService.sendEmail(mailParam.toemail, 'Meeting Invitation', data , calendarObj)
 
