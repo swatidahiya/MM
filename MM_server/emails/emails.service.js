@@ -17,13 +17,13 @@ async function sendEmail(to, subject, body, calendarObj = null){
         secure: false,
         ignoreTLS: true,
         auth: {
-            user: 'checkx-no-reply@checkboxtechnology.com',
-            pass: 'Check@70box'
+            user: 'mm-noreply@checkboxtechnology.com',
+            pass: 'Check@70box123'
         }
     });
 
     let mailOptions = {
-        from: "checkx-no-reply@checkboxtechnology.com",
+        from: "mm-noreply@checkboxtechnology.com",
         to,
         subject,
         html: body,

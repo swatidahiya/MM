@@ -9,6 +9,8 @@ import { async } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { ActionDialogComponent } from '../action-dialog/action-dialog.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+
 // declare let Email: any;
 
 @Component({
@@ -20,7 +22,7 @@ import { ActionDialogComponent } from '../action-dialog/action-dialog.component'
 export class NewMeetingComponent implements OnInit {
 
   currentUser: User;
-
+  recurrence: boolean = false;
   meeting = new Meetings;
 
   firstFormGroup: FormGroup
@@ -51,6 +53,7 @@ export class NewMeetingComponent implements OnInit {
   ngOnInit() {
     this.minDate = new Date();
     this.refresh();
+    // console.log("recurrence " + this.recurrenceBool)
   }
 
   async refresh() {
@@ -88,7 +91,9 @@ export class NewMeetingComponent implements OnInit {
           object['HostUserMail'] = this.currentUser.Email;
           object['RoomKey'] = Math.floor(Math.random() * 0xFFFFFF);
           object['Conclusion'] = "Add Your Conclusion Here!";
-          object['reoccrence'] = 'Yes';
+          console.log("i am printing here")
+          console.log(this.recurrence);
+          object['recurrence'] = this.recurrence;
 
           this.displayName.forEach(user => {
             partipatents.push(user.Email);
@@ -114,7 +119,8 @@ export class NewMeetingComponent implements OnInit {
 
           object['Partipatents'] = partipatents;
           object['MeetingAssignedTo'] = assignee;
-
+          console.log("this is our meeting object")
+          console.log(object);
           var mailObject = {};
           mailObject["subject"] = "Meeting Invitation",
             mailObject["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + object.Meeting_Subject;

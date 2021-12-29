@@ -21,6 +21,8 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatNativeDateModule, MatInputModule } from '@angular/material';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { AmazingTimePickerModule } from 'amazing-time-picker';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+
 
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
@@ -30,6 +32,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     NewMeetingRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    MatCheckboxModule,
     // AngularFontAwesomeModule,
     FlexLayoutModule,
     MatCardModule,

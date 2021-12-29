@@ -14,7 +14,7 @@ const meetingSchema = new Schema({
     MeetingDate: {type: Date},
     MeetingTime: {type: String},
     MeetingAssignedTo: {type: Array},
-    reoccrence: {type: String},
+    recurrence: {type: Boolean},
     Meeting_Location: {type: String},
     Partipatents: {type: Array},
     Share_Link: {type: String},

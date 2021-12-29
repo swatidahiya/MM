@@ -18,7 +18,8 @@ module.exports = {
     updateProfile,
     base64_encode,
     forgotPassword,
-    getUser
+    getUser,
+    getByUserName
 }
 
 async function getById(idParam) {
@@ -79,11 +80,16 @@ async function updateUser(req) {
  
     const user = await User.findOne({ AppUserID: req.params.id })
     console.log("this is user")
-    console.log(user)
+    cons .log(user)
     console.log("this is rq.body")
     console.log(req.body)
     Object.assign(user, req.body);
     await user.save();
+    return user;
+}
+
+async function getByUserName(name){
+    const user = await User.findOne({LoginName: name})
     return user;
 }
 
@@ -104,7 +110,6 @@ async function authenticateUser(userParam) {
             expiresIn: '4d'
         });
         return {
-
             token
         }
     }

@@ -223,7 +223,7 @@
                 <hr style="border: 1px solid gray;">
 
                 <div class="row mb-2 mt-sm-3 mt-2">
-                    <form class="col" #formData="ngForm" (ngSubmit)="createMeeting(formData)">
+                    <form (keydown.enter)="$event.preventDefault()" class="col" #formData="ngForm" (ngSubmit)="createMeeting(formData)">
 
                         <div class="row mb-2 ">
                             <div class="col-sm-6 mb-2 form-group">
@@ -285,7 +285,6 @@
                                     </mat-autocomplete>
                                 </div>
                             </div>
-
                         </div>
 
                         <mat-divider></mat-divider>
@@ -326,6 +325,15 @@
                         </div>
 
                         <mat-divider></mat-divider>
+                        <br>
+                        <div class="row my-2">
+                            <div class="col mb-2">
+                                <mat-checkbox name = "recurrence" [(ngModel)] = "recurrence" class ="checkbox"></mat-checkbox>
+                                <span>Is this a weekly recurring meeting ?</span>
+                               
+                            </div>
+                        </div>
+
 
                         <div class="row mt-3">
                             <div class="col" style="text-align: right;">
