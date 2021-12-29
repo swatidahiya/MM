@@ -22,6 +22,9 @@ import { MatNativeDateModule, MatInputModule } from '@angular/material';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { MultiSelectModule } from '@syncfusion/ej2-angular-dropdowns';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+
+
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 @NgModule({
@@ -30,6 +33,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     NewMeetingRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    MatCheckboxModule,
     // AngularFontAwesomeModule,
     FlexLayoutModule,
     MatCardModule,

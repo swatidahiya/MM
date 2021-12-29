@@ -20,6 +20,10 @@
     border-radius: 20px;
 }
 
+.checkbox{
+    margin: 0 12px;
+}
+
 /* .card-header h6{
 color: black;
 justify-content: center;

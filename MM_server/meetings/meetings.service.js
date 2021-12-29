@@ -6,7 +6,62 @@ const User = db.User;
 var fs = require("fs");
 const emailService = require('../emails/emails.service');
 const MeetingNote = db.MeetingNotes;
+var cron = require('node-cron');
+var moment = require("moment");
+const actionService = require('../actions/actions.service');
+const userService = require('../users/users.service')
 
+cron.schedule('0 0 * * *', async () => {
+  console.log('running a task every day at midnight');
+  var date = new Date();
+  var tempDate = Date.parse(date);
+  date.setDate(date.getDate() + 2);
+  var newDate = Date.parse(date);
+  var meetings = await getMeetings();
+  for(let i=0; i< meetings.length; i++){
+    if(meetings[i].recurrence === true){
+        var meetingDate = meetings[i].MeetingDate;
+    testDate = Date.parse(meetingDate)
+    var newScheduledDate = meetingDate.setDate(meetingDate.getDate() + 7);
+    var difference = newDate - newScheduledDate;
+    if(difference >= 0 && difference < 86400000){
+        var obj = meetings[i].toJSON();
+        delete obj._id;
+        var prevMeetingID = obj.MeetingID
+        obj.MeetingDate = new Date(newScheduledDate).toISOString()
+        obj.MeetingTime = obj.MeetingDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+        var createNewMeet = await postMeeting(obj);
+        var mailObject = {};
+        mailObject["subject"] = "Meeting Invitation",
+        mailObject["message"] = "You are invited as a Participant in this meeting. Please login and check Meeting name " + obj.Meeting_Subject;
+        mailObject["MeetingSubject"] = obj.Meeting_Subject;
+        mailObject["MeetingDate"] = obj.MeetingTime;
+        mailObject["HostUser"] = obj.HostUser;
+        mailObject["MeetingDescription"] = obj.Meeting_objective;
+        let user = await userService.getByUserName(obj.HostUser);
+        mailObject["HostUserMail"] = user.Email;
+        mailObject["Meeting_Location"] =  "https://mmv1.checkboxtechnology.com/videoRoom/" + obj.RoomKey;
+        mailObject["toemail"]= meetings[i].Partipatents;
+        await sendMail(mailObject);
+    
+        let meetingActions = await actionService.getActionByMeetingId(prevMeetingID);
+       
+        for(let j=0; j< meetingActions.length; j++){
+            if(meetingActions[j].Status !== 2){
+            
+                var actionObj = meetingActions[j].toJSON();
+                delete actionObj._id;
+                actionObj.MeetingID = createNewMeet.MeetingID;
+                let actionCreated = await actionService.postAction(actionObj);
+            }
+        }
+
+    }
+    }
+    
+  }
+  
+});
 
 
 module.exports = {
@@ -23,9 +78,9 @@ module.exports = {
 }
 
 
-
 async function postMeeting(body){
     var meetingParams = body;
+    console.log(meetingParams);
     var meetings = await getMeetings();
 
     if(meetings.length > 0) {
@@ -117,10 +172,12 @@ async function filterMeetings(object) {
 
 async function sendMail(mailParam){
  console.log(mailParam)
+ var link = "<a href = '" + mailParam.Meeting_Location + "'><span>" + mailParam.Meeting_Location + "</span></a>"
+ console.log(link)
     fs.readFile('meetingInvitation.html', 'utf8', function (err, data) {
         data = data.replace(/%UserName%/g, mailParam.toname);
         data = data.replace(/%MeetingSubject%/g, mailParam.MeetingSubject);
-        data = data.replace(/%ShareLink%/g, mailParam.Meeting_Location);
+        data = data.replace(/%ShareLink%/g, link);
         data = data.replace(/%MeetingDate%/g, mailParam.MeetingDate);
         data = data.replace(/%HostUser%/g, mailParam.HostUser);
         data = data.replace(/%meetingdescription%/g, mailParam.MeetingDescription);
